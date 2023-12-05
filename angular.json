@@ -19,7 +19,7 @@
                 "externals": "replace"
               }
             },
-            "outputPath": "dist/esbrina",
+            "outputPath": "dist/docs",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
