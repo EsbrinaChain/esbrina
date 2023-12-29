@@ -1,0 +1,57 @@
+.globalText {
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.globalTitle {
+    text-align: center;
+    color: coral;
+}
+
+.selectIdioma {
+    color: rgb(3, 118, 250);
+    max-width: 110px;
+    font-size: small;
+}
+
+.selectIdiomaTitulo {
+    color: rgb(14, 10, 221);
+}
+
+.espacioItems {
+    width: 20px;
+}
+
+.imgLogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    height: 25%;
+}
+
+.menuToolbar{
+    font-size: small;
+}
+
+a{
+    font-size: 16px;
+    font-style: normal;
+    text-decoration: none;
+    color:white;
+}
+
+.top-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+mat-select {
+    font-size: 12px;
+}
+mat-option {
+    font-size: 12px;
+}
