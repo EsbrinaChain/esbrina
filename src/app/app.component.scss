@@ -11,6 +11,7 @@
 .selectIdioma {
     color: rgb(3, 118, 250);
     max-width: 110px;
+    font-size: small;
 }
 
 .selectIdiomaTitulo {
@@ -33,8 +34,24 @@
     font-size: small;
 }
 
-.customToolbar{
-    font-size: 20px;
+a{
+    font-size: 16px;
     font-style: normal;
     text-decoration: none;
+    color:white;
+}
+
+.top-right {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+mat-select {
+    font-size: 12px;
+}
+mat-option {
+    font-size: 12px;
 }

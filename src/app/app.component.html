@@ -9,13 +9,18 @@
         <a  routerLink="registro">{{idioma_seleccionat.m10}}</a>
         <span class="espacioItems"></span>
         <span flex></span>
-
-        <mat-form-field class="selectIdioma">
-            <mat-label class="selectIdiomaTitulo">{{idioma_seleccionat.m0}}</mat-label>
-            <mat-select type="number" [(ngModel)]="levelNum" (ngModelChange)="toNumber()">
-                <mat-option selected *ngFor="let level of levels" [value]=level.num>{{ level.name }}</mat-option>
-            </mat-select>
-        </mat-form-field>
+        <div class="top-right">
+            <mat-form-field class="selectIdioma mat-select" color="primary">
+                <mat-label class="selectIdiomaTitulo">{{idioma_seleccionat.m0}}</mat-label>
+                <mat-select type="number" [(ngModel)]="levelNum" (ngModelChange)="toNumber()">
+                    <mat-option selected 
+                        *ngFor="let level of levels" 
+                        [value]=level.num>{{ level.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
     </mat-toolbar>
 
 
