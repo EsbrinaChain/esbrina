@@ -17,7 +17,7 @@ import * as CryptoJS from 'crypto-js';
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule],
   templateUrl: './wallet-in.component.html',
-  styleUrl: './wallet-in.component.css'
+  styleUrl: './wallet-in.component.scss'
 })
 
 export class WalletInComponent {

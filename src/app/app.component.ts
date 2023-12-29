@@ -20,7 +20,7 @@ import { WalletInComponent } from "./wallet-in/wallet-in.component";
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
     MatSidenavModule, MatIconModule, MatMenuModule, MatListModule, WalletInComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
   
 export class AppComponent implements OnInit{
