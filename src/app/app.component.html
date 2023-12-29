@@ -1,12 +1,12 @@
 <div>
-    <mat-toolbar color="primary">
+    <mat-toolbar  color="primary">
         <a><mat-icon (click)="sidenav.toggle()">menu</mat-icon></a>
         <span class="espacioItems"></span>
 
-        <a>{{idioma_seleccionat.m9}}</a>
+        <a  routerLink="wallet1">{{idioma_seleccionat.m9}}</a>
         <span class="espacioItems"></span>
 
-        <a>{{idioma_seleccionat.m10}}</a>
+        <a  routerLink="registro">{{idioma_seleccionat.m10}}</a>
         <span class="espacioItems"></span>
         <span flex></span>
 
@@ -23,14 +23,14 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav>
         <mat-nav-list (click)="sidenav.close()">
-            <a mat-list-item routelink="">{{idioma_seleccionat.m3}}</a>
-            <a mat-list-item routelink="">{{idioma_seleccionat.m4}}</a>
-            <a mat-list-item routelink="">{{idioma_seleccionat.m5}}</a>
-            <a mat-list-item routelink="">{{idioma_seleccionat.m6}}</a>
+            <a mat-list-item routerLink="">{{idioma_seleccionat.m3}}</a>
+            <a mat-list-item routerLink="">{{idioma_seleccionat.m4}}</a>
+            <a mat-list-item routerLink="">{{idioma_seleccionat.m5}}</a>
+            <a mat-list-item routerLink="">{{idioma_seleccionat.m6}}</a>
             <a mat-list-item routelink="">{{idioma_seleccionat.m7}}</a>
-            <a mat-list-item routelink="">{{idioma_seleccionat.m8}}</a>
-            <a mat-list-item routelink="./wallet-in">{{idioma_seleccionat.m9}}</a>
-            <a mat-list-item routelink="">{{idioma_seleccionat.m10}}</a>
+            <a mat-list-item routerLink="">{{idioma_seleccionat.m8}}</a>
+            <a mat-list-item routerLink="wallet1">{{idioma_seleccionat.m9}}</a>
+            <a mat-list-item routerLink="registro">{{idioma_seleccionat.m10}}</a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
@@ -39,5 +39,7 @@
             <h2 class="globalText">{{subtitle}}</h2>
             <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
         </div>
+        <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>
+

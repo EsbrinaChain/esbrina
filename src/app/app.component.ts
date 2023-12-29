@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { es, en, cat} from "./idioma";
 import {MatSelectModule} from '@angular/material/select';
@@ -16,7 +16,7 @@ import { WalletInComponent } from "./wallet-in/wallet-in.component";
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule,
+  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
     MatSidenavModule, MatIconModule, MatMenuModule, MatListModule, WalletInComponent],
   templateUrl: './app.component.html',
