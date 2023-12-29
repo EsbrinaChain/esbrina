@@ -1,0 +1,30 @@
+.globalText {
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.globalTitle {
+    text-align: center;
+    color: coral;
+}
+
+.selectIdioma {
+    color: rgb(3, 118, 250);
+    max-width: 110px;
+}
+
+.selectIdiomaTitulo {
+    color: rgb(14, 10, 221);
+}
+
+.espacioItems {
+    width: 20px;
+}
+
+.imgLogo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    height: 25%;
+}

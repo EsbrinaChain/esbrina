@@ -1,2 +1,11 @@
 import { Routes } from '@angular/router';
-export const routes: Routes = [];
+import { WalletInComponent } from "./wallet-in/wallet-in.component";
+
+export const routes: Routes = [
+    {
+    path: "wallet-in",
+    component: WalletInComponent
+    }
+];
+
+
