@@ -1,32 +1,16 @@
-<!-- Form Inicial -->
-<form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
-    <div *ngIf="!encrypted"><input id="n1" formControlName="seeds" size="60" placeholder="Seed" type="password" /></div>
-    <div><input id="n2" formControlName="password" type="password" placeholder="Password" /></div>
-    <button type="submit">Login</button>
-    <div>
-        <button type="button" (click)="loginMetamask()">Login con Metamask</button>
-    </div>
-</form>
+<div class="centrado"> 
+    <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="loginMetamask(loginForm.value)">
+        <div>
+            <input id="n1" formControlName="userLogin" size="20" placeholder="User"/>
 
-<div *ngIf="!metamask && wallet.address">
-    <b>PrivateKey:</b> {{wallet.privateKeyHex}}
-    <br><b>PublicKey:</b> {{wallet.publicKey}}
-    <br><b>Address:</b> {{wallet.address}}
-    <br><b>Balance: </b> {{balanceWalletAddress}} ETH.
+            <input id="n2" formControlName="userPass" size="20" type="password" placeholder="Password" />
+        </div>
+        <div class="centrado">
+            <button *ngIf="opcionSel=='login'" type="submit" mat-raised-button color="primary">{{idiomaSel.m9}}</button>
+            <button *ngIf="opcionSel=='registrar'" type="submit" mat-raised-button color="primary">{{idiomaSel.m10}}</button>
+        </div>
+        
+        
+    </form>
 </div>
-<div *ngIf="metamask && wallet.address">
-    <b>Metamask Address:</b> {{wallet.address}}
-    <br><b>Balance: </b> {{balanceWalletAddress}} ETH.
-</div>
-<div *ngIf="blockNumber">
-    <b>Block Number: </b> {{blockNumber}}
-</div>
-<h3 *ngIf="wallet.address">Enviar Tx </h3>
-
-<form *ngIf="wallet.address" [formGroup]="sendForm" (ngSubmit)="enviaTx(sendForm.value)">
-    <div><input formControlName="address" size="60" type="text" placeholder="address" /></div>
-    <div><input formControlName="monto" type="text" /></div>
-    <button type="submit">Send Tx</button>
-</form>
-
 

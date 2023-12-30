@@ -35,7 +35,9 @@ export class AppComponent implements OnInit{
   idiomes:any;
   idioma_seleccionat:any;
   title:any;
-  subtitle:any;
+  subtitle: any;
+  loginShow = false;
+  registrarShow = false;
   
   constructor() {
     this.selectedLevel = this.levels[0];
@@ -68,6 +70,10 @@ export class AppComponent implements OnInit{
     }
   }
 
+  loginMostrar(val: boolean) {
+      this.loginShow = val;
+      this.registrarShow = !val;
+  }
 }
 
 

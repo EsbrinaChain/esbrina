@@ -1,8 +1,12 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FormBuilder,FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 // Librerias de Ethereum y DApp
 import * as Mnemonic from 'bitcore-mnemonic';
@@ -11,19 +15,27 @@ import * as bip39 from 'bip39';
 import * as util from '@ethereumjs/util';
 import Web3  from 'web3';
 import * as CryptoJS from 'crypto-js';
+import { es } from '../idioma';
+
+
 
   @Component({
   selector: 'app-wallet-in',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule],
+    imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
+      MatButtonModule, MatTooltipModule, MatIconModule],
   templateUrl: './wallet-in.component.html',
   styleUrl: './wallet-in.component.scss'
 })
 
 export class WalletInComponent {
-  title = 'esbrina';
-
+  @Input()
+  idiomaSel: any=es;
+  @Input()
+  opcionSel: any;
+    
   // Variables
+  title = 'esbrina';
   loginForm: any;
   sendForm: any;
   encrypted: any;
@@ -41,10 +53,12 @@ export class WalletInComponent {
   blockNumber: any;
   balanceWalletAddress: any;
   web3: any;
- 
+      
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView; 
     this.loginForm = formBuilder.group({
+      userLogin: "",
+      userPass:"",
       seeds: "",
       password: ""
     });
@@ -109,7 +123,7 @@ export class WalletInComponent {
     
   }
   
-  async loginMetamask() {
+  async loginMetamask1() {
     
     //this.window.ethereum.enable().then((acts: any) => {
     this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -118,6 +132,18 @@ export class WalletInComponent {
     this.getBalanceAddress(this.wallet.address);
     this.web3 = new Web3(this.window.ethereum);
     this.metamask = true;
+  }
+    
+  
+  async loginMetamask(sendData: any) {
+  
+  //this.window.ethereum.enable().then((acts: any) => {
+  this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
+  this.wallet.address = this.accounts[0];
+  this.getBlockN();
+  this.getBalanceAddress(this.wallet.address);
+  this.web3 = new Web3(this.window.ethereum);
+  this.metamask = true;
   }
 
  async getBlockN() {
@@ -210,5 +236,7 @@ export class WalletInComponent {
     var tx = await this.window.ethereum.request({ method: 'eth_sendTransaction', params: args });
     console.log("Tx=", tx);
   }
-
+  ngOnInit() {
+    console.log(this.opcionSel);
+  }
 }
