@@ -13,7 +13,7 @@ export const es = {
     m11: "Logout",
     m12: "Usuario",
     m13: "Contraseña",
-    m14: "",
+    m14: "Login con Metamask",
     m15: "",
 };
 
@@ -32,7 +32,7 @@ export const  en={
     m11: "Logout",
     m12: "User",
     m13: "Password",
-    m14: "",
+    m14: "Login with Metamask",
     m15: "",
 };
 
@@ -51,7 +51,7 @@ export const  cat={
     m11: "Logout",
     m12: "Usuari",
     m13: "Contrasenya",
-    m14: "",
+    m14: "Login amb Metamask",
     m15: "",
 
 };

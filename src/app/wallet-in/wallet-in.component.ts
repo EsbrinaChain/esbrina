@@ -6,6 +6,7 @@ import { DOCUMENT } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 
 // Librerias de Ethereum y DApp
@@ -53,6 +54,7 @@ export class WalletInComponent {
   blockNumber: any;
   balanceWalletAddress: any;
   web3: any;
+  provider: any;
       
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView; 
@@ -122,7 +124,7 @@ export class WalletInComponent {
     };
     
   }
-  
+  // original function
   async loginMetamask1() {
     
     //this.window.ethereum.enable().then((acts: any) => {
@@ -135,15 +137,33 @@ export class WalletInComponent {
   }
     
   
-  async loginMetamask(sendData: any) {
+    async loginMetamask(sendData: any) {
+    
+      this.provider = await detectEthereumProvider();
+      if (this.provider) {
+        console.log(this.provider);
+        // From now on, this should always be true:
+        // provider === window.ethereum
+        if (this.provider == undefined || this.provider !== this.window.ethereum) {
+           console.log('Please install MetaMask!');
+           return;
+        }
+      } 
+      
+      function startApp(provider:any) {
+        // If the provider returned by detectEthereumProvider isn't the same as
+        // window.ethereum, something is overwriting it – perhaps another wallet.
+       
+        // Access the decentralized web!
+      }
   
-  //this.window.ethereum.enable().then((acts: any) => {
-  this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
-  this.wallet.address = this.accounts[0];
-  this.getBlockN();
-  this.getBalanceAddress(this.wallet.address);
-  this.web3 = new Web3(this.window.ethereum);
-  this.metamask = true;
+      //this.window.ethereum.enable().then((acts: any) => {
+      this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
+      this.wallet.address = this.accounts[0];
+      this.getBlockN();
+      this.getBalanceAddress(this.wallet.address);
+      this.web3 = new Web3(this.window.ethereum);
+      this.metamask = true;
   }
 
  async getBlockN() {
