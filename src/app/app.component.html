@@ -3,16 +3,16 @@
         <a><mat-icon (click)="sidenav.toggle()">menu</mat-icon></a>
         <span class="espacioItems"></span>
 
-        <a  routerLink="wallet1">{{idioma_seleccionat.m9}}</a>
+        <a  routerLink="wallet1" (click)="loginShow=true;registrarShow=false;">{{idioma_seleccionat.m9}}</a>
         <span class="espacioItems"></span>
 
-        <a  routerLink="registro">{{idioma_seleccionat.m10}}</a>
-        <span class="espacioItems"></span>
+        <a  routerLink="registro" (click)="registrarShow=true;loginShow=false;">{{idioma_seleccionat.m10}}</a>
+        <span class="espacioItems"></span>                 
         <span flex></span>
         <div class="top-right">
             <mat-form-field class="selectIdioma mat-select" color="primary">
                 <mat-label class="selectIdiomaTitulo">{{idioma_seleccionat.m0}}</mat-label>
-                <mat-select type="number" [(ngModel)]="levelNum" (ngModelChange)="toNumber()">
+                <mat-select #idioma type="number" [(ngModel)]="levelNum" (ngModelChange)="toNumber()">
                     <mat-option selected 
                         *ngFor="let level of levels" 
                         [value]=level.num>{{ level.name }}
@@ -34,8 +34,8 @@
             <a mat-list-item routerLink="">{{idioma_seleccionat.m6}}</a>
             <a mat-list-item routelink="">{{idioma_seleccionat.m7}}</a>
             <a mat-list-item routerLink="">{{idioma_seleccionat.m8}}</a>
-            <a mat-list-item routerLink="wallet1">{{idioma_seleccionat.m9}}</a>
-            <a mat-list-item routerLink="registro">{{idioma_seleccionat.m10}}</a>
+            <a mat-list-item routerLink="wallet1" (click)="loginShow=true;registrarShow=false;">{{idioma_seleccionat.m9}}</a>
+            <a mat-list-item routerLink="registro" (click)="registrarShow=true;loginShow=false;">{{idioma_seleccionat.m10}}</a>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content>
@@ -44,7 +44,9 @@
             <h2 class="globalText">{{subtitle}}</h2>
             <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
         </div>
-        <router-outlet></router-outlet>
+        <app-wallet-in *ngIf="loginShow" [idiomaSel]="idioma_seleccionat"></app-wallet-in>
+        <app-registrar *ngIf="registrarShow" [idiomaSel]="idioma_seleccionat"></app-registrar>
+        
     </mat-sidenav-content>
 </mat-sidenav-container>
 

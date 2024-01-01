@@ -9,11 +9,11 @@ export const es = {
     m7: "Estadísticas",
     m8: "Configuración",
     m9: "Login",
-    m10: "Registrar",
+    m10: "Registrarse",
     m11: "Logout",
-    m12: "",
-    m13: "",
-    m14: "",
+    m12: "Usuario",
+    m13: "Contraseña",
+    m14: "Login con Metamask",
     m15: "",
 };
 
@@ -30,9 +30,9 @@ export const  en={
     m9: "Login",
     m10: "Register",
     m11: "Logout",
-    m12: "",
-    m13: "",
-    m14: "",
+    m12: "User",
+    m13: "Password",
+    m14: "Login with Metamask",
     m15: "",
 };
 
@@ -49,9 +49,9 @@ export const  cat={
     m9: "Login",
     m10: "Registrar-se",
     m11: "Logout",
-    m12: "",
-    m13: "",
-    m14: "",
+    m12: "Usuari",
+    m13: "Contrasenya",
+    m14: "Login amb Metamask",
     m15: "",
 
 };
