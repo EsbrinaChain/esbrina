@@ -32,9 +32,7 @@ import { es } from '../idioma';
 export class WalletInComponent {
   @Input()
   idiomaSel: any=es;
-  @Input()
-  opcionSel: any;
-    
+      
   // Variables
   title = 'esbrina';
   loginForm: any;
@@ -257,6 +255,6 @@ export class WalletInComponent {
     console.log("Tx=", tx);
   }
   ngOnInit() {
-    console.log(this.opcionSel);
+    
   }
 }

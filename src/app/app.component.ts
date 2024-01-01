@@ -11,6 +11,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import { WalletInComponent } from "./wallet-in/wallet-in.component";
+import { RegistrarComponent } from './registrar/registrar.component';
+
 
 
 @Component({
@@ -18,7 +20,8 @@ import { WalletInComponent } from "./wallet-in/wallet-in.component";
   standalone: true,
   imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
-    MatSidenavModule, MatIconModule, MatMenuModule, MatListModule, WalletInComponent],
+    MatSidenavModule, MatIconModule, MatMenuModule, MatListModule,
+    WalletInComponent, RegistrarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -70,10 +73,6 @@ export class AppComponent implements OnInit{
     }
   }
 
-  loginMostrar(val: boolean) {
-      this.loginShow = val;
-      this.registrarShow = !val;
-  }
 }
 
 
