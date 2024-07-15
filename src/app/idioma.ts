@@ -14,7 +14,7 @@ export const es = {
     m12: "Usuario",
     m13: "Contraseña",
     m14: "Registrarse sin Metamask",
-    m15: "",
+    m15: "cambio",
 };
 
 export const  en={
