@@ -1,12 +1,12 @@
 
 
 <div class="centrado">
-    <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="registrar(loginForm.value)">
-        <div>
+    <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="loginMetamask(loginForm);">
+        <!--<div>
             <input id="n1" formControlName="userLogin" size="20" placeholder="{{idiomaSel.m12}}" />
 
             <input id="n2" formControlName="userPass" size="20" type="password" placeholder="{{idiomaSel.m13}}" />
-        </div>
+        </div>-->
         <div class="centrado">
             <button type="submit" mat-raised-button color="primary">{{idiomaSel.m10}}</button>
         </div>

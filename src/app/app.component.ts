@@ -13,8 +13,6 @@ import {MatListModule} from '@angular/material/list';
 import { WalletInComponent } from "./wallet-in/wallet-in.component";
 import { RegistrarComponent } from './registrar/registrar.component';
 
-
-
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -39,10 +37,12 @@ export class AppComponent implements OnInit{
   idioma_seleccionat:any;
   title:any;
   subtitle: any;
-  loginShow = false;
+  loginShow = true;
   registrarShow = false;
+  window: any;
   
   constructor() {
+    
     this.selectedLevel = this.levels[0];
     this.idiomes = ["es", "en", "cat"];
     this.idioma_seleccionat = es;

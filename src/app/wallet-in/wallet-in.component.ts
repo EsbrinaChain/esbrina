@@ -57,9 +57,6 @@ export class WalletInComponent {
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView; 
     this.loginForm = formBuilder.group({
-      userLogin: "",
-      userPass:"",
-      seeds: "",
       password: ""
     });
     this.sendForm = formBuilder.group({
@@ -67,38 +64,48 @@ export class WalletInComponent {
       monto:"",
     });
     this.encrypted = window.localStorage.getItem('seeds');
+    
   }
 
-  async sendLogin(sendData: any) {
-   if(!this.encrypted){
-    if (!sendData.seeds || !sendData.password) {
-      return alert("Todos son campos obligatorios.");
+    async sendLogin(sendData: any) {
+    if (!this.encrypted) {
+      //const mnemonic1 = bip39.generateMnemonic(); // genera la semilla automaticamente
+      const mnemonic1 = "neglect trap digital bean echo only strategy jungle jar easily trap brush";
+	   //console.log('Semilla generada aleatoriamente:',mnemonic1);
+    if (!sendData.password) {
+      return alert("El password de usuario es obligatorio.");
     }
-    if (!Mnemonic.isValid(sendData.seeds)) {
-      return alert("Semilla invalida.");
-    }
-    this.encrypted = CryptoJS.AES.encrypt(sendData.seeds, sendData.password);
+    //if (!Mnemonic.isValid(sendData.seeds)) {
+    //  return alert("Semilla invalida.");
+    //}
+    this.encrypted = CryptoJS.AES.encrypt(mnemonic1, sendData.password);
     window.localStorage.setItem('seeds', this.encrypted.toString());
     //console.log(sendData,this.encrypted.toString());
    }
    else {
-     if (!sendData.password) {
+      if (!sendData.password) {
        return alert("El password es obligatorio.");
-     }
-     this.llavor = CryptoJS.AES.decrypt(this.encrypted.toString(), sendData.password).toString(CryptoJS.enc.Utf8);
-     if (!this.llavor) { return alert("Password incorrecto!"); }
+      }
+      this.llavor = CryptoJS.AES.decrypt(this.encrypted.toString(), sendData.password).toString(CryptoJS.enc.Utf8);
+      if (!this.llavor) { return alert("Password incorrecto!"); }
 
-     var keys = await this.initWallet(this.llavor).then((valor) => { return valor; });
+      var keys = await this.initWallet(this.llavor).then((valor) => { return valor; });
 
-     this.wallet.privateKey = keys.privateKey;
-     this.wallet.privateKeyHex = util.bytesToHex(keys.privateKey);
-     this.wallet.publicKey = keys.publicKey;
-     this.wallet.address=keys.address;
-     this.metamask = false;
-     this.getBlockN();
-     this.getBalanceAddress(this.wallet.address);
-     this.web3 = new Web3(this.window.ethereum);
-     this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
+      this.wallet.privateKey = keys.privateKey;
+      this.wallet.privateKeyHex = util.bytesToHex(keys.privateKey);
+      this.wallet.publicKey = keys.publicKey;
+      this.wallet.address = keys.address;
+      console.log(this.wallet.address);
+      this.metamask = false;
+      
+      this.web3 = new Web3('https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903');      
+      this.web3.eth.defaultAccount = this.wallet.address;
+      var n = await this.web3.eth.getBalance(this.wallet.address);
+      console.log("BALANCE (wei): ", n);
+      console.log("BlockNumber: ", await this.getBlockN());
+      console.log("Balance: ",await this.getBalanceAddress(this.wallet.address));
+      
+      
     }
   }
   
@@ -121,58 +128,18 @@ export class WalletInComponent {
         address: address
     };
     
-  }
-  // original function
-  async loginMetamask1() {
-    
-    //this.window.ethereum.enable().then((acts: any) => {
-    this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
-    this.wallet.address = this.accounts[0];
-    this.getBlockN();
-    this.getBalanceAddress(this.wallet.address);
-    this.web3 = new Web3(this.window.ethereum);
-    this.metamask = true;
-  }
-    
+  }  
   
-    async loginMetamask(sendData: any) {
-    
-      this.provider = await detectEthereumProvider();
-      if (this.provider) {
-        console.log(this.provider);
-        // From now on, this should always be true:
-        // provider === window.ethereum
-        if (this.provider == undefined || this.provider !== this.window.ethereum) {
-           console.log('Please install MetaMask!');
-           return;
-        }
-      } 
-      
-      function startApp(provider:any) {
-        // If the provider returned by detectEthereumProvider isn't the same as
-        // window.ethereum, something is overwriting it – perhaps another wallet.
-       
-        // Access the decentralized web!
-      }
-  
-      //this.window.ethereum.enable().then((acts: any) => {
-      this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
-      this.wallet.address = this.accounts[0];
-      this.getBlockN();
-      this.getBalanceAddress(this.wallet.address);
-      this.web3 = new Web3(this.window.ethereum);
-      this.metamask = true;
-  }
-
- async getBlockN() {
-    this.blockNumber = await this.window.ethereum.request({ method: 'eth_blockNumber' }); 
-    console.log(this.blockNumber);
+    async getBlockN() {
+      this.blockNumber = await this.web3.eth.getBlockNumber();
+      return this.blockNumber;
   }
 
   async getBalanceAddress(address:any) {
-    var valor = await this.window.ethereum.request({ method: 'eth_getBalance', params: [address] }); 
-    var valorEther = Web3.utils.fromWei(valor, 'ether');
+    var valor = await this.web3.eth.getBalance(address); 
+    var valorEther = this.web3.utils.fromWei(valor, 'ether');
     this.balanceWalletAddress = valorEther;
+    return valorEther;
   }
 
   async sendTx0(sendTxData: any) {

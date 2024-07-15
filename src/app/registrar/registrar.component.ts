@@ -9,19 +9,22 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { es } from '../idioma';
 import detectEthereumProvider from '@metamask/detect-provider';
 
+import Web3  from 'web3';
+
 @Component({
   selector: 'app-registrar',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-      MatButtonModule, MatTooltipModule, MatIconModule],
+    MatButtonModule, MatTooltipModule, MatIconModule],
   templateUrl: './registrar.component.html',
   styleUrl: './registrar.component.scss'
 })
+  
 export class RegistrarComponent {
   @Input()
   idiomaSel: any = es;
 
-// Variables
+  // Variables
   title = 'esbrina';
   loginForm: any;
   sendForm: any;
@@ -30,24 +33,30 @@ export class RegistrarComponent {
   metamask: boolean = false;
   wallet: any = {
     privateKey: '',
-    privateKeyHex:'',
+    privateKeyHex: '',
     publicKey: '',
     address: ''
   };
+  
   window: any;
   provider: any;
+  accounts: any;
+  blockNumber: any;
+  balanceWalletAddress: any;
+  web3: any;
 
-constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
-    this.window = document.defaultView; 
+
+  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
+    this.window = document.defaultView;
     this.loginForm = formBuilder.group({
       userLogin: "",
-      userPass:"",
+      userPass: "",
       seeds: "",
       password: ""
     });
     this.sendForm = formBuilder.group({
       address: "",
-      monto:"",
+      monto: "",
     });
     this.encrypted = window.localStorage.getItem('seeds');
   }
@@ -65,6 +74,42 @@ constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: F
         return;
       }
     }
+
+  
     // Registrar usuario: user/pass i public key
+  }
+
+  
+  async getBlockN() {
+    this.blockNumber = await this.window.ethereum.request({ method: 'eth_blockNumber' });
+    console.log(this.blockNumber);
+  }
+
+  async getBalanceAddress(address: any) {
+    var valor = await this.window.ethereum.request({ method: 'eth_getBalance', params: [address] });
+    var valorEther = Web3.utils.fromWei(valor, 'ether');
+    this.balanceWalletAddress = valorEther;
+  }
+
+  async loginMetamask(sendData: any) {
+    //console.log("METAMASK");
+    this.provider = await detectEthereumProvider();
+    if (this.provider) {
+      console.log(this.provider);
+      // From now on, this should always be true:
+      // provider === window.ethereum
+      if (this.provider == undefined || this.provider !== this.window.ethereum) {
+        console.log('Please install MetaMask!');
+        return;
+      }
+      //console.log("LLEGA");
+      this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
+      console.log(this.accounts);
+      this.wallet.address = this.accounts[0];
+      this.getBlockN();
+      this.getBalanceAddress(this.wallet.address);
+      this.web3 = new Web3(this.window.ethereum);
+      this.metamask = true;
+    }
   }
 }
