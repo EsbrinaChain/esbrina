@@ -6,7 +6,7 @@ import { DOCUMENT } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import detectEthereumProvider from '@metamask/detect-provider';
+import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 
 // Librerias de Ethereum y DApp
@@ -24,7 +24,7 @@ import { es } from '../idioma';
   selector: 'app-wallet-in',
   standalone: true,
     imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-      MatButtonModule, MatTooltipModule, MatIconModule],
+      MatButtonModule, MatTooltipModule, MatIconModule, PreguntaComponent],
   templateUrl: './wallet-in.component.html',
   styleUrl: './wallet-in.component.scss'
 })
@@ -47,16 +47,18 @@ export class WalletInComponent {
     address: ''
   };
 
-  window: any;
-  accounts: any
-  blockNumber: any;
-  balanceWalletAddress: any;
-  web3: any;
-  provider: any;
+    window: any;
+    accounts: any
+    blockNumber: any;
+    balanceWalletAddress: any;
+    web3: any;
+    provider: any;
+    
       
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView; 
     this.loginForm = formBuilder.group({
+      userSeed: "",
       password: ""
     });
     this.sendForm = formBuilder.group({
@@ -70,8 +72,8 @@ export class WalletInComponent {
     async sendLogin(sendData: any) {
     if (!this.encrypted) {
       //const mnemonic1 = bip39.generateMnemonic(); // genera la semilla automaticamente
-      const mnemonic1 = "neglect trap digital bean echo only strategy jungle jar easily trap brush";
-	   //console.log('Semilla generada aleatoriamente:',mnemonic1);
+      const mnemonic1 = sendData.userSeed;
+      //console.log('Semilla enviada:', mnemonic1);
     if (!sendData.password) {
       return alert("El password de usuario es obligatorio.");
     }
@@ -82,31 +84,28 @@ export class WalletInComponent {
     window.localStorage.setItem('seeds', this.encrypted.toString());
     //console.log(sendData,this.encrypted.toString());
    }
-   else {
-      if (!sendData.password) {
-       return alert("El password es obligatorio.");
-      }
-      this.llavor = CryptoJS.AES.decrypt(this.encrypted.toString(), sendData.password).toString(CryptoJS.enc.Utf8);
-      if (!this.llavor) { return alert("Password incorrecto!"); }
-
-      var keys = await this.initWallet(this.llavor).then((valor) => { return valor; });
-
-      this.wallet.privateKey = keys.privateKey;
-      this.wallet.privateKeyHex = util.bytesToHex(keys.privateKey);
-      this.wallet.publicKey = keys.publicKey;
-      this.wallet.address = keys.address;
-      console.log(this.wallet.address);
-      this.metamask = false;
-      
-      this.web3 = new Web3('https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903');      
-      this.web3.eth.defaultAccount = this.wallet.address;
-      var n = await this.web3.eth.getBalance(this.wallet.address);
-      console.log("BALANCE (wei): ", n);
-      console.log("BlockNumber: ", await this.getBlockN());
-      console.log("Balance: ",await this.getBalanceAddress(this.wallet.address));
-      
-      
+    if (!sendData.password) {
+      return alert("El password es obligatorio.");
     }
+    this.llavor = CryptoJS.AES.decrypt(this.encrypted.toString(), sendData.password).toString(CryptoJS.enc.Utf8);
+    if (!this.llavor) { return alert("Password incorrecto!"); }
+
+    var keys = await this.initWallet(this.llavor).then((valor) => { return valor; });
+
+    this.wallet.privateKey = keys.privateKey;
+    this.wallet.privateKeyHex = util.bytesToHex(keys.privateKey);
+    this.wallet.publicKey = keys.publicKey;
+    this.wallet.address = keys.address;
+    console.log(this.wallet.address);
+    this.metamask = false;
+    
+    this.web3 = new Web3('https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903');      
+    this.web3.eth.defaultAccount = this.wallet.address;
+    var n = await this.web3.eth.getBalance(this.wallet.address);
+    console.log("BALANCE (wei): ", n);
+    console.log("BlockNumber: ", await this.getBlockN());
+    console.log("Balance: ",await this.getBalanceAddress(this.wallet.address));
+    
   }
   
   async initWallet(seeds: String) {

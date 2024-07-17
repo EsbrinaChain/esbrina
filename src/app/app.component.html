@@ -1,26 +1,24 @@
 <div>
-    <mat-toolbar  class="customToolbar" color="primary">
+    <mat-toolbar class="customToolbar" color="primary">
         <!--<a><mat-icon (click)="sidenav.toggle()">menu</mat-icon></a>
         <span class="espacioItems"></span>-->
 
         <!--<a  routerLink="wallet1" (click)="loginShow=true;registrarShow=false;">{{idioma_seleccionat.m9}}</a>
         <span class="espacioItems"></span>-->
 
-        <a  routerLink="registro" (click)="loginShow=!loginShow;registrarShow=!registrarShow;">{{idioma_seleccionat.m9}}</a>
-        <span class="espacioItems"></span>               
+        <a (click)="loginShow=!loginShow;registrarShow=!registrarShow;">{{idioma_seleccionat.m9}}</a>
+        <span class="espacioItems"></span>
         <span flex></span>
         <div class="top-right">
             <mat-form-field class="selectIdioma mat-select" color="primary">
                 <mat-label class="selectIdiomaTitulo">{{idioma_seleccionat.m0}}</mat-label>
                 <mat-select #idioma type="number" [(ngModel)]="levelNum" (ngModelChange)="toNumber()">
-                    <mat-option selected 
-                        *ngFor="let level of levels" 
-                        [value]=level.num>{{ level.name }}
+                    <mat-option selected *ngFor="let level of levels" [value]=level.num>{{ level.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-        
+
     </mat-toolbar>
 
     <mat-sidenav-container>

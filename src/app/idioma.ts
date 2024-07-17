@@ -11,13 +11,13 @@ export const es = {
     m9: "Login",
     m10: "Login con Metamask",
     m11: "Logout",
-    m12: "Usuario",
+    m12: "Registro",
     m13: "Contraseña",
-    m14: "Registrarse sin Metamask",
-    m15: "cambio",
+    m14: "Wallet sin Metamask",
+    m15: "Semilla (12 palabras)",
 };
 
-export const  en={
+export const en = {
     m0: "Language:",
     m1: "ESBRINA CHAIN - Collaborative Knowledge System",
     m2: "Sharing everyone's knowledge with blockchain technology.",
@@ -30,13 +30,13 @@ export const  en={
     m9: "Login",
     m10: "Login with Metamask",
     m11: "Logout",
-    m12: "User",
+    m12: "Register",
     m13: "Password",
-    m14: "Register without Metamask",
-    m15: "",
+    m14: "Wallet without Metamask",
+    m15: "Seed (12 words)",
 };
 
-export const  cat={
+export const cat = {
     m0: "Idioma:",
     m1: "ESBRINA CHAIN - Sistema de Coneixement Col.laboratiu.",
     m2: "Compartint el coneixement de tots amb tecnología Blockchain.",
@@ -49,10 +49,10 @@ export const  cat={
     m9: "Login",
     m10: "Login amb Metamask",
     m11: "Logout",
-    m12: "Usuari",
+    m12: "Registrar-se",
     m13: "Contrasenya",
-    m14: "Registrar-se sense Metamask",
-    m15: "",
+    m14: "Wallet sense Metamask",
+    m15: "Llavor (12 paraules)",
 
 };
 

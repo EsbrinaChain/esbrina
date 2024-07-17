@@ -1,10 +1,15 @@
 <div class="centrado">
-     
-    <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
-        
-        <div>
-            <!--<input id="n1" formControlName="userLogin" size="20" placeholder="{{idiomaSel.m12}}"/>-->
 
+    <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
+
+        <div>
+            @if(!encrypted){
+                <!--placeholder="{{idiomaSel.m15}}" -->
+                <textarea id="n1" formControlName="userSeed" rows="4" cols="30" (onblur)="idiomaSel.m15" onfocus="this.innerHTML='gold afford crawl napkin shove rhythm melody insect exchange grow betray wild'"></textarea><br>
+            }@else{
+
+            }
+            
             <input id="n2" formControlName="password" size="20" type="password" placeholder="{{idiomaSel.m13}}" />
         </div>
         <div class="centrado">

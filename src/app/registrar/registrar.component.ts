@@ -91,7 +91,7 @@ export class RegistrarComponent {
     this.balanceWalletAddress = valorEther;
   }
 
-  async loginMetamask(sendData: any) {
+  async loginMetamask() {
     //console.log("METAMASK");
     this.provider = await detectEthereumProvider();
     if (this.provider) {
