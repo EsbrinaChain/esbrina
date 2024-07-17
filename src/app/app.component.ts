@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -10,8 +10,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
-import { WalletInComponent } from "./wallet-in/wallet-in.component";
+import { WalletInComponent } from './wallet-in/wallet-in.component';
 import { RegistrarComponent } from './registrar/registrar.component';
+import { UsuariosComponent } from "./usuarios/usuarios.component";
 
 
 @Component({
@@ -20,7 +21,7 @@ import { RegistrarComponent } from './registrar/registrar.component';
   imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
     MatSidenavModule, MatIconModule, MatMenuModule, MatListModule,
-    WalletInComponent, RegistrarComponent],
+    WalletInComponent, RegistrarComponent, UsuariosComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -42,6 +43,11 @@ export class AppComponent implements OnInit{
   registrarShow = false;
   window: any;
 
+  @ViewChild(WalletInComponent)
+  WalletIn: WalletInComponent | undefined;
+  walletAddr: any;
+  encryptedVar: any;
+ 
 
   
   constructor() {
@@ -51,8 +57,7 @@ export class AppComponent implements OnInit{
     this.idioma_seleccionat = es;
     this.title = this.idioma_seleccionat.m1;
     this.subtitle = this.idioma_seleccionat.m2;
-
-
+    this.getVarsWalletIn();
   }
   ngOnInit() {
     
@@ -76,6 +81,12 @@ export class AppComponent implements OnInit{
       this.title = this.idioma_seleccionat.m1;
       this.subtitle = this.idioma_seleccionat.m2;
     }
+  }
+
+
+  getVarsWalletIn(){
+      this.encryptedVar = this.WalletIn?.encrypted;
+      this.walletAddr = this.WalletIn?.wallet;
   }
 
 }
