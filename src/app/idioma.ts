@@ -15,6 +15,14 @@ export const es = {
     m13: "Contraseña",
     m14: "Wallet sin Metamask",
     m15: "Semilla (12 palabras)",
+    m16: "Email",
+    m17: "Registro de usuarios",
+    m18: "Registrar nuevo usuario",
+    m20: "Alias",
+    m21: "Por favor, introduzca una dirección de correo electrónico correcta!",
+    m22: "Usted tiene ya una cuenta creada en Esbrinachain!",
+    m23: "Pulse 'Borrar cuenta' para eliminar esta cuenta",
+    m24: "Borrar cuenta"
 };
 
 export const en = {
@@ -34,6 +42,14 @@ export const en = {
     m13: "Password",
     m14: "Wallet without Metamask",
     m15: "Seed (12 words)",
+    m16: "Email",
+    m17: "User Recording",
+    m18: "Register a new user",
+    m20: "Alias",
+    m21: "Please enter a valid email address!",
+    m22: "You have an account in Esbrinachain yet!",
+    m23: "Press 'Erase account' to eliminate this account ",
+    m24: "Erase account"
 };
 
 export const cat = {
@@ -53,6 +69,14 @@ export const cat = {
     m13: "Contrasenya",
     m14: "Wallet sense Metamask",
     m15: "Llavor (12 paraules)",
+    m16: "Email",
+    m17: "Registre d'Usuaris",
+    m18: "Registrar un nou usuari",
+    m20: "Àlies",
+    m21: "Si us plau, entri una adreça de correu correcta!",
+    m22: "Voste ja té un compte creat a Esbrinachain!",
+    m23: "Premi 'Esborrar compte' per eliminar el compte.",
+    m24: "Erase account"
 
 };
 

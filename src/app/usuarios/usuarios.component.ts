@@ -1,21 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { es, en, cat} from "../idioma";
-import { PreguntaComponent } from "../pregunta/pregunta.component";
-
+import { FormBuilder,FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import { DOCUMENT } from '@angular/common';
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { JsonPipe } from '@angular/common'
-
-
-
+import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp } from 'firebase/firestore';
+//import 'firebaseui/dist/firebaseui.css'
+import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import * as CryptoJS from 'crypto-js';
 
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
 })
@@ -23,22 +22,33 @@ import { JsonPipe } from '@angular/common'
 export class UsuariosComponent {
 
   @Input()
-  idiomaSel: any;
+  idiomaSel: any=es;
   
-  
+  window: any;
   app: any;
   analytics: any;
-  idiomes:any;
   idioma_seleccionat: any;
   db: any;
   listaUsuarios: any;
+  totalUsuarios: any;
   listajson: any;
-
-  constructor() {
+  regForm: any;
+  userCred: any;
+  user: any;
+  emailIncorrecte = false;
+  altaUser: boolean=false;
     
-    this.idiomes = ["es", "en", "cat"];
-    this.idioma_seleccionat = this.idiomaSel;
 
+  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
+    this.window = document.defaultView;
+    this.idioma_seleccionat = this.idiomaSel;
+    this.regForm = formBuilder.group({
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      password: "",
+      alias: ""
+    });
+    console.log(this.regForm);
+    
   
 }
   ngOnInit() {
@@ -53,30 +63,92 @@ export class UsuariosComponent {
         };
         
     this.app = initializeApp(firebaseConfig);
-    //this.db = getFirestore(this.app);
     this.db = getFirestore(this.app);
     this.analytics = getAnalytics(this.app);
+    this.totalUsuarios = this.conTotalUsuarios();
+    this.miraSiEsbrinaUser();
+    console.log(this.altaUser);
   }
 
-  
-
-  async insertaUsuario() { // (3)
-    await this.db.collection('Usuarios').add({
-      aliase: "Chispas",
-      app: "Perez Salas",
-      existe: true,
-      nom: "Manuel",
-      reputacion: 0,
-      vetado:false
-    });
+  miraSiEsbrinaUser() {    
+    if (this.window.localStorage.getItem('esbrinaUser') != null) {
+      this.altaUser = true;
+    }
+    else {
+      this.altaUser = false;
+    }
   }
 
   async conUsuarios() {
-    const citiesCol = collection(this.db, '/Usuarios');
-    const usSnapshot = await getDocs(citiesCol);
+    const numUsuarios = collection(this.db, '/Usuarios');
+    const usSnapshot = await getDocs(numUsuarios);
     this.listaUsuarios = usSnapshot.docs.map(doc => doc.data());
+    this.totalUsuarios = this.listaUsuarios.length;
     console.log(this.listaUsuarios[0]);
 
+  }
+  async insertaUsuarioID(email: any, pass: any, alias: any) {
+    if(!this.altaUser){
+        await setDoc(doc(this.db, "Usuarios", (this.totalUsuarios + 1).toString()),
+          {
+            aliase: alias,
+            email: email,
+            existe: true,
+            psw: pass,
+            reputacion: 0,
+            vetado: false,
+            creado: Timestamp.fromDate(new Date())
+          });
+      this.window.localStorage.setItem('esbrinaUser', CryptoJS.AES.encrypt(email, pass));
+      this.window.localStorage.setItem('esbrinaUserMail', email);
+    }
+  }
+
+  async sendRegistro(sendData: any) {
+    
+    this.insertaUsuarioID(sendData.email, sendData.password, sendData.alias);
+  }
+
+  async conTotalUsuarios() {
+    const numUsuarios = collection(this.db, '/Usuarios');
+    const usSnapshot = await getDocs(numUsuarios);
+    this.totalUsuarios = usSnapshot.docs.length;
+    console.log(this.totalUsuarios);
+
+  }
+
+  insUsuario(email:any, password:any) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        this.userCred = userCredential 
+        this.user = userCredential.user;
+        console.log(this.userCred,this.user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode,errorMessage);
+        // ..
+      });
+  }
+
+  signOutUsuario() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
+  testEmail() {
+    if (this.regForm.status == "INVALID") {
+      this.emailIncorrecte = true;
+    }
+    else {
+      this.emailIncorrecte = false;
+    }
   }
 
 

@@ -1,4 +1,17 @@
 <div class="centrado">
-    <button (click)="conUsuarios()">Obtener Usuarios</button>
-    <br>Nombre: {{listaUsuarios[0].nom}}<br> Apellidos: {{listaUsuarios[0].app}}<br>Reputacion: {{listaUsuarios[0].reputacion}}
+    <span class="usuarios_num">Nº de usuarios actuales: {{totalUsuarios}}</span>
+    <h4 class="usuarios_op">{{idiomaSel.m18}}</h4>
+    <form [formGroup]="regForm" (ngSubmit)="sendRegistro(regForm.value)">
+        <div><input id="n1" formControlName="email" size=30 type="email" (focusout)="testEmail()" (input)="emailIncorrecte=false" placeholder="{{idiomaSel.m16}}" /></div>
+        @if(emailIncorrecte){
+            <br> <div class="error-message">{{idiomaSel.m21}}</div> <br>
+        }
+        <div><input id="n2" formControlName="password" size="30" type="password" placeholder="{{idiomaSel.m13}}" /></div>
+        <div><input id="n3" formControlName="alias" size="30" placeholder="{{idiomaSel.m20}}" /></div>
+        
+        <div class="centrado">
+            <button type="submit" mat-raised-button color="primary">{{idiomaSel.m12}}</button>
+        </div>
+    </form>
+    
 </div>

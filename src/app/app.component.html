@@ -1,12 +1,8 @@
 <div>
     <mat-toolbar class="customToolbar" color="primary">
-        <!--<a><mat-icon (click)="sidenav.toggle()">menu</mat-icon></a>
-        <span class="espacioItems"></span>-->
-
-        <!--<a  routerLink="wallet1" (click)="loginShow=true;registrarShow=false;">{{idioma_seleccionat.m9}}</a>
-        <span class="espacioItems"></span>-->
-
-        <a (click)="loginShow=!loginShow;registrarShow=!registrarShow;">{{idioma_seleccionat.m9}}</a>
+        <a (click)="regUser=false;loginShow=!loginShow;registrarShow=!registrarShow;">{{idioma_seleccionat.m9}}</a>
+        <span class="espacioItems"></span>
+        <a (click)="regUser=true;miraSiEsbrinaUser()">{{idioma_seleccionat.m12}}</a>
         <span class="espacioItems"></span>
         <span flex></span>
         <div class="top-right">
@@ -42,11 +38,19 @@
                 <h2 class="globalText">{{subtitle}}</h2>
                 <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
             </div>
+            @if(regUser && !userDefined){
+                <app-usuarios [idiomaSel]="idioma_seleccionat"></app-usuarios>
+            }@else if(regUser && userDefined){
+                <div class="centrado">
+                    <h4 class="usuarios_op">{{idioma_seleccionat.m22}}</h4>
+                    <h4 class="usuarios_op">{{idioma_seleccionat.m23}}</h4>
+                    <button mat-raised-button color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>
+                </div>
+            }@else if (!regUser) {
+                <app-wallet-in *ngIf="loginShow" [idiomaSel]="idioma_seleccionat"></app-wallet-in>
+                <app-registrar *ngIf="registrarShow" [idiomaSel]="idioma_seleccionat"></app-registrar>
+            }
             
-            <app-usuarios></app-usuarios>
-            <app-wallet-in *ngIf="loginShow" [idiomaSel]="idioma_seleccionat"></app-wallet-in>
-            <app-registrar *ngIf="registrarShow" [idiomaSel]="idioma_seleccionat"></app-registrar>
-
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
