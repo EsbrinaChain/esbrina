@@ -13,6 +13,7 @@ import {MatListModule} from '@angular/material/list';
 import { WalletInComponent } from './wallet-in/wallet-in.component';
 import { RegistrarComponent } from './registrar/registrar.component';
 import { UsuariosComponent } from "./usuarios/usuarios.component";
+import { PreguntaComponent } from "./pregunta/pregunta.component";
 import { DOCUMENT } from '@angular/common';
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
@@ -26,7 +27,7 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth"
   imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
     MatSidenavModule, MatIconModule, MatMenuModule, MatListModule,
-    WalletInComponent, RegistrarComponent, UsuariosComponent],
+    WalletInComponent, RegistrarComponent, UsuariosComponent, PreguntaComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -95,9 +96,9 @@ export class AppComponent implements OnInit{
     this.esbrinaUser = this.window.localStorage.getItem('esbrinaUser');
     
     if (this.esbrinaUser == null)
-    { this.userDefined = false; }
+    { this.userDefined = false; this.regUser = true; }
     else {
-      this.userDefined = true;
+      this.userDefined = true; this.regUser = false;
     }
     this.esbrinaUserMail=this.window.localStorage.getItem('esbrinaUserMail');
     console.log("UserDefined: ",this.userDefined);

@@ -86,9 +86,6 @@ export class RegistrarComponent {
         return;
       }
     }
-
-  
-    // Registrar usuario: user/pass i public key
   }
 
   

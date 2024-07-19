@@ -9,12 +9,13 @@ import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp } fro
 //import 'firebaseui/dist/firebaseui.css'
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import * as CryptoJS from 'crypto-js';
+import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, PreguntaComponent],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
 })
@@ -101,6 +102,7 @@ export class UsuariosComponent {
           });
       this.window.localStorage.setItem('esbrinaUser', CryptoJS.AES.encrypt(email, pass));
       this.window.localStorage.setItem('esbrinaUserMail', email);
+      this.altaUser = true;
     }
   }
 

@@ -6,7 +6,6 @@ import { DOCUMENT } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { PreguntaComponent } from "../pregunta/pregunta.component";
 import { UsuariosComponent } from "../usuarios/usuarios.component";
 
 
@@ -25,7 +24,7 @@ import { es } from '../idioma';
   selector: 'app-wallet-in',
   standalone: true,
     imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-      MatButtonModule, MatTooltipModule, MatIconModule, PreguntaComponent,UsuariosComponent],
+      MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent],
   templateUrl: './wallet-in.component.html',
   styleUrl: './wallet-in.component.scss'
 })

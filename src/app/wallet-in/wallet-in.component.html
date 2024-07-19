@@ -1,5 +1,6 @@
 <div class="centrado">
-  @if(userDefined){
+  @if(userDefined && !wallet.address){
+    <img class="imgLogo" src="./assets/logo/Logo-4.jpg" /><br>
     <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
 
         <div>
@@ -15,8 +16,11 @@
             <button type="submit" mat-raised-button color="primary">{{idiomaSel.m14}}</button>
         </div>
     </form>
-    }@else{
+  }@else if(userDefined && wallet.address){
+    <h1>Caso preguntas</h1>
+  }@else{
+        <img class="imgLogo" src="./assets/logo/Logo-4.jpg" /><br>
         <app-usuarios [idiomaSel]="idiomaSel"></app-usuarios>
-    }
+  }
 </div>
 
