@@ -1,5 +1,6 @@
 <div class="centrado">
-        <button>{{idiomaSelPreg}}</button><span width="15px"></span><button></button>
+        <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>-->
+        <button mat-raised-button color="primary" (click)="conPregs()">Obtener Preguntas</button>
         <table class="tblCenter" cols="7">
             <tr>
                 <td width="2%" class="tdIndex"><div class="id_preg">Nº 1</div></td>
@@ -23,6 +24,4 @@
             </tr>
         </table>
         
-
-
 </div>

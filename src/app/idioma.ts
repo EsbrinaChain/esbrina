@@ -22,7 +22,13 @@ export const es = {
     m21: "Por favor, introduzca una dirección de correo electrónico correcta!",
     m22: "Usted tiene ya una cuenta creada en Esbrinachain!",
     m23: "Pulse 'Borrar cuenta' para eliminar esta cuenta",
-    m24: "Borrar cuenta"
+    m24: "Borrar cuenta",
+    m25: "Realizar una Nueva Pregunta",
+    m26: "Realizar una Respuesta",
+    m27: "",
+    m28: "",
+    m29: "",
+    m30: ""
 };
 
 export const en = {
@@ -49,7 +55,13 @@ export const en = {
     m21: "Please enter a valid email address!",
     m22: "You have an account in Esbrinachain yet!",
     m23: "Press 'Erase account' to eliminate this account ",
-    m24: "Erase account"
+    m24: "Erase account",
+    m25: "Make a New Question",
+    m26: "Add a New Answer",
+    m27: "",
+    m28: "",
+    m29: "",
+    m30: ""
 };
 
 export const cat = {
@@ -76,7 +88,13 @@ export const cat = {
     m21: "Si us plau, entri una adreça de correu correcta!",
     m22: "Voste ja té un compte creat a Esbrinachain!",
     m23: "Premi 'Esborrar compte' per eliminar el compte.",
-    m24: "Erase account"
+    m24: "Erase account",
+    m25: "Crear una Nova Pregunta",
+    m26: "Afegir una Resposta",
+    m27: "",
+    m28: "",
+    m29: "",
+    m30: ""
 
 };
 
