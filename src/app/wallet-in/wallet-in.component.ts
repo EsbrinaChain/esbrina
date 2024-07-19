@@ -17,6 +17,7 @@ import * as util from '@ethereumjs/util';
 import Web3  from 'web3';
 import * as CryptoJS from 'crypto-js';
 import { es } from '../idioma';
+import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 
 
@@ -24,7 +25,7 @@ import { es } from '../idioma';
   selector: 'app-wallet-in',
   standalone: true,
     imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-      MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent],
+    MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent, PreguntaComponent],
   templateUrl: './wallet-in.component.html',
   styleUrl: './wallet-in.component.scss'
 })

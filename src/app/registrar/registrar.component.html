@@ -1,10 +1,13 @@
-@if(userDefined){
+@if(userDefined && !wallet.address){
 <div class="centrado">
         <div class="centrado">
             <img class="imgLogo" src="./assets/logo/Logo-4.jpg" /><br>
             <button (click)="loginMetamask();" type="submit" mat-raised-button color="primary">{{idiomaSel.m10}}</button>
         </div>
 </div>
-}@else{
+}@else if(userDefined && wallet.address){
+    <app-pregunta></app-pregunta>
+}
+@else{
     <app-usuarios [idiomaSel]="idiomaSel"></app-usuarios>
 }

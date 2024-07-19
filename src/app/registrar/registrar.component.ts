@@ -9,6 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { es } from '../idioma';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { UsuariosComponent } from "../usuarios/usuarios.component";
+import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 import Web3  from 'web3';
 
@@ -16,7 +17,7 @@ import Web3  from 'web3';
   selector: 'app-registrar',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-    MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent],
+    MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent, PreguntaComponent],
   templateUrl: './registrar.component.html',
   styleUrl: './registrar.component.scss'
 })
