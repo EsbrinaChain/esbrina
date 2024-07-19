@@ -6,7 +6,7 @@
         </div>
 </div>
 }@else if(userDefined && wallet.address){
-    <app-pregunta></app-pregunta>
+    <app-pregunta [idiomaSel]="idiomaSel"></app-pregunta>
 }
 @else{
     <app-usuarios [idiomaSel]="idiomaSel"></app-usuarios>
