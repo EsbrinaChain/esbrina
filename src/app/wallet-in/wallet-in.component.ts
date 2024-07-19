@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreguntaComponent } from "../pregunta/pregunta.component";
+import { UsuariosComponent } from "../usuarios/usuarios.component";
 
 
 // Librerias de Ethereum y DApp
@@ -24,7 +25,7 @@ import { es } from '../idioma';
   selector: 'app-wallet-in',
   standalone: true,
     imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-      MatButtonModule, MatTooltipModule, MatIconModule, PreguntaComponent],
+      MatButtonModule, MatTooltipModule, MatIconModule, PreguntaComponent,UsuariosComponent],
   templateUrl: './wallet-in.component.html',
   styleUrl: './wallet-in.component.scss'
 })
@@ -53,6 +54,7 @@ export class WalletInComponent {
     balanceWalletAddress: any;
     web3: any;
     provider: any;
+    userDefined: any;
     
       
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
@@ -66,9 +68,20 @@ export class WalletInComponent {
       monto:"",
     });
     this.encrypted = window.localStorage.getItem('seeds');
-    
+    this.miraSiEsbrinaUser();
+
   }
 
+  miraSiEsbrinaUser() {    
+    if (this.window.localStorage.getItem('esbrinaUser') != null) {
+      this.userDefined = true;
+    }
+    else {
+      this.userDefined = false;
+    }
+  }  
+    
+    
     async sendLogin(sendData: any) {
     if (!this.encrypted) {
       //const mnemonic1 = bip39.generateMnemonic(); // genera la semilla automaticamente

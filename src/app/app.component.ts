@@ -137,7 +137,6 @@ export class AppComponent implements OnInit{
       this.walletAddr = this.WalletIn?.wallet;
   }
 
-
   async buscaUsuarioAlta() {
     const usuariosRef = collection(this.db, "Usuarios");
     const q = query(usuariosRef, where("email", "==",this.esbrinaUserMail.toString()));

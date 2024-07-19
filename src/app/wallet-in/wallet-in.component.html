@@ -1,5 +1,5 @@
 <div class="centrado">
-
+  @if(userDefined){
     <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
 
         <div>
@@ -9,13 +9,14 @@
             }@else{
 
             }
-            
             <input id="n2" formControlName="password" size="20" type="password" placeholder="{{idiomaSel.m13}}" />
         </div>
         <div class="centrado">
             <button type="submit" mat-raised-button color="primary">{{idiomaSel.m14}}</button>
         </div>
     </form>
-
+    }@else{
+        <app-usuarios [idiomaSel]="idiomaSel"></app-usuarios>
+    }
 </div>
 
