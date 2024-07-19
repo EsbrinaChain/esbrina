@@ -14,46 +14,26 @@
                 </mat-select>
             </mat-form-field>
         </div>
-
     </mat-toolbar>
+    
+    <div>
+        <h1 class="globalText globalTitle">{{title}}</h1>
+        <h2 class="globalText">{{subtitle}}</h2>
+    </div>
+    @if(regUser && !userDefined){
+        <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
+        <app-usuarios [idiomaSel]="idioma_seleccionat"></app-usuarios>
+    }@else if(regUser){
+        <div class="centrado">
+            <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
+            <h4 class="usuarios_op">{{idioma_seleccionat.m22}}</h4>
+            <h4 class="usuarios_op">{{idioma_seleccionat.m23}}</h4>
+            <button mat-raised-button color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>
+        </div>
+    }@else if (!regUser) {
+        <!--<img class="imgLogo" src="./assets/logo/Logo-4.jpg" />-->
+        <app-wallet-in *ngIf="loginShow" [idiomaSel]="idioma_seleccionat"></app-wallet-in>
+        <app-registrar *ngIf="registrarShow" [idiomaSel]="idioma_seleccionat"></app-registrar>
+    }
 
-    <mat-sidenav-container>
-        <mat-sidenav #sidenav>
-            <mat-nav-list (click)="sidenav.close()">
-                <a mat-list-item routerLink="">{{idioma_seleccionat.m3}}</a>
-                <a mat-list-item routerLink="">{{idioma_seleccionat.m4}}</a>
-                <a mat-list-item routerLink="">{{idioma_seleccionat.m5}}</a>
-                <a mat-list-item routerLink="">{{idioma_seleccionat.m6}}</a>
-                <a mat-list-item routelink="">{{idioma_seleccionat.m7}}</a>
-                <a mat-list-item routerLink="">{{idioma_seleccionat.m8}}</a>
-                <!--<a mat-list-item routerLink="wallet1"
-                    (click)="loginShow=true;registrarShow=false;">{{idioma_seleccionat.m9}}</a>
-                <a mat-list-item routerLink="registro"
-                    (click)="registrarShow=true;loginShow=false;">{{idioma_seleccionat.m10}}</a>-->
-            </mat-nav-list>
-        </mat-sidenav>
-        <mat-sidenav-content>
-            <div>
-                <h1 class="globalText globalTitle">{{title}}</h1>
-                <h2 class="globalText">{{subtitle}}</h2>
-                <!--<img class="imgLogo" src="./assets/logo/Logo-4.jpg" />-->
-            </div>
-            @if(regUser && !userDefined){
-                <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
-                <app-usuarios [idiomaSel]="idioma_seleccionat"></app-usuarios>
-            }@else if(regUser){
-                <div class="centrado">
-                    <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
-                    <h4 class="usuarios_op">{{idioma_seleccionat.m22}}</h4>
-                    <h4 class="usuarios_op">{{idioma_seleccionat.m23}}</h4>
-                    <button mat-raised-button color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>
-                </div>
-            }@else if (!regUser) {
-                <!--<img class="imgLogo" src="./assets/logo/Logo-4.jpg" />-->
-                <app-wallet-in *ngIf="loginShow" [idiomaSel]="idioma_seleccionat"></app-wallet-in>
-                <app-registrar *ngIf="registrarShow" [idiomaSel]="idioma_seleccionat"></app-registrar>
-            }
-            
-        </mat-sidenav-content>
-    </mat-sidenav-container>
 </div>
