@@ -1,0 +1,100 @@
+.tblCenter {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+    border: radius 1px solid greenyellow;
+}
+
+td {
+    border: 2px solid green;
+    border-radius: 35px;
+    padding: 5px;
+}
+
+.tdIndex {
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px;
+    border-style: solid;
+    border-radius: 35px;
+    background-color: darkcyan;
+    color: white;
+}
+
+.tdHidden {
+    border: none;
+    align-items: center;
+}
+
+.tdHiddenBtnResp {
+    border: none;
+    align-items: center;
+    width: 2%;
+}
+
+.tdRespostes {
+    width: auto;
+}
+
+.textMetadata {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+}
+
+.textMetadataRespAnulada {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    background-color: rgb(85, 134, 240);
+    border-radius: 35px;
+}
+
+.btnSep {
+    padding: 2px;
+    width: 32px;
+    height: 32px;
+}
+
+.textMetadataRecompensa {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    color: red;
+    padding: 2%;
+}
+
+.tdMetadata {
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    border: none;
+    background-color: rgb(193, 227, 248);
+    color: rgb(26, 135, 236);
+    text-align: left;
+    padding-left: 1%;
+
+}
+
+.tdResp {
+    border: none;
+}
+
+.textEnunciat {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    color: rgba(5, 83, 166, 0.897);
+    padding: 2%;
+    background-color: rgb(254, 241, 122);
+}
+
+textarea {
+    border: none;
+    border-radius: 35px;
+    width: 100%;
+}
+
+.ganadora{
+    color:greenyellow;
+}

@@ -8,11 +8,12 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
 import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { RespuestaComponent} from '../respuesta/respuesta.component';
 
 @Component({
   selector: 'app-pregunta',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, RespuestaComponent],
   templateUrl: './pregunta.component.html',
   styleUrl: './pregunta.component.scss'
 })

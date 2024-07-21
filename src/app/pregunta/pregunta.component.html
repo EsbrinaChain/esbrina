@@ -20,7 +20,7 @@
                     <div class="textMetadata"> Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
                 <td colspan="4">
-                    <!--<app-respuesta></app-respuesta>-->
+                    <app-respuesta [id_preg]="item.idp"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp"  width="1%">
                     <button class="btnSep" width="8px">+</button><br>
