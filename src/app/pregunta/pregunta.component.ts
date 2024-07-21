@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { es, en, cat } from "../idioma";
+import {pregs} from "../db-pregs"
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 @Component({
@@ -63,9 +65,12 @@ export class PreguntaComponent {
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
     this.analytics = getAnalytics(this.app);
-
   }
-
+  
+  ngAfterViewInit() {
+    console.log("CARGA");
+    this.conPregs();
+  }
 async conPregs() {
     const colPregs = collection(this.db, '/Pregs');
     const usSnapshot = await getDocs(colPregs);
@@ -73,13 +78,15 @@ async conPregs() {
     this.totalPregs = usSnapshot.size;
     console.log(this.listaPregs);
 
+}
+  
+ 
+
+async insPregs() {
+    for(let i = 0; i<pregs.length; i++)
+      await setDoc(doc(this.db, "Pregs", (i + 1).toString()), pregs[i]);
+      //console.log(i+1, pregs[i]);
   }
 
-
-
-
-
-
 }
-
 // 0xF562C02033DF4b174885D8c7678dC1489340F6d9

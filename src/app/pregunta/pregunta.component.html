@@ -1,27 +1,27 @@
 <div class="centrado">
         <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>-->
-        <button mat-raised-button color="primary" (click)="conPregs()">Obtener Preguntas</button>
+        
         <table class="tblCenter" cols="7">
+        @for (item of listaPregs; track item) {
             <tr>
-                <td width="2%" class="tdIndex"><div class="id_preg">Nº 1</div></td>
+                <td width="2%" class="tdIndex"><div class="id_preg">Nº {{item.idp}}</div></td>
                 <td class="tdPreg" colspan="6">
-                    <textarea class="textEnunciat" name="preg_enunciado">{{preg.enunciado}}</textarea>
+                    <textarea class="textEnunciat" name="preg_enunciado">{{item.enunciado}}</textarea>
                 </td>
                 
             </tr>
             <tr>
                 <td class="tdHidden"></td>
                 <td class="tdMetadata">
-                    <div class="textMetadata"> Autor:</div><div>{{preg.autor}}</div>
-                    <div class="textMetadata"> Fecha:</div><div>{{preg.creada}}</div>
-                    <div class="textMetadata"> Estado:</div><div>{{preg.estado}}</div>
-                    <div class="textMetadata"> Recompensa:<span class="textMetadataRecompensa">{{preg.recompensa}}</span></div>
-                    <div class="textMetadata">Fecha Votacion:</div><div>{{preg.fecha_votacion}}</div>
+                    <div class="textMetadata"> Autor:</div><div>{{item.autor}}</div>
+                    <div class="textMetadata"> Fecha:</div><div>{{item.creada}}</div>
+                    <div class="textMetadata"> Estado:</div><div>{{item.estado}}</div>
+                    <div class="textMetadata"> Recompensa:<span class="textMetadataRecompensa">{{item.recompensa}}</span></div>
+                    <div class="textMetadata">Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
                 <td colspan="5"></td>
-                              
-                
             </tr>
+        } 
         </table>
         
 </div>
