@@ -1,31 +1,20 @@
 <div class="centrado">
-    <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>-->
-        <!--<button mat-raised-button color="primary" (click)="insResp()">INSERTAR Respuestas</button><br>-->
-    <table class="tblCenter" cols="3">
+    <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>
+        <button mat-raised-button color="primary" (click)="insResp()">INSERTAR Respuestas</button><br>-->
+      <table class="tblCenter">
         @for (item of listaResp; track item) {
-        <tr><div class="textMetadata"> Autor:</div><div>{{item.email}}</div></tr>
-        <tr>
-            <td width="2%" class="tdIndex">
-                <div class="id_resp">Nº {{item.id_resp}}</div>
-            </td>
-            <td class="tdResp" colspan="2">
-                <textarea class="textEnunciat" name="resp_enunciado">{{item.enunciado}}</textarea>
-            </td>
-        </tr>
-        <tr>
-            <td class="tdHidden"></td>
-            <td class="tdMetadata">
-                @if(item.anulada){ <div class="textMetadataRespAnulada">ANULADA</div> }
-                
-                <div class="textMetadata"> Votos:</div>
-                <div>{{item.votos}}</div>
-                @if(item.ganadora) {
-                    <div class="ganadora">green</div>
-                }
-                
-            </td>
-        </tr>
+            <tr>
+                <td><div>Autor: {{item.email}}<span width="5px"></span>Votos: {{item.votos}}</div></td><td></td>
+            </tr>
+            <tr>
+                <td><div>Nº {{item.id_resp}}</div></td><td><span width="5px"></span></td><td><div>{{item.enunciado}}</div></td>
+            </tr>
+            <tr>
+                <td>
+                    @if(item.ganadora) { <div class="ganadora">green</div>  }
+                </td>
+                <td>@if(item.anulada){ <div>ANULADA</div> }</td>
+            </tr>
         }
-    </table>
-
+      </table>
 </div>

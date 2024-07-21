@@ -61,7 +61,7 @@ export class RespuestaComponent {
   }
 
   async conRespPregQuery(id_preg: any) {
-    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy('id_resp', 'asc'));
+    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg));
     const usSnapshot = await getDocs(queryPregs);
     this.listaResp = usSnapshot.docs.map(doc => doc.data());
     console.log(this.listaResp);

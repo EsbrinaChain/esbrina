@@ -1,15 +1,15 @@
 export const resps: any = [
     {
-        autor: "pedro.carrillo@eresmas.net",
+        email: "pedro.carrillo@eresmas.net",
         id_resp: 1,
         id_preg1: 1,
         enunciado: "Verdes y azules.",
-        ganadora: false,
+        ganadora: true,
         votos: 0,
         anulada: false
     },
     {
-        autor: "aterrado@cepsa.es",
+        email: "aterrado@cepsa.es",
         id_resp: 2,
         id_preg: 1,
         enunciado: "Gris oscuro.",
@@ -18,7 +18,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        autor: "carlos.damas@gmail.com",
+        email: "carlos.damas@gmail.com",
         id_resp: 3,
         id_preg: 1,
         enunciado: "Negros.",
@@ -27,7 +27,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        autor: "maria.picado@telefonica.net",
+        email: "maria.picado@telefonica.net",
         id_resp: 4,
         id_preg: 1,
         enunciado: "Mezcla de negros y marrones.",
@@ -36,7 +36,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        autor: "marta.ferz@sitcom.com",
+        email: "marta.ferz@sitcom.com",
         id_resp: 5,
         id_preg: 1,
         enunciado: "Gris claro.",
