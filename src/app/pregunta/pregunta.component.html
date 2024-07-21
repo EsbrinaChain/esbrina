@@ -1,6 +1,6 @@
 <div class="centrado">
-        <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>-->
-        
+        <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>
+        <button mat-raised-button color="primary" (click)="insPregs()">INSERTAR Preguntas</button>-->
         <table class="tblCenter" cols="7">
         @for (item of listaPregs; track item) {
             <tr>
@@ -13,13 +13,15 @@
                 <td class="tdHidden"></td>
                 <td class="tdMetadata">
                     @if(item.anulada){ <div class="textMetadataPregAnulada">ANULADA</div> }
-                    <div class="textMetadata"> Autor:</div><div>{{item.autor}}</div>
+                    <div class="textMetadata"> Autor:</div><div>{{item.email}}</div>
                     <div class="textMetadata"> Fecha:</div><div>{{item.creada}}</div>
                     <div class="textMetadata"> Estado:</div><div>{{item.estado}}</div>
                     <div class="textMetadata"> Recompensa:<span class="textMetadataRecompensa">{{item.recompensa}}</span></div>
                     <div class="textMetadata"> Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
-                <td colspan="4"></td>
+                <td colspan="4">
+                    <!--<app-respuesta></app-respuesta>-->
+                </td>
                 <td class="tdHiddenBtnResp"  width="1%">
                     <button class="btnSep" width="8px">+</button><br>
                     <label>{{idiomaSel.m26}}</label>

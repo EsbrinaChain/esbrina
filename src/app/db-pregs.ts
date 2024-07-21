@@ -10,7 +10,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "10 de julio de 2024, 11:05:46 a.m. UTC+2",
         idioma: "es",
-        recompensa: 10
+        recompensa: 10,
+        email:"jamesBand@gmail.com"
         
     },
     {
@@ -24,7 +25,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"pedro.carrillo@eresmas.net"
     },
     {
         idp: 3,
@@ -37,7 +39,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"aterrado@cepsa.es"
     },
     {
         idp: 4,
@@ -50,7 +53,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"carlos.damas@gmail.com"
     },
     {
         idp: 5,
@@ -63,7 +67,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"maria.picado@telefonica.net"
     },
     {
         idp: 6,
@@ -76,7 +81,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"marta.ferz@sitcom.com"
     },
     {
         idp: 7,
@@ -89,7 +95,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"carla.santamaria.gmail.com"
     },
     {
         idp: 8,
@@ -102,7 +109,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"crutchford-peter@gmail.com"
     },
     {
         idp: 9,
@@ -115,7 +123,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"svarriloche@aol.com"
     },
     {
         idp: 10,
@@ -128,7 +137,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"caromarcos45@hotmail.com"
     },
     {
         idp:11,
@@ -141,7 +151,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"sergioalberto.manila@gmail.com"
     },
     {
         idp: 12,
@@ -154,7 +165,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"silgarrigues@gmail.com"
     },
     {
         idp: 13,
@@ -167,7 +179,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"ukekana@gmail.com"
     },
     {
         idp: 14,
@@ -179,7 +192,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"angelitodaive@gmail.com"
     },
     {
         idp: 15,
@@ -192,7 +206,8 @@ export const pregs: any = [
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50
+        recompensa: 50,
+        email:"maggi.Herrero1000@gmail.com"
     }
 ];
 

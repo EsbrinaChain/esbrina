@@ -68,19 +68,18 @@ export class PreguntaComponent {
   }
   
   ngAfterViewInit() {
-    console.log("CARGA");
-    this.conPregs();
+    console.log("Lee todas las preguntas:");
+    this.conPregsQuery();
   }
-async conPregs() {
-    const colPregs = collection(this.db, '/Pregs');
-    const usSnapshot = await getDocs(colPregs);
+  
+async conPregsQuery() {
+    const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
+    const usSnapshot = await getDocs(queryPregs);
     this.listaPregs = usSnapshot.docs.map(doc => doc.data());
     this.totalPregs = usSnapshot.size;
     console.log(this.listaPregs);
 
 }
-  
- 
 
 async insPregs() {
     for(let i = 0; i<pregs.length; i++)
