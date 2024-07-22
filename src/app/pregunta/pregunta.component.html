@@ -4,7 +4,7 @@
         <table class="tblCenter" cols="7">
         @for (item of listaPregs; track item) {
             <tr>
-                <td width="2%" class="tdIndex"><div class="id_preg">Nº {{item.idp}}</div></td>
+                <td width="3%" class="tdIndex"><div class="id_preg">Nº {{item.idp}}</div></td>
                 <td class="tdPreg" colspan="6">
                     <textarea class="textEnunciat" name="preg_enunciado">{{item.enunciado}}</textarea>
                 </td>
@@ -23,8 +23,10 @@
                     <app-respuesta [id_preg]="item.idp"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp" width="1%">
+                    @if(item.estado=="activa"){
                 <button class="btnSep" width="8px">+</button><br>
                 <label>{{idiomaSel.m26}}</label>
+                }
                 </td>
             </tr>
         } 
