@@ -31,6 +31,7 @@ export class RespuestaComponent {
   app: any;
   db: any;
   listaResp: any;
+  total_resp: any;
 
   constructor() {
     this.idiomaSelPreg = this.idiomaSel;
@@ -58,6 +59,9 @@ export class RespuestaComponent {
   
   ngAfterViewInit() {
     this.conRespPregQuery(this.id_preg);
+    this.numActualResps();
+    console.log("Número actual de respuestas: ", this.total_resp);
+    console.log("Num resps: ", resps.length);
   }
 
   async conRespPregQuery(id_preg: any) {
@@ -68,10 +72,20 @@ export class RespuestaComponent {
     console.log(this.listaResp[0]);
   }
 
+  async numActualResps() {
+    const queryResps = query(collection(this.db, '/Resps'));
+    const usSnapshot = await getDocs(queryResps);
+    if (usSnapshot.empty) this.total_resp = 0;
+    else this.total_resp = usSnapshot.size;
+
+    console.log(this.total_resp);
+  }
+
   async insResp() {
-    for(let i = 0; i<resps.length; i++) {
-      await setDoc(doc(this.db, "Resps", (i + 1).toString()), resps[i]);
-      console.log(i + 1, resps[i]);
+    
+    for(let i = 1; i<=resps.length; i++) {
+      await setDoc(doc(this.db, "Resps", (i).toString()), resps[i-1]);
+      console.log(i, resps[i]);
       }
   }
 

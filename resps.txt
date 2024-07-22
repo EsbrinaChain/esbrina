@@ -1,4 +1,3 @@
-export const resps: any = [
 {
         email: "pedro.carrillo@eresmas.net",
         id_resp: 1,
@@ -673,5 +672,4 @@ export const resps: any = [
         ganadora: false,
         votos: 0,
         anulada: false
-    } 
-];
+    }

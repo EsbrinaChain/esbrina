@@ -35,7 +35,7 @@ export const pregs: any = [
         autor_address: "0xBBAA34",
         creada: "20 de julio de 2024, 9:00: 00 p.m.UTC + 2",
         enunciado: "¿Cuál es el disco más vendido de la historia?",
-        // "Thriller", Michael Jackson
+        // "Bad", Michael Jackson
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
@@ -174,7 +174,7 @@ export const pregs: any = [
         autor: "Uke Kanatoga",
         autor_address: "0x45ACD",
         creada: "19 de julio de 2024, 4:00: 42 p.m.UTC + 2",
-        enunciado: "¿Quién fue el fundador de la escuela de pintura del 'Impresionismo'?",
+        enunciado: "¿Quién fue el fundador de la escuela de pintura 'Impresionismo'?",
         // Claude Monet
         estado: "activa",
         fecha_votacion: "",
@@ -189,6 +189,7 @@ export const pregs: any = [
         autor_address: "0xFFGG22",
         creada: "19 de julio de 2024, 4:00: 42 p.m.UTC + 2",
         enunciado: "¿Cuál tiene más oscars, 'Titanic', 'Ben-Hur' o el 'Señor de los anillos?",
+        // 13
         estado: "activa",
         fecha_votacion: "",
         idioma: "es",
