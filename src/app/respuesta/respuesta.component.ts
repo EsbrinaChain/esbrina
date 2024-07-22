@@ -65,6 +65,7 @@ export class RespuestaComponent {
     const usSnapshot = await getDocs(queryPregs);
     this.listaResp = usSnapshot.docs.map(doc => doc.data());
     console.log(this.listaResp);
+    console.log(this.listaResp[0]);
   }
 
   async insResp() {

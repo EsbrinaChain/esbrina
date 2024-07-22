@@ -1,20 +1,12 @@
-<div class="centrado">
     <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>
         <button mat-raised-button color="primary" (click)="insResp()">INSERTAR Respuestas</button><br>-->
-      <table class="tblCenter">
+      <table>
         @for (item of listaResp; track item) {
             <tr>
-                <td><div>Autor: {{item.email}}<span width="5px"></span>Votos: {{item.votos}}</div></td><td></td>
-            </tr>
-            <tr>
-                <td><div>Nº {{item.id_resp}}</div></td><td><span width="5px"></span></td><td><div>{{item.enunciado}}</div></td>
-            </tr>
-            <tr>
-                <td>
-                    @if(item.ganadora) { <div class="ganadora">green</div>  }
-                </td>
-                <td>@if(item.anulada){ <div>ANULADA</div> }</td>
+                <td width="1%" class="tdRespId">{{item.id_resp}}-</td>
+                <td width="auto"><label class="textEnunciado">{{item.enunciado}}</label></td>
+                <td width="auto" class="tdRespAutor">{{item.email}}</td>
+                <td class="tdRespVotos"> Votos {{item.votos}}</td>
             </tr>
         }
       </table>
-</div>

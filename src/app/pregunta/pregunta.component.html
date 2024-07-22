@@ -19,12 +19,12 @@
                     <div class="textMetadata"> Recompensa:<span class="textMetadataRecompensa">{{item.recompensa}}</span></div>
                     <div class="textMetadata"> Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
-                <td colspan="4">
+                <td colspan="5" class="tdRespostes">
                     <app-respuesta [id_preg]="item.idp"></app-respuesta>
                 </td>
-                <td class="tdHiddenBtnResp"  width="1%">
-                    <button class="btnSep" width="8px">+</button><br>
-                    <label>{{idiomaSel.m26}}</label>
+                <td class="tdHiddenBtnResp" width="1%">
+                <button class="btnSep" width="8px">+</button><br>
+                <label>{{idiomaSel.m26}}</label>
                 </td>
             </tr>
         } 
