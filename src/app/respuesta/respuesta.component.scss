@@ -41,13 +41,11 @@
     padding-left: 5px;
     text-align: justify;
     align-content: start;
+    border-radius: 10px;
 }
-.textEnunciadoGanadora {
-    font-size: 16px;
-    color: rgb(148, 5, 167);
-    padding-left: 5px;
-    text-align: justify;
-    align-content: start;
+.ganadora {
     background-color: rgb(100, 240, 128);
+    width: fit-content;
+    padding:4px;
 }
 
