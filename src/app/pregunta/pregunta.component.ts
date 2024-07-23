@@ -28,6 +28,8 @@ export class PreguntaComponent {
   analytics: any;
   listaPregs: any;
   totalPregs: any;
+  listaPregs1: any;
+  totalPregs1: any;
   
 
   preg = {
@@ -44,8 +46,6 @@ export class PreguntaComponent {
 
   constructor() {
     this.idiomaSelPreg = this.idiomaSel;
-
-
   }
 
   ngOnInit(): void {
@@ -72,13 +72,33 @@ export class PreguntaComponent {
     console.log("Lee todas las preguntas:");
     this.conPregsQuery();
   }
-  
+
+convertDate(firebaseObject: any) {
+    if (!firebaseObject) return null;
+    for (const [key, value] of Object.entries(firebaseObject)) {
+      // convert simple properties
+      if (value && value.hasOwnProperty('seconds'))
+        firebaseObject[key] = (value as Timestamp).toDate();
+    }
+    return firebaseObject;
+  }
+
+async conPregs1Query() {
+    const queryPregs = query(collection(this.db, '/Pregs1'),orderBy('idp','asc'));
+    const usSnapshot = await getDocs(queryPregs);
+    this.listaPregs1 = usSnapshot.docs.map(doc => doc.data());
+  this.totalPregs1 = usSnapshot.size;
+  console.log(this.listaPregs1[0]);
+
+}
+
+
 async conPregsQuery() {
     const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
     const usSnapshot = await getDocs(queryPregs);
     this.listaPregs = usSnapshot.docs.map(doc => doc.data());
-    this.totalPregs = usSnapshot.size;
-    console.log(this.listaPregs);
+  this.totalPregs = usSnapshot.size;
+  console.log(this.listaPregs[0]);
 
 }
 

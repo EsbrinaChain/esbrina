@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { es, en, cat } from "../idioma";
 import {resps} from "../db-resps"
@@ -14,7 +15,7 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth"
 @Component({
   selector: 'app-respuesta',
   standalone: true,
-  imports: [MatButtonModule],
+  imports: [MatButtonModule, CommonModule],
   templateUrl: './respuesta.component.html',
   styleUrl: './respuesta.component.scss'
 })
@@ -60,16 +61,12 @@ export class RespuestaComponent {
   ngAfterViewInit() {
     this.conRespPregQuery(this.id_preg);
     this.numActualResps();
-    console.log("Número actual de respuestas: ", this.total_resp);
-    console.log("Num resps: ", resps.length);
   }
 
   async conRespPregQuery(id_preg: any) {
-    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg));
+    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
     const usSnapshot = await getDocs(queryPregs);
     this.listaResp = usSnapshot.docs.map(doc => doc.data());
-    console.log(this.listaResp);
-    console.log(this.listaResp[0]);
   }
 
   async numActualResps() {
@@ -78,7 +75,7 @@ export class RespuestaComponent {
     if (usSnapshot.empty) this.total_resp = 0;
     else this.total_resp = usSnapshot.size;
 
-    console.log(this.total_resp);
+    console.log("Nº actual de respuestas",this.total_resp);
   }
 
   async insResp() {
