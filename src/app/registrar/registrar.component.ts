@@ -8,6 +8,8 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { es } from '../idioma';
 import detectEthereumProvider from '@metamask/detect-provider';
+import { UsuariosComponent } from "../usuarios/usuarios.component";
+import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 import Web3  from 'web3';
 
@@ -15,7 +17,7 @@ import Web3  from 'web3';
   selector: 'app-registrar',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-    MatButtonModule, MatTooltipModule, MatIconModule],
+    MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent, PreguntaComponent],
   templateUrl: './registrar.component.html',
   styleUrl: './registrar.component.scss'
 })
@@ -44,6 +46,7 @@ export class RegistrarComponent {
   blockNumber: any;
   balanceWalletAddress: any;
   web3: any;
+  userDefined: any;
 
 
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
@@ -59,8 +62,18 @@ export class RegistrarComponent {
       monto: "",
     });
     this.encrypted = window.localStorage.getItem('seeds');
+    this.miraSiEsbrinaUser();
   }
 
+
+  miraSiEsbrinaUser() {
+    if (this.window.localStorage.getItem('esbrinaUser') != null) {
+      this.userDefined = true;
+    }
+    else {
+      this.userDefined = false;
+    }
+  }
 
   async registrar(sendData: any) {
     
@@ -74,9 +87,6 @@ export class RegistrarComponent {
         return;
       }
     }
-
-  
-    // Registrar usuario: user/pass i public key
   }
 
   
@@ -91,7 +101,7 @@ export class RegistrarComponent {
     this.balanceWalletAddress = valorEther;
   }
 
-  async loginMetamask(sendData: any) {
+  async loginMetamask() {
     //console.log("METAMASK");
     this.provider = await detectEthereumProvider();
     if (this.provider) {

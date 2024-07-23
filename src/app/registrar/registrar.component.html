@@ -1,14 +1,13 @@
-
-
+@if(userDefined && !wallet.address){
 <div class="centrado">
-    <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="loginMetamask(loginForm);">
-        <!--<div>
-            <input id="n1" formControlName="userLogin" size="20" placeholder="{{idiomaSel.m12}}" />
-
-            <input id="n2" formControlName="userPass" size="20" type="password" placeholder="{{idiomaSel.m13}}" />
-        </div>-->
         <div class="centrado">
-            <button type="submit" mat-raised-button color="primary">{{idiomaSel.m10}}</button>
+            <img class="imgLogo" src="./assets/logo/Logo-4.jpg" /><br>
+            <button (click)="loginMetamask();" type="submit" mat-raised-button color="primary">{{idiomaSel.m10}}</button>
         </div>
-    </form>
 </div>
+}@else if(userDefined && wallet.address){
+    <app-pregunta [idiomaSel]="idiomaSel"></app-pregunta>
+}
+@else{
+    <app-usuarios [idiomaSel]="idiomaSel"></app-usuarios>
+}

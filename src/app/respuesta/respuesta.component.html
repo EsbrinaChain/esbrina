@@ -1,0 +1,15 @@
+    <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>
+
+        <button mat-raised-button color="primary" (click)="insResp()">INSERTAR Respuestas</button><br>
+        <button mat-raised-button color="primary" (click)="numActualResps()">TOTAL de Respuestas</button>-->
+        
+      <table>
+        @for (item of listaResp; track item) {
+            <tr>
+                <td width="1%" class="tdRespId">{{item.id_resp}}-</td>
+                <td><div [ngClass]="item.ganadora == true ? 'textEnunciado ganadora' : 'textEnunciado'">{{item.enunciado}}</div></td> 
+                <td width="80px" class="tdRespAutor">{{item.email}}</td>
+                <td width="70px"><div class="tdRespVotosValor">{{item.votos}} votos</div></td>
+            </tr>
+        }
+    </table>
