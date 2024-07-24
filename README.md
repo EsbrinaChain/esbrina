@@ -1,6 +1,6 @@
 #  
-<p align='center'><h1> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$ </h1> 
-  <h1> ${\LARGE\textrm{\color{red}(!EN CONSTRUCCIÓN!)}$ </h1></p>
+<p align='center'><h1> ${\LARGE\textrm{\color{royalblue}EsbrinaChain  }}$ </h1> 
+  <h1> ${\LARGE\textrm{\color{red}(!EN CONSTRUCCIÓN!)  }}$ </h1></p>
 
 <p align='center'>  
 ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ </p>
