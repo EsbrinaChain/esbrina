@@ -1,5 +1,5 @@
 #  
-<p align='center'><font-size='38px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\HUGE\textrm{\color{green}(!EN CONSTRUCCIÓN!)}}$.</font>
+<p align='center'><font-size='38px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\Huge\textrm{\color{green}(!EN CONSTRUCCIÓN!)}}$.</font>
 
 #
 
