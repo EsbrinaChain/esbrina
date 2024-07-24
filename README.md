@@ -1,5 +1,5 @@
 #  
-<p align='center' style="color:green"><h1>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\LARGE\textrm{\color{green}(!EN CONSTRUCCIÓN!)}}$.</h1></p>
+<p align='center' style="color:green"><h1>EsbrinaChain    (!EN CONSTRUCCIÓN!)</h1></p>
 
 <p align='center'>  
 ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ </p>
