@@ -25,7 +25,7 @@
                     <app-respuesta [id_preg]="item.idp"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp">
-                    @if(item.estado=="activa"){
+                    @if(item.estado=="activa" && !item.anulada){
                 <button class="btnSep">+</button><br>
                 <label>{{idiomaSel.m26}}</label>
                 }
