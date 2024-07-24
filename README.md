@@ -11,7 +11,7 @@
     ${\LARGE\textrm{\color{royalblue}Blockchain: [EsbrinaChain] - [token: SAP] }}$ 
 </p>
 
-<p align='center'><img src="/img/Logo-4.gif" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
+<p align='center'><img src="/img/Logo-3.png" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
 <p align='center'><img src="/img/Logo-4b.gif" style="width:22cm;height:20cm" alt="EsbrinaChain-Application" /></p>
 
 # Criterios del sistema Blockchain
