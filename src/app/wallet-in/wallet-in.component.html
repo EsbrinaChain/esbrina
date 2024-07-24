@@ -1,6 +1,6 @@
 <div class="centrado">
   @if(userDefined && !wallet.address){
-    <img class="imgLogo" src="./assets/logo/Logo-4.jpg" /><br>
+    <img class="imgLogo" src="./assets/logo/{{imgLogoFile}}" /><br>
     <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
         <div>
             @if(!encrypted){

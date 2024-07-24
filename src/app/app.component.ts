@@ -48,6 +48,7 @@ export class AppComponent implements OnInit{
   loginShow = true;
   registrarShow = false;
   regUser = false;
+  imgLogoFile: string = "Logo-3.png";
   window: any;
   esbrinaUser: string="";
   esbrinaUserMail: any;

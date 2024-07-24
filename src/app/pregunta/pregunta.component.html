@@ -1,8 +1,8 @@
-<!--<div class="centrado">-->
+
         <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>
         <button mat-raised-button color="primary" (click)="insPregs()">INSERTAR Preguntas</button>
         <button mat-raised-button color="primary" (click)="conPregs1Query()">PROBAR Procesa Fechas</button>-->
-        <table cols="7">
+        <table cols="7" width="95%">
         @for (item of listaPregs; track item) {
             <tr>
                 <td width="4%" class="tdIndex"><div class="id_preg">Nº {{item.idp}}</div></td>
@@ -21,17 +21,16 @@
                     <div class="textMetadata"></div>
                     <div class="textMetadata"> Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
-                <td colspan="5">
+                <td colspan="5" width="80%">
                     <app-respuesta [id_preg]="item.idp"></app-respuesta>
                 </td>
-                <td class="tdHiddenBtnResp" width="1%">
+                <td class="tdHiddenBtnResp">
                     @if(item.estado=="activa"){
-                <button class="btnSep" width="8px">+</button><br>
+                <button class="btnSep">+</button><br>
                 <label>{{idiomaSel.m26}}</label>
                 }
                 </td>
             </tr>
         } 
         </table>
-        
-<!--</div>-->
+

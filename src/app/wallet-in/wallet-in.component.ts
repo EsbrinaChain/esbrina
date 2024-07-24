@@ -36,6 +36,7 @@ export class WalletInComponent {
       
   // Variables
   title = 'esbrina';
+  imgLogoFile: string = "Logo-3.png";
   loginForm: any;
   sendForm: any;
   encrypted: any;

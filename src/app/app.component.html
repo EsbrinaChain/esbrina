@@ -17,17 +17,18 @@
             </mat-form-field>
         </div>
     </mat-toolbar>
-    
+    <br>
     <div>
         <h1 class="globalText globalTitle">{{title}}</h1>
         <h2 class="globalText">{{subtitle}}</h2>
     </div>
+    <br>
     @if(regUser && !userDefined){
-        <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
+        <img class="imgLogo" src="./assets/logo/{{imgLogoFile}}" />
         <app-usuarios [idiomaSel]="idioma_seleccionat"></app-usuarios>
     }@else if(regUser){
         <div class="centrado">
-            <img class="imgLogo" src="./assets/logo/Logo-4.jpg" />
+            <img class="imgLogo" src="./assets/logo/{{imgLogoFile}}" />
             <h4 class="usuarios_op">{{idioma_seleccionat.m22}}</h4>
             <h4 class="usuarios_op">{{idioma_seleccionat.m23}}</h4>
             <button mat-raised-button color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>

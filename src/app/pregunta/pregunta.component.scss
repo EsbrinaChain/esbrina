@@ -61,6 +61,7 @@
 
 .tdPreg {
     border: none;
+    width:96%;
 }
 .textEnunciado {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -69,8 +70,8 @@
     color: rgba(10, 120, 235, 0.808);
     background-color: rgba(255, 243, 0, 0.421);
     padding:5px;
-    height: 3rem;
-    line-height: 3rem;
+    //height: 3rem;
+    //line-height: 3rem;
 }
 
 textarea {
