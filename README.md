@@ -3,7 +3,6 @@ ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockch
  Blockchain:   EsbrinaChain       token:  SAP}}$.
 ##
 
-![EsbrinaChain](/img/Logo-4.gif "EsbrinaChain") ![EsbrinaChain](/img/Logo-4c.gif "EsbrinaChain")
 <img src="/img/Logo-4.gif" style="width:11cm;height:11cm" alt="EsbrinaChain-System" /><img src="/img/Logo-4c.gif" style="width:11cm;height:11cm" alt="EsbrinaChain-Application" />
 
 El sistema es público y de libre acceso sobre la testnet de Ethereum (Sepolia). 
