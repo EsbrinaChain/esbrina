@@ -2,9 +2,9 @@
 <p align='center'>  <h1> ${\LARGE\textrm{\color{royalblue}EsbrinaChain }}$   ${\LARGE\textrm{\color{red}(!EN CONSTRUCCIÓN!) }}$ </h1> </p>
 <br>
 <p style='text-align: center'> 
-  <h2> <center>
+  <h2 align='center'>
     ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ 
-  </center></h2>
+  </h2>
 </p>
 <br> 
 <p style='text-align: center'> 
