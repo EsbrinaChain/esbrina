@@ -1,9 +1,9 @@
 #  
-<p align='center'><font-size='38px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\LARGE\textrm{\color{green}(!EN CONSTRUCCIÓN!)}}$.</font>
+<p align='center'><font-size='38px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\HUGE\textrm{\color{green}(!EN CONSTRUCCIÓN!)}}$.</font>
 
 #
 
-<p align='center'>
+<p align='center'> 
 ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ </p>
 
 <p align='center'>
