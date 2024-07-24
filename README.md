@@ -3,7 +3,7 @@
 <br>
 <p style="text-align: center"> 
   <h2> 
-    ${\LARGE\textrm{\color{royalblue}(        Sistema colaborativo de conocimiento en blockchain) }}$ 
+    ${\LARGE\textrm{\color{royalblue}        Sistema colaborativo de conocimiento en blockchain }}$ 
   </h2>
 </p>
 <br> 
