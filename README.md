@@ -3,6 +3,7 @@
 
 #
 
+<p align='center'>
 ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$
 
 ${\LARGE\textrm{\color{royalblue}Blockchain: EsbrinaChain       Token: SAP}}$ </p>
