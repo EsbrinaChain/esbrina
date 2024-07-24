@@ -7,7 +7,7 @@
   </h2>
 </p>
 <br> 
-<p style='text-align: center'> 
+<p align='center'> 
     ${\LARGE\textrm{\color{royalblue}Blockchain: [EsbrinaChain] - [token: SAP] }}$ 
 </p>
 
