@@ -1,0 +1,16 @@
+﻿Document ID;anulada;autor;autor_address;creada;email;enunciado;estado;fecha_votacion;idioma;idp;recompensa
+1;false;"""Bandido James""";"""0xFFF""";"""19/07/2024""";"""jamesBand@gmail.com""";"""¿De qué color tienen los ojos los delfines?""";"""consulta""";"""10/07/2024""";"""es""";1;10
+2;false;"""Pedro Carrillo""";"""0xFGFGFG""";"""20/07/2024""";"""pedro.carrillo@eresmas.net""";"""¿En que año acabó la II Guerra Mundial?""";"""votando""";"""""";"""es""";2;50
+3;false;"""Alba Terrado""";"""0xBBAA34""";"""20/07/2024""";"""aterrado@cepsa.es""";"""¿Cuál es el disco más vendido de la historia?""";"""activa""";"""""";"""es""";3;50
+4;false;"""Carlos Damas""";"""0xCCDA23""";"""20/07/2024""";"""carlos.damas@gmail.com""";"""¿Cuál es el himno de la Unión Europea?""";"""activa""";"""""";"""es""";4;50
+5;false;"""Maria Picado""";"""0xAA4567""";"""21/07/2024""";"""maria.picado@telefonica.net""";"""¿Cuántas veces ha ganado Rafael Nadal el torneo de Wimbledon?""";"""activa""";"""""";"""es""";5;50
+6;false;"""Marta Fernández""";"""0xCA3344""";"""21/07/2024""";"""marta.ferz@sitcom.com""";"""¿En qué ciudad vivían Romeo y Julieta?""";"""activa""";"""""";"""es""";6;50
+7;false;"""Carla Santamaría""";"""0xDBAA88""";"""21/07/2024""";"""carla.santamaria.gmail.com""";"""¿Quién es el actor que interpreta a Jon Nieve en ‘Juego de Tronos?""";"""activa""";"""""";"""es""";7;50
+8;false;"""Peter Crutchford""";"""0x2233FFA""";"""22/07/2024""";"""crutchford-peter@gmail.com""";"""¿Qué actriz interpretó a Claire Underwood en la serie 'House of Cards?""";"""activa""";"""""";"""es""";8;50
+9;false;"""Santiago Varriloche""";"""0xDCAACB""";"""19/07/2024""";"""svarriloche@aol.com""";"""¿En qué año cayó el muro de Berlín?""";"""activa""";"""""";"""es""";9;50
+10;false;"""Carolina Marcos""";"""0x6577BA""";"""19/07/2024""";"""caromarcos45@hotmail.com""";"""¿En qué país nació Adolf Hitler?""";"""activa""";"""""";"""es""";10;50
+11;false;"""Sergio Manila""";"""0ABC49""";"""19/07/2024""";"""sergioalberto.manila@gmail.com""";"""¿Cuándo se fundó la OTAN?""";"""activa""";"""""";"""es""";11;50
+12;false;"""Sílvia Garrigues""";"""0xAC213F""";"""19/07/2024""";"""silgarrigues@gmail.com""";"""¿Bajo el reinado de quién se creó la Guardia Civil?""";"""activa""";"""""";"""es""";12;50
+13;false;"""Uke Kanatoga""";"""0x45ACD""";"""19/07/2024""";"""ukekana@gmail.com""";"""¿Quién fue el fundador de la escuela de pintura 'Impresionismo'?""";"""activa""";"""""";"""es""";13;50
+14;false;"""Ángel Daive""";"""0xFFGG22""";"""19/07/2024""";"""angelitodaive@gmail.com""";"""¿Cuál tiene más oscars, 'Titanic', 'Ben-Hur' o el 'Señor de los anillos?""";"""activa""";"""""";"""es""";14;50
+15;false;"""Magdalena Herrero""";"""0xDCA4455""";"""19/07/2024""";"""maggi.Herrero1000@gmail.com""";"""¿Quién cantó la canción 'Girls Just Wanna Have Fun'?""";"""activa""";"""""";"""es""";15;50
