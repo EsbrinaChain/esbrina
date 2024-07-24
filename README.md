@@ -15,8 +15,8 @@ El sistema es público y de libre acceso sobre la testnet de Ethereum (Sepolia).
 <p align='justify'>Si algún usuario quiere incrementar del valor de recompensa de una respuesta a una pregunta lo podrá hacer y el sistema recibirá el importe en custodia.
 El sistema será capaz de realizar una clasificación de la temática de las preguntas finalizadas y su índice de participación por parte de los usuarios o alguna estadística de interés sobre los datos de funcionamiento del sistema.</p>
 <p align='justify'>Cada mes el sistema premiará de manera pseudoaleatoria a uno de entre los 5 usuarios con mayor reputación con el valor del 80% de los beneficios actuales del sistema.</p> 
-<p>La idea de marketing/venta de este sistema es que es mucho más preciso en la respuesta y devuelve la información que quiere el usuario, que no recibe un aluvión de respuestas sino un conjunto menor, casi sin errores porque están ajustadas a lo que pregunta el usuario, y además, la respuesta final es consensuada por la mayoría, y que por lo tanto, no solo puede decidir con cuál se queda, sino que obtiene cual es el parecer o criterio de la mayoría. Además se pueden generar nuevas preguntas afinando las respuestas con el resto de los usuarios.</p>
-<br>
+<p>La idea de marketing/venta de este sistema es que es mucho más preciso en la respuesta y devuelve la información que quiere el usuario, que no recibe un aluvión de respuestas sino un conjunto menor, casi sin errores porque están ajustadas a lo que pregunta el usuario, y además, la respuesta final es consensuada por la mayoría, y que por lo tanto, no solo puede decidir con cuál se queda, sino que obtiene cual es el parecer o criterio de la mayoría. Además se pueden generar nuevas preguntas afinando las respuestas con el resto de los usuarios.</p><br>
+ 
 # Aspectos técnicos:
 # Proyecto Esbrina
 Este proyecto se generó con [Angular CLI](https://github.com/angular/angular-cli) versión 17.0.5.
