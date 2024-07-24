@@ -1,5 +1,5 @@
 #  
-<p align='center'><font-size='28px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\LARGE\textrm{\color{green}(En elaboración durante 2024)}}$.</font>
+<p align='center'><font-size='38px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$. ${\LARGE\textrm{\color{green}(!EN CONSTRUCCIÓN!)}}$.</font>
 
 #
 
