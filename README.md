@@ -1,28 +1,26 @@
-# Esbrina
+# Sistema colaborativo de conocimiento en blockchain.
+## Blockchain:   EsbrinaChain       token:  SAP
+##
+El sistema es público y de libre acceso sobre la testnet de Ethereum (Sepolia). 
+<p>Cada participante puede formular la pregunta que desee y fijar un valor en tokens, por el que está dispuesto a pagar una respuesta a modo de recompensa al usuario que la facilite. Opcionalmente se puede fijar un número de respuestas para cerrar la pregunta, sino por defecto serán 100. El valor de coste por la respuesta quedará custodiado por el depósito de capital del sistema.</p>
+<p>Si el propietario de una pregunta no ve ninguna respuesta a su pregunta podrá realizar 3 incrementos de valor de recompensa, o eliminar la pregunta formulada. Si elimina la pregunta recibirá el valor del 50% de lo propuesto por una respuesta y el otro 50% permanecerá en el depósito del sistema.</p>
+<p>Una pregunta que permanezca sin respuesta durante 1 semana será eliminada por el sistema y el usuario autor no recibirá el aporte realizado por una respuesta pasando al bote del sistema.</p> 
+<p>Los usuarios que estén dispuestos a ganar la recompensa de una pregunta formulada proporcionaran una única respuesta.</p>
+</p>Una vez que se hayan recibido el cupo de respuestas para una pregunta, se inicia un proceso de votación en dónde los usuarios que no sean autores de alguna de las posibles respuestas indicarán que respuesta consideran más adecuada. En la valoración de dos respuestas similares se decantarán por la primera o de mejor detalle. El sistema después de 1 semana asignará a la pregunta la respuesta más votada.</p>
+<p>El ganador del resultado de la votación recibirá en su wallet la cantidad estipulada por su respuesta. A partir de entonces la pregunta pasará de ‘Activa’ a ‘Consultable’ y para conocer su respuesta cada usuario deberá aportar el 50% del coste de la respuesta y la podrá ver durante el periodo de 1h.</p>
+<p>Cada usuario dispondrá de una estadística que registrará el porcentaje sobre el número de respuestas correctas e incorrectas realizadas y el número de preguntas formuladas sobre el que se calculará su reputación en el sistema. </p>
+<p>Si algún usuario quiere incrementar del valor de recompensa de una respuesta a una pregunta lo podrá hacer y el sistema recibirá el importe en custodia.
+El sistema será capaz de realizar una clasificación de la temática de las preguntas finalizadas y su índice de participación por parte de los usuarios o alguna estadística de interés sobre los datos de funcionamiento del sistema.</p>
+<p>Cada mes el sistema premiará de manera pseudoaleatoria a uno de entre los 5 usuarios con mayor reputación con el valor del 80% de los beneficios actuales del sistema.</p> 
+<p>La idea de marketing/venta de este sistema es que es mucho más preciso en la respuesta y devuelve la información que quiere el usuario, que no recibe un aluvión de respuestas sino un conjunto menor, casi sin errores porque están ajustadas a lo que pregunta el usuario, y además, la respuesta final es consensuada por la mayoría, y que por lo tanto, no solo puede decidir con cuál se queda, sino que obtiene cual es el parecer o criterio de la mayoría. Además se pueden generar nuevas preguntas afinando las respuestas con el resto de los usuarios.</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.5.
-
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
+# Aspectos técnicos:
+# Proyecto Esbrina
+Este proyecto se generó con [Angular CLI](https://github.com/angular/angular-cli) versión 17.0.5.
+## Desarrollo
+Ejecute `ngserve` para un servidor de desarrollo. Navegue hasta `http://localhost:4200/`. La aplicación se recargará automáticamente si cambia alguno de los archivos fuente.
 ## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-"# esbrina" 
+Ejecute `ng build` para construir el proyecto. Los artefactos de compilación se almacenarán en el directorio `dist/`.
+## Ayuda
+Para obtener más ayuda sobre Angular CLI, use `ng help` o consulte la página [Descripción general y referencia de comandos de Angular CLI] (https://angular.io/cli).
+"#esbrina"
