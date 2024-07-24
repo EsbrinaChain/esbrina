@@ -1,17 +1,10 @@
 #  
-<p style="text-align: center;">
-  
-  <h1> ${\LARGE\textrm{\color{royalblue}(EsbrinaChain) }}$   ${\LARGE\textrm{\color{red}(!EN CONSTRUCCIÓN!) }}$ </h1> 
-  
-</p>
-<br><br>
-<p style="text-align: center;"> <h2>
-  ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ 
-</h2> 
-
+<p style="text-align: center;">  <h1> ${\LARGE\textrm{\color{royalblue}(EsbrinaChain) }}$   ${\LARGE\textrm{\color{red}(!EN CONSTRUCCIÓN!) }}$ </h1> </p>
+<br>
+<p style="text-align: center;"> <h2> ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ </h2> 
 <br> 
-
-${\LARGE\textrm{\color{royalblue}Blockchain: EsbrinaChain       Token: SAP}}$ </p>
+${\LARGE\textrm{\color{royalblue}Blockchain: EsbrinaChain   token: SAP}}$ 
+</p>
 
 <p align='center'><img src="/img/Logo-4.gif" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
 <p align='center'><img src="/img/Logo-4b.gif" style="width:22cm;height:20cm" alt="EsbrinaChain-Application" /></p>
