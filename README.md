@@ -2,8 +2,8 @@
 ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.
  Blockchain:   EsbrinaChain       token:  SAP}}$.
 ##
-
-![EsbrinaChain](/img/Logo-4.gif "EsbrinaChain") ![EsbrinaChain](/img/Logo-4c.gif "EsbrinaChain")
+<center>
+![EsbrinaChain](/img/Logo-4.gif "EsbrinaChain") ![EsbrinaChain](/img/Logo-4c.gif "EsbrinaChain")</center>
 
 El sistema es público y de libre acceso sobre la testnet de Ethereum (Sepolia). 
 <p>Cada participante puede formular la pregunta que desee y fijar un valor en tokens, por el que está dispuesto a pagar una respuesta a modo de recompensa al usuario que la facilite. Opcionalmente se puede fijar un número de respuestas para cerrar la pregunta, sino por defecto serán 100. El valor de coste por la respuesta quedará custodiado por el depósito de capital del sistema.</p>
