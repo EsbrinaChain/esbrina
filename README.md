@@ -4,8 +4,10 @@
   
 </p>
 
-<p align='center'>  
-${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ </p>
+<p align='center'> <h2>
+  ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.}}$ 
+</h2> 
+</p>
 
 <p align='center'>
 ${\LARGE\textrm{\color{royalblue}Blockchain: EsbrinaChain       Token: SAP}}$ </p>
