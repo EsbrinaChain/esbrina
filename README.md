@@ -1,5 +1,6 @@
-# ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.
-## Blockchain:   EsbrinaChain       token:  SAP}}$.
+# EsbrinaChain
+${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.
+ Blockchain:   EsbrinaChain       token:  SAP}}$.
 ##
 
 ![EsbrinaChain](/img/Logo-4.jpg "EsbrinaChain")
