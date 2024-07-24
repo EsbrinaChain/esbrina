@@ -1,5 +1,5 @@
 #  
-<p align='center'>${\LARGE\textrm{\color{red}EsbrinaChain}}$.</p>p>
+<p align='center'><font size='18px'>${\LARGE\textrm{\color{red}EsbrinaChain}}$.</font></p>
 ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain.
  Blockchain: EsbrinaChain       Token: SAP}}$.
 ##
