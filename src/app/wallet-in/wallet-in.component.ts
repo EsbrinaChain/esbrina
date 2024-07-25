@@ -6,7 +6,8 @@ import { DOCUMENT } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UsuariosComponent } from "../usuarios/usuarios.component";
+import { UsuariosComponent } from '../usuarios/usuarios.component';
+import { ABI } from '../esbrinachain';
 
 
 // Librerias de Ethereum y DApp
@@ -49,14 +50,18 @@ export class WalletInComponent {
     address: ''
   };
 
-    window: any;
-    accounts: any
-    blockNumber: any;
-    balanceWalletAddress: any;
-    web3: any;
-    provider: any;
-    userDefined: any;
+  window: any;
+  accounts: any
+  blockNumber: any;
+  balanceWalletAddress: any;
+  web3: any;
+  provider: any;
+  userDefined: any;
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
+  providerETH = 'http://127.0.0.1:7545/'; 
+  contract: any;
+  contract_address:any = "0x195DC1E0844d87b76FbFC0162BC1e1050c19C38d";
       
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView; 
@@ -70,6 +75,7 @@ export class WalletInComponent {
     });
     this.encrypted = window.localStorage.getItem('seeds');
     this.miraSiEsbrinaUser();
+    this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
 
   }
 
@@ -113,7 +119,7 @@ export class WalletInComponent {
     console.log(this.wallet.address);
     this.metamask = false;
     
-    this.web3 = new Web3('https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903');      
+    this.web3 = new Web3(this.providerETH);      
     this.web3.eth.defaultAccount = this.wallet.address;
     var n = await this.web3.eth.getBalance(this.wallet.address);
     console.log("BALANCE (wei): ", n);

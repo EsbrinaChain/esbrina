@@ -10,6 +10,7 @@ import { es } from '../idioma';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { UsuariosComponent } from "../usuarios/usuarios.component";
 import { PreguntaComponent } from "../pregunta/pregunta.component";
+import { ABI } from '../esbrinachain';
 
 import Web3  from 'web3';
 
@@ -47,6 +48,8 @@ export class RegistrarComponent {
   balanceWalletAddress: any;
   web3: any;
   userDefined: any;
+  contract: any;
+  contract_address:any = "0x195DC1E0844d87b76FbFC0162BC1e1050c19C38d";
 
 
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
@@ -63,6 +66,7 @@ export class RegistrarComponent {
     });
     this.encrypted = window.localStorage.getItem('seeds');
     this.miraSiEsbrinaUser();
+    this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
   }
 
 
@@ -92,13 +96,14 @@ export class RegistrarComponent {
   
   async getBlockN() {
     this.blockNumber = await this.window.ethereum.request({ method: 'eth_blockNumber' });
-    console.log(this.blockNumber);
+    console.log("Block Number: ",this.blockNumber);
   }
 
   async getBalanceAddress(address: any) {
     var valor = await this.window.ethereum.request({ method: 'eth_getBalance', params: [address] });
     var valorEther = Web3.utils.fromWei(valor, 'ether');
     this.balanceWalletAddress = valorEther;
+    console.log("Balance (ETH): ", this.balanceWalletAddress);
   }
 
   async loginMetamask() {
@@ -114,8 +119,9 @@ export class RegistrarComponent {
       }
       //console.log("LLEGA");
       this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
-      console.log(this.accounts);
+      console.log("All accounts: ", this.accounts);
       this.wallet.address = this.accounts[0];
+      console.log("Wallet:",this.wallet.address);
       this.getBlockN();
       this.getBalanceAddress(this.wallet.address);
       this.web3 = new Web3(this.window.ethereum);
