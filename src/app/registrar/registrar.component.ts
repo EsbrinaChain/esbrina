@@ -66,7 +66,7 @@ export class RegistrarComponent {
     });
     this.encrypted = window.localStorage.getItem('seeds');
     this.miraSiEsbrinaUser();
-    this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+    
   }
 
 
@@ -126,6 +126,7 @@ export class RegistrarComponent {
       this.getBalanceAddress(this.wallet.address);
       this.web3 = new Web3(this.window.ethereum);
       this.metamask = true;
+      this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
     }
   }
 }

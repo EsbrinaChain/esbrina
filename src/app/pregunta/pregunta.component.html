@@ -26,8 +26,9 @@
                 </td>
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="activa" && !item.anulada){
-                <button class="btnSep">+</button><br>
+                <button class="btnSep" (click)="creaPregunta()">+</button>
                 <label>{{idiomaSel.m26}}</label>
+                <mat-icon class="add-course-btn" (click)="showDialog()">add</mat-icon><br>
                 }
                 </td>
             </tr>

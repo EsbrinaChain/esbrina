@@ -77,7 +77,7 @@ export class AppComponent implements OnInit{
     this.title = this.idioma_seleccionat.m1;
     this.subtitle = this.idioma_seleccionat.m2;
     this.getVarsWalletIn();
-    console.log("altaUser: ",this.UsuariosEsb?.altaUser);
+    //console.log("altaUser: ",this.UsuariosEsb?.altaUser);
   }
   
   ngOnInit() {
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit{
       this.userDefined = true; this.regUser = false;
     }
     this.esbrinaUserMail=this.window.localStorage.getItem('esbrinaUserMail');
-    console.log("UserDefined: ",this.userDefined);
+    //console.log("UserDefined: ",this.userDefined);
   }
 
   miraSiEsbrinaUser() {
@@ -116,7 +116,7 @@ export class AppComponent implements OnInit{
 
   toNumber(){
     this.levelNum = +this.levelNum;
-    console.log(this.levelNum);
+    //console.log(this.levelNum);
     if (this.levelNum==0){
       this.idioma_seleccionat = es;
       this.title = this.idioma_seleccionat.m1;

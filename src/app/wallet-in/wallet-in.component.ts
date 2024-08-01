@@ -22,13 +22,15 @@ import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 
 
+
   @Component({
   selector: 'app-wallet-in',
   standalone: true,
     imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
     MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent, PreguntaComponent],
   templateUrl: './wallet-in.component.html',
-  styleUrl: './wallet-in.component.scss'
+    styleUrl: './wallet-in.component.scss',
+  
 })
 
 export class WalletInComponent {
@@ -61,9 +63,20 @@ export class WalletInComponent {
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address:any = "0x195DC1E0844d87b76FbFC0162BC1e1050c19C38d";
-      
-  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
+  contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
+  
+  // Variable de S.C.
+  tiempo_votacion: any;
+  tiempo_respuesta: any;
+  num_incr_recompensa: any;
+  total_preg: any;
+  total_resp: any;
+  cupo_respuestas: any;
+  total_usuarios: any;
+  admin_address: any;
+    
+    constructor(@Inject(DOCUMENT) private document: Document,
+                private formBuilder: FormBuilder) {
     this.window = document.defaultView; 
     this.loginForm = formBuilder.group({
       userSeed: "",
@@ -75,8 +88,7 @@ export class WalletInComponent {
     });
     this.encrypted = window.localStorage.getItem('seeds');
     this.miraSiEsbrinaUser();
-    this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
-
+    
   }
 
   miraSiEsbrinaUser() {    
@@ -116,15 +128,20 @@ export class WalletInComponent {
     this.wallet.privateKeyHex = util.bytesToHex(keys.privateKey);
     this.wallet.publicKey = keys.publicKey;
     this.wallet.address = keys.address;
-    console.log(this.wallet.address);
+    console.log("Wallet Address: ",this.wallet.address);
     this.metamask = false;
     
     this.web3 = new Web3(this.providerETH);      
     this.web3.eth.defaultAccount = this.wallet.address;
     var n = await this.web3.eth.getBalance(this.wallet.address);
-    console.log("BALANCE (wei): ", n);
-    console.log("BlockNumber: ", await this.getBlockN());
-    console.log("Balance: ",await this.getBalanceAddress(this.wallet.address));
+    //console.log("BALANCE (wei): ", n);
+    //console.log("BlockNumber: ", await this.getBlockN());
+    //console.log("Balance: ", await this.getBalanceAddress(this.wallet.address));
+    //console.log("Contrato:");
+      //this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+    //console.log("contract_address:", this.contract_address);
+    this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+    this.consultaVariables();
     
   }
   
@@ -241,6 +258,24 @@ export class WalletInComponent {
     console.log("Tx=", tx);
   }
   ngOnInit() {
-    
+  
   }
+    // consulta de una variable de S.C. await this.contract.methods.variable().call()
+    async consultaVariables() {
+      
+      this.tiempo_respuesta = await this.contract.methods.tiempo_respuesta().call();
+      this.tiempo_votacion= await this.contract.methods.tiempo_votacion().call();
+      this.total_preg= await this.contract.methods.total_preg().call();
+      this.total_resp= await this.contract.methods.total_resp().call();
+      this.cupo_respuestas = await this.contract.methods.cupo_respuestas().call();
+      
+      
+      /*console.log("tiempo_respuesta:", this.tiempo_respuesta);
+      console.log("tiempo_votacion:", this.tiempo_votacion);
+      console.log("total_pregs:",this.total_preg);
+      console.log("total_resps:", this.total_resp);*/
+      
+      
+    }    
+
 }

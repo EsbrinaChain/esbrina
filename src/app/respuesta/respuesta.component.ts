@@ -75,7 +75,7 @@ export class RespuestaComponent {
     if (usSnapshot.empty) this.total_resp = 0;
     else this.total_resp = usSnapshot.size;
 
-    console.log("Nº actual de respuestas",this.total_resp);
+    //console.log("Nº actual de respuestas",this.total_resp);
   }
 
   async insResp() {

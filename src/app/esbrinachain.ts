@@ -1,5 +1,6 @@
 // 0xd14E645CDf9f57B2ED2DB211fd60186951438D3C  contract address a Garnache
-// 0x195dc1e0844d87b76fbfc0162bc1e1050c19c38d
+// 0xA493ee6535d5F51C4aA3cF3edB3A372DC0c73A00
+
 // admin: 0x0d5d41b38C99f5CE596690Bf9Fb376076a120481
 //
 //othr accounts
@@ -705,6 +706,44 @@ export let ABI = {
 				"internalType": "int256",
 				"name": "prestigio",
 				"type": "int256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "valoresVariables",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
