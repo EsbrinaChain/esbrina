@@ -144,25 +144,5 @@ showDialog(){
 
 }
 
-@Component({
-  selector: 'app-pregDialog',
-  standalone: true,
-  imports:[MatDialogContent, MatDialogActions],
-  templateUrl: './app-pregDialog.html',
-  styleUrl: './app-pregDialog.scss'
-})
-export class pregDialogComponent {
- 
-  camposPreg: any;
 
-  constructor(private dialog: MatDialogRef<pregDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log("Constructor_parent: ", data);
-    this.camposPreg= this.data;
-  }
-
-  closeDialog(){
-    this.dialog.close();
-}
-
-}
 // 0xF562C02033DF4b174885D8c7678dC1489340F6d9
