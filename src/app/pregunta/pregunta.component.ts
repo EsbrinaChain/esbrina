@@ -1,4 +1,4 @@
-import { Component, Input, Inject } from '@angular/core';
+import { Component, Input, Inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { es, en, cat } from "../idioma";
 import {pregs} from "../db-pregs"
@@ -12,14 +12,15 @@ import { RespuestaComponent } from '../respuesta/respuesta.component';
 import { AskEsbrinaService } from '../ask-esbrina.service';
 import Web3 from 'web3';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialog, MatDialogRef, MatDialogContent, MatDialogActions, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MatDialogContent, MatDialogActions, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
+import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 import { ABI } from '../esbrinachain';
-
+import { GetPregComponent } from '../get-preg/get-preg.component';
 
 @Component({
   selector: 'app-pregunta',
   standalone: true,
-  imports: [MatButtonModule, RespuestaComponent, MatIconModule],
+  imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, GetPregComponent],
   templateUrl: './pregunta.component.html',
   styleUrl: './pregunta.component.scss'
 })
@@ -41,10 +42,7 @@ export class PreguntaComponent {
   listaPregs1: any;
   totalPregs1: any;
   web3: any;
-  customer = {
-    activated: "MARIANO"
-  };
-
+  
   provider: any;
   userDefined: any;
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
@@ -55,15 +53,12 @@ export class PreguntaComponent {
   
 
   preg = {
-    id_preg: 1,
-    anulada: true,
-    autor:"Bandido James",
-    autor_address: "0xFFFED2345",
-    creada: "19 de julio de 2024, 4:00:42 p.m. UTC+2",
-    enunciado: "¿De qué color tienen los ojos los delfines del Mar Mediterráneo?",
-    estado: "Activa",
-    fecha_votacion: "26 de julio de 2024",
-    recompensa: 10
+    id_preg: '',
+    autor:"",
+    creada: "",
+    enunciado: "",
+    fecha_votacion: "",
+    recompensa: ""
   };
 
   dataGlobal: any;
@@ -143,7 +138,7 @@ creaPregunta() {
 
 showDialog(){
   //this.matDialog.open(ActivateCustomerConfirmComponent);
-  this.matDialog.open(ActivateCustomerConfirmComponent, {data: {ActivatedStatus: this.customer.activated}});
+  this.matDialog.open(GetPregComponent);
   
   }
 
@@ -156,12 +151,13 @@ showDialog(){
   templateUrl: './app-pregDialog.html',
   styleUrl: './app-pregDialog.scss'
 })
-export class ActivateCustomerConfirmComponent {
+export class pregDialogComponent {
  
-  nombre :any;
-  constructor(private dialog: MatDialogRef<ActivateCustomerConfirmComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  camposPreg: any;
+
+  constructor(private dialog: MatDialogRef<pregDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
     console.log("Constructor_parent: ", data);
-    this.nombre= this.data.ActivatedStatus;
+    this.camposPreg= this.data;
   }
 
   closeDialog(){

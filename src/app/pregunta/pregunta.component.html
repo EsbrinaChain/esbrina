@@ -1,7 +1,6 @@
 
-        <!-- <button mat-raised-button color="primary">{{idiomaSelPreg.m25}}</button>
-        <button mat-raised-button color="primary" (click)="insPregs()">INSERTAR Preguntas</button>
-        <button mat-raised-button color="primary" (click)="conPregs1Query()">PROBAR Procesa Fechas</button>-->
+        <button class="nuevaPregunta" mat-raised-button color="primary" (click)="showDialog()">{{idiomaSelPreg.m25}}</button>
+        
         <table cols="7" width="95%">
         @for (item of listaPregs; track item) {
             <tr>
@@ -28,10 +27,15 @@
                     @if(item.estado=="activa" && !item.anulada){
                 <button class="btnSep" (click)="creaPregunta()">+</button>
                 <label>{{idiomaSel.m26}}</label>
-                <mat-icon class="add-course-btn" (click)="showDialog()">add</mat-icon><br>
                 }
                 </td>
             </tr>
         } 
         </table>
+
+
+
+<!--
+        <button mat-raised-button color="primary" (click)="insPregs()">INSERTAR Preguntas</button>
+        <button mat-raised-button color="primary" (click)="conPregs1Query()">PROBAR Procesa Fechas</button>-->
 

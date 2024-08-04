@@ -1,11 +1,16 @@
-<h2 mat-dialog-title>A Dialog</h2>
+<div class="centrado">
+<h4 style="color:blue" mat-dialog-title>Nueva pregunta...</h4>
 
 <mat-dialog-content class='mat-typography'>
-    <p>Customer activation status: <br>{{nombre}}</p>
+    Enunciado: 
+    <textarea matInput cdkTextareaAutosize #autosize cdkAutosizeMinRows="10" cdkAutosizeMaxRows="15"></textarea><br> 
+    Autor (email): <input color='primary' controlType="input" controlName="iautorN" inputType="text"><br>
+    Recompensa por respuesta: <input color='primary' controlType="input" controlName="iRecom" inputType="text"><br>
 </mat-dialog-content>
-<mat-dialog-actions align='end'>
-
-    <button mat-button color='primary' (click)='closeDialog()'>
-        Close Dialog
-    </button>
+<mat-dialog-actions>
+    <button mat-button color='primary' (click)='closeDialog()'>Cancelar</button>
+    <button mat-button color='primary' (click)='closeDialog()'>Cerrar</button>
 </mat-dialog-actions>
+</div>
+
+<!-- <input color='primary' controlType="input" controlName="ienunciado" inputType="textarea"  rows="4" cols="30"> -->
