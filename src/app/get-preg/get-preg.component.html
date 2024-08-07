@@ -4,9 +4,9 @@
     <div class="titulo" mat-dialog-title>Editando nueva pregunta...</div><br>
     <mat-dialog-content>
         <div class="enunciado">
-            <mat-form-field appearance="fill" class="textarea globals">
+            <mat-form-field appearance="fill" class="textarea">
                 <mat-label>Enunciado</mat-label>
-                <textarea matInput type="text" [(ngModel)]="dataPreg.enunciado" class="textarea" 
+                <textarea matInput type="text" cdkTextareaAutosize [(ngModel)]="dataPreg.enunciado" class="textarea" 
                           placeholder="Enunciado de la pregunta..."></textarea>
                 <mat-hint>(con signos ¿?)</mat-hint>
             </mat-form-field>

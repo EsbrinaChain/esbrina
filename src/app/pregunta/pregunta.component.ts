@@ -166,7 +166,7 @@ creaPregunta() {
 showDialog(){
     
   const dialogConfig = new MatDialogConfig();
-  dialogConfig.width = '50%';
+  dialogConfig.width = '70%';
   dialogConfig.autoFocus = true;
   dialogConfig.data = { enunciado: '', recompensa: '0' };
 
