@@ -16,6 +16,7 @@ import { MatDialog, MatDialogRef, MatDialogContent, MatDialogActions, MAT_DIALOG
 import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 import { ABI } from '../esbrinachain';
 import { GetPregComponent } from '../get-preg/get-preg.component';
+import { GetRespComponent } from '../get-resp/get-resp.component';
 
 @Component({
   selector: 'app-pregunta',
@@ -60,6 +61,7 @@ export class PreguntaComponent {
   };
 
   dialogRef: any;
+  dialogRefResp: any;
   datos: any;
 
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
@@ -174,10 +176,47 @@ async getBalanceAddress(address:any) {
     
 }
  
+
+  async insertaRespuesta(idPreg:any, enunciado: any) {
+    
+
+      this.totalPregs++;
+        const rsp = {
+          idp: this.totalPregs,
+          anulada: false,
+          autor: window.localStorage.getItem('esbrinaUserMail'),
+          autor_address: this.wallet.address,
+          creada: this.creaDate(new Date(new Date().getTime())),
+          enunciado: enunciado,
+          estado: "activa",
+          fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
+          idioma: "es",
+          recompensa: "",
+          email: window.localStorage.getItem('esbrinaUserMail')
+        };
+      console.log(rsp);
+      await setDoc(doc(this.db, "Resps", (1).toString()), rsp);
+      
+    
+}
+  dialogRespuesta(idPreg: any) {
   
-  creaRespuesta() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.width = '70%';
+  dialogConfig.autoFocus = true;
+  dialogConfig.data = { enunciado: ''};
+
+  this.dialogRefResp = this.matDialog.open(GetRespComponent, dialogConfig);
+
+  this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => { 
+    if (result !== undefined)
+    {
+      //this.insertaRespuesta(idPreg, result.enunciado);  
+      console.log(idPreg,result.enunciado);
+      }
+  });
   
-  }  
+}  
   
   
   

@@ -1,4 +1,4 @@
-.globals{
+.globals {
     margin-left: 10%;
     margin-right: 10%;
 }
@@ -12,10 +12,10 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 15px;
     color: rgb(26, 113, 236);
-    
+
 }
 
-.titulo{
+.titulo {
     text-align: center;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18px;
@@ -23,17 +23,30 @@
     background-color: blueviolet;
 }
 
-.fondo{
+.AddPreg {
+    align-content: center;
+    margin-top: 3%;
+    //background-color: blueviolet;
+    text-align: center;
+    color: rgb(5, 71, 216);
+}
+
+.fondo {
     background-color: rgb(189, 219, 244);
 }
 
-.button{
+.button {
     background-color: rgb(30, 80, 180);
     border-radius: 8px;
-    color:white;
-    padding:3%;
+    color: white;
+    padding: 3%;
     text-shadow: 1cap;
-    
+
+}
+
+.recompensa {
+    color: crimson;
+    font-weight: bold;
 }
 
 .enunciado {
@@ -42,8 +55,9 @@
     color: rgb(20, 50, 220);
 }
 
-
-
-
-
-
+.dialogC1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+}

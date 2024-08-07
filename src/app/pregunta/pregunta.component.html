@@ -25,7 +25,7 @@
                 </td>
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="activa" && !item.anulada){
-                <button class="btnSep" (click)="creaRespuesta()">+</button>
+                <button class="btnSep" (click)="dialogRespuesta(item.idp)">+</button>
                 <label>{{idiomaSel.m26}}</label>
                 }
                 </td>

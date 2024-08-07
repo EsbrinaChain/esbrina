@@ -1,0 +1,21 @@
+<div class="fondo">
+    <div class="centrado globals">
+
+        <div class="titulo" mat-dialog-title>Editando nueva respuesta...</div><br>
+        <mat-dialog-content>
+            <div class="enunciado">
+                <mat-form-field appearance="fill" class="textarea">
+                    <mat-label>Respuesta</mat-label>
+                    <textarea matInput type="text" cdkTextareaAutosize [(ngModel)]="nuevaResp.enunciado" class="textarea"
+                        placeholder="Enunciado de la respuesta..."></textarea>
+                    <!--<mat-hint>(con signos ¿?)</mat-hint>-->
+                </mat-form-field>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions class=" globals">
+            <button mat-raised-button color="accent" (click)="canceladoResp()">Cancelar</button>
+            <button mat-raised-button [mat-dialog-close]="nuevaResp" color="primary"
+                (click)="confirmadoResp()">Confirmar</button>
+        </mat-dialog-actions>
+    </div>
+</div>
