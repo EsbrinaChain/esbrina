@@ -51,7 +51,8 @@ export class PreguntaComponent {
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
-  
+  fecha1: any;
+  fecha: any;
 
   preg = {
     enunciado: "",
@@ -64,8 +65,20 @@ export class PreguntaComponent {
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
     this.idiomaSelPreg = this.idiomaSel;
     this.web3 = this.web3obj;
+    //this.fecha = this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
+        
   }
 
+  creaDate(d:any) {
+  var yyyy = d.getFullYear().toString();
+  var mm = (d.getMonth()+1).toString();
+  var dd  = d.getDate().toString();
+
+  var mmChars = mm.split('');
+  var ddChars = dd.split('');
+
+  return  (ddChars[1]?dd:"0"+ddChars[0]) + '/' + (mmChars[1]?mm:"0"+mmChars[0]) + '/'  + yyyy;
+}
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -129,38 +142,53 @@ async insPregs() {
 }
  
 async getBalanceAddress(address:any) {
-    var valor = await this.web3.eth.getBalance(address); 
-    var valorEther = this.web3.utils.fromWei(valor, 'ether');
+    var valor = await this.web3obj.eth.getBalance(address); 
+    var valorEther = this.web3obj.utils.fromWei(valor, 'ether');
     this.balanceWalletAddress = valorEther;
     return valorEther;
 }
   
-  async insertaPregunta(data: any) {
-    this.balanceWalletAddress = this.getBalanceAddress(this.wallet.address);
-    if(data.recompensa >= this.balanceWalletAddress){
-        this.totalPregs++;
+  async insertaPregunta(enunciado: any, recompensa: any) {
+    
+    this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
+    
+    if(recompensa < this.balanceWalletAddress){
+      this.totalPregs++;
         const prg = {
           idp: this.totalPregs,
           anulada: false,
-          autor: "",
+          autor: window.localStorage.getItem('esbrinaUserMail'),
           autor_address: this.wallet.address,
-          creada: Date.now(),
-          enunciado: data.enunciado,
+          creada: this.creaDate(new Date(new Date().getTime())),
+          enunciado: enunciado,
           estado: "activa",
-          fecha_votacion: Date.now() + 604800,
+          fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
           idioma: "es",
-          recompensa: data.recompensa,
+          recompensa: recompensa,
           email: window.localStorage.getItem('esbrinaUserMail')
         };
-        const balance = await this.getBalanceAddress(this.wallet.address);
-        await setDoc(doc(this.db, "Pregs", this.totalPregs), prg);
+      console.log(prg);
+      await setDoc(doc(this.db, "Pregs", (this.totalPregs + 1).toString()), prg);
+      this.conPregsQuery();
     }
+    
 }
+ 
+  
+  creaRespuesta() {
+  
+  }  
+  
+  
+  
+  
+  
+  
   
 ////////////// revisar si usar ///
 creaPregunta() {
   let novaPreg:any = { };
-  this.service.creaPregunta(this.web3, this.wallet, novaPreg);
+  this.service.creaPregunta(this.web3obj, this.wallet, novaPreg);
   }  
 
 showDialog(){
@@ -170,9 +198,12 @@ showDialog(){
   dialogConfig.autoFocus = true;
   dialogConfig.data = { enunciado: '', recompensa: '0' };
 
-  let dialogRef = this.matDialog.open(GetPregComponent, dialogConfig);
+  this.dialogRef = this.matDialog.open(GetPregComponent, dialogConfig);
 
-  dialogRef.afterClosed().subscribe((result: any) => { console.log(result); });
+  this.datos = this.dialogRef.afterClosed().subscribe((result: any) => { 
+    if(result !== undefined) this.insertaPregunta(result.enunciado, result.recompensa);
+  });
+  
   
   //this.insertaPregunta();  
   //console.log("Enunciado: ", this.datos.enunciado);
