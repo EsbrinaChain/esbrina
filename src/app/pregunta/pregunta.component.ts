@@ -18,6 +18,7 @@ import { ABI } from '../esbrinachain';
 import { GetPregComponent } from '../get-preg/get-preg.component';
 import { GetRespComponent } from '../get-resp/get-resp.component';
 
+
 @Component({
   selector: 'app-pregunta',
   standalone: true,
@@ -44,6 +45,8 @@ export class PreguntaComponent {
   totalPregs1: any;
   web3: any;
   balanceWalletAddress: any;
+  total_resp: any;
+  idPreg: any;
   
   provider: any;
   userDefined: any;
@@ -52,8 +55,7 @@ export class PreguntaComponent {
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
-  fecha1: any;
-  fecha: any;
+
 
   preg = {
     enunciado: "",
@@ -63,14 +65,19 @@ export class PreguntaComponent {
   dialogRef: any;
   dialogRefResp: any;
   datos: any;
+  missCupoResp: Boolean;
 
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
     this.idiomaSelPreg = this.idiomaSel;
     this.web3 = this.web3obj;
+    this.missCupoResp= this.idiomaSelPreg.m27; 
     //this.fecha = this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
         
   }
 
+  showMiss() {
+    
+  }
   creaDate(d:any) {
   var yyyy = d.getFullYear().toString();
   var mm = (d.getMonth()+1).toString();
@@ -103,10 +110,7 @@ export class PreguntaComponent {
     
   }
   
-  ngAfterViewInit() {
-    //console.log("Lee todas las preguntas:");
-    this.conPregsQuery();
-  }
+  
 
 convertDate(firebaseObject: any) {
     if (!firebaseObject) return null;
@@ -129,9 +133,9 @@ async conPregs1Query() {
 
 
 async conPregsQuery() {
-    const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
-    const usSnapshot = await getDocs(queryPregs);
-    this.listaPregs = usSnapshot.docs.map(doc => doc.data());
+  const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
+  const usSnapshot = await getDocs(queryPregs);
+  this.listaPregs = usSnapshot.docs.map(doc => doc.data());
   this.totalPregs = usSnapshot.size;
   //console.log(this.listaPregs[0]);
 
@@ -175,53 +179,86 @@ async getBalanceAddress(address:any) {
     }
     
 }
- 
 
-  async insertaRespuesta(idPreg:any, enunciado: any) {
+  async numActualResps() {
+    const queryResps = query(collection(this.db, '/Resps'));
+    const usSnapshot = await getDocs(queryResps);
+    if (usSnapshot.empty) return 0;
+    else return usSnapshot.size;
+
+    //console.log("Nº actual de respuestas",this.total_resp);
+  }
+
+  async conRespPregQuery(id_preg: any) {
+    const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
+    const usSnapshot = await getDocs(queryResps);
+    if (usSnapshot.empty) return 0;
+    else return usSnapshot.size;
+  } 
+
+async insertaRespuesta(idPreg:any, enunciado: any) {
     
+  const idGlobalResps = await this.numActualResps();
+  const respPregActual = await this.conRespPregQuery(idPreg);
 
-      this.totalPregs++;
-        const rsp = {
-          idp: this.totalPregs,
-          anulada: false,
-          autor: window.localStorage.getItem('esbrinaUserMail'),
-          autor_address: this.wallet.address,
-          creada: this.creaDate(new Date(new Date().getTime())),
-          enunciado: enunciado,
-          estado: "activa",
-          fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
-          idioma: "es",
-          recompensa: "",
-          email: window.localStorage.getItem('esbrinaUserMail')
+  const rsp = {
+        email: window.localStorage.getItem('esbrinaUserMail'),
+        id_resp: respPregActual+1,
+        id_preg: idPreg,
+        enunciado: enunciado,
+        ganadora: false,
+        votos: 0,
+        anulada: false
         };
       console.log(rsp);
-      await setDoc(doc(this.db, "Resps", (1).toString()), rsp);
-      
+      await setDoc(doc(this.db, "Resps", (idGlobalResps + 1).toString()), rsp);
+      this.conPregsQuery();
     
-}
-  dialogRespuesta(idPreg: any) {
-  
-  const dialogConfig = new MatDialogConfig();
-  dialogConfig.width = '70%';
-  dialogConfig.autoFocus = true;
-  dialogConfig.data = { enunciado: ''};
+  }
 
-  this.dialogRefResp = this.matDialog.open(GetRespComponent, dialogConfig);
+  async noResps(id_preg: any) {
+    const email = window.localStorage.getItem('esbrinaUserMail');
+    const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), where("email","==",email));
+    const usSnapshot = await getDocs(queryResps);
 
-  this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => { 
-    if (result !== undefined)
-    {
-      //this.insertaRespuesta(idPreg, result.enunciado);  
-      console.log(idPreg,result.enunciado);
-      }
-  });
+    const listaResps = usSnapshot.docs.map(doc => doc.data());
+    console.log("Lista respuestas", listaResps);
+    
+    if (usSnapshot.size==0)
+    { return true; }
+    else
+    { return false; }
+  }
+
   
+  async dialogRespuesta(idPreg: any) {
+  
+    const usarDialog = await this.noResps(idPreg);
+    console.log("usarDialog: ",usarDialog)
+    if (usarDialog) {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.width = '70%';
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = { enunciado: '' };
+    
+      this.dialogRefResp = this.matDialog.open(GetRespComponent, dialogConfig);
+    
+      this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => {
+        if (result !== undefined) {
+          this.insertaRespuesta(idPreg, result.enunciado);
+          console.log(idPreg, result.enunciado);
+        }
+      });
+    } else {
+      
+    }
 }  
-  
-  
-  
-  
-  
+
+  ngAfterViewInit() {
+    //console.log("Lee todas las preguntas:");
+    this.conPregsQuery();
+    
+  }
   
   
 ////////////// revisar si usar ///

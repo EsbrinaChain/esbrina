@@ -25,7 +25,7 @@ export const es = {
     m24: "Borrar cuenta",
     m25: "Realizar una Nueva Pregunta",
     m26: "Responder",
-    m27: "",
+    m27: "Sólo 1 vez",
     m28: "",
     m29: "",
     m30: ""
@@ -58,7 +58,7 @@ export const en = {
     m24: "Erase account",
     m25: "Make a New Question",
     m26: "Post a New Answer",
-    m27: "",
+    m27: "Only one answer by question",
     m28: "",
     m29: "",
     m30: ""
@@ -91,7 +91,7 @@ export const cat = {
     m24: "Erase account",
     m25: "Crear una Nova Pregunta",
     m26: "Respondre",
-    m27: "",
+    m27: "Només 1 resposta per pregunta",
     m28: "",
     m29: "",
     m30: ""
