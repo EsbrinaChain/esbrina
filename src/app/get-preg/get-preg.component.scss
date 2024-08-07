@@ -5,17 +5,16 @@
 
 textarea {
     border: 1px;
-    border-radius: 8px;
+    border-radius: 10px;
     border-color: blueviolet;
-    width: 100%;
-    height: 10%;
+    width: auto;
     background-color: gainsboro;
 }
 
 .titulo{
     text-align: center;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 14px;
+    font-size: 18px;
     color: coral;
     background-color: blueviolet;
 }
@@ -32,7 +31,7 @@ textarea {
     background-color: rgb(189, 219, 244);
 }
 
-button{
+.button{
     background-color: rgb(30, 80, 180);
     border-radius: 8px;
     color:white;
@@ -50,5 +49,14 @@ button{
     font-size: 18px;
     color: rgb(20, 50, 220);
 }
+
+.dialogC1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+
 
 

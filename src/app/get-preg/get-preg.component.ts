@@ -1,45 +1,35 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MatDialogContent, MatDialogActions, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MatDialogModule, MatDialogContent, MatDialogActions, MatDialogClose, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 
 @Component({
   selector: 'app-get-preg',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, MatDialogContent, MatDialogActions, MatFormFieldModule,
+    MatButtonModule, MatDialogModule, MatInputModule,MatDialogClose],
   templateUrl: './get-preg.component.html',
   styleUrl: './get-preg.component.scss'
 })
 export class GetPregComponent {
 
-  emailIncorrecte = false;
-  pregForm: any;
+  dataPreg: any;
 
-  constructor(private formBuilder: FormBuilder,
-    private dialog: MatDialogRef<GetPregComponent>) {
-    this.dialog.updateSize("50%", "37%");
-    this.pregForm = formBuilder.group({
-      enunciado:"",
-      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
-      recompensa: ""
-    });
-    
+  constructor(
+    private dialog: MatDialogRef<GetPregComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.dataPreg = data;
   }
 
-  testEmail() {
-    if (this.pregForm.status == "INVALID") {
-      this.emailIncorrecte = true;
-    }
-    else {
-      this.emailIncorrecte = false;
-    }
-  }
-
-  sendPreg(sendData: any) {
+  cancelado() {
     this.dialog.close();
-    console.log("enunciado:", sendData.enunciado);
-    console.log("Recompensa: ", sendData.recompensa);
-    
   }
 
+  confirmado() {
+    this.dialog.close(this.dataPreg);
+  }
 
 }

@@ -42,6 +42,7 @@ export class PreguntaComponent {
   listaPregs1: any;
   totalPregs1: any;
   web3: any;
+  balanceWalletAddress: any;
   
   provider: any;
   userDefined: any;
@@ -53,15 +54,12 @@ export class PreguntaComponent {
   
 
   preg = {
-    id_preg: '',
-    autor:"",
-    creada: "",
     enunciado: "",
-    fecha_votacion: "",
     recompensa: ""
   };
 
-  dataGlobal: any;
+  dialogRef: any;
+  datos: any;
 
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
     this.idiomaSelPreg = this.idiomaSel;
@@ -129,6 +127,35 @@ async insPregs() {
       await setDoc(doc(this.db, "Pregs", (i + 1).toString()), pregs[i]);
       //console.log(i+1, pregs[i]);
 }
+ 
+async getBalanceAddress(address:any) {
+    var valor = await this.web3.eth.getBalance(address); 
+    var valorEther = this.web3.utils.fromWei(valor, 'ether');
+    this.balanceWalletAddress = valorEther;
+    return valorEther;
+}
+  
+  async insertaPregunta(data: any) {
+    this.balanceWalletAddress = this.getBalanceAddress(this.wallet.address);
+    if(data.recompensa >= this.balanceWalletAddress){
+        this.totalPregs++;
+        const prg = {
+          idp: this.totalPregs,
+          anulada: false,
+          autor: "",
+          autor_address: this.wallet.address,
+          creada: Date.now(),
+          enunciado: data.enunciado,
+          estado: "activa",
+          fecha_votacion: Date.now() + 604800,
+          idioma: "es",
+          recompensa: data.recompensa,
+          email: window.localStorage.getItem('esbrinaUserMail')
+        };
+        const balance = await this.getBalanceAddress(this.wallet.address);
+        await setDoc(doc(this.db, "Pregs", this.totalPregs), prg);
+    }
+}
   
 ////////////// revisar si usar ///
 creaPregunta() {
@@ -137,12 +164,24 @@ creaPregunta() {
   }  
 
 showDialog(){
-  //this.matDialog.open(ActivateCustomerConfirmComponent);
-  this.matDialog.open(GetPregComponent);
+    
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.width = '50%';
+  dialogConfig.autoFocus = true;
+  dialogConfig.data = { enunciado: '', recompensa: '0' };
+
+  let dialogRef = this.matDialog.open(GetPregComponent, dialogConfig);
+
+  dialogRef.afterClosed().subscribe((result: any) => { console.log(result); });
   
+  //this.insertaPregunta();  
+  //console.log("Enunciado: ", this.datos.enunciado);
+  //console.log("Recompensa: ", this.datos.recompensa);
   }
 
 }
+
+
 
 
 // 0xF562C02033DF4b174885D8c7678dC1489340F6d9
