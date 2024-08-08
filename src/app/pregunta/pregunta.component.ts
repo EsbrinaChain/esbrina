@@ -50,9 +50,9 @@ export class PreguntaComponent {
   
   provider: any;
   userDefined: any;
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  providerETH = 'http://127.0.0.1:7545/'; 
+  //providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
 

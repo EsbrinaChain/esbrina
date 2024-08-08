@@ -59,9 +59,9 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  providerETH = 'http://127.0.0.1:7545/'; 
+  //providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
   
@@ -138,10 +138,10 @@ export class WalletInComponent {
     //console.log("BlockNumber: ", await this.getBlockN());
     //console.log("Balance: ", await this.getBalanceAddress(this.wallet.address));
     //console.log("Contrato:");
-      //this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+    //this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
     //console.log("contract_address:", this.contract_address);
     this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
-    this.consultaVariables();
+    //this.consultaVariables();
     
   }
   
