@@ -1,7 +1,9 @@
 <div class="fondo">
     <div class="centrado globals">
-
-        <div class="titulo" mat-dialog-title>Editando nueva respuesta...</div><br>
+        <div class="titulo" mat-dialog-title>Editando nueva respuesta...<br>
+        <div class="subtitulo">(Sólo una ÚNICA respuesta por pregunta)</div>
+        </div>
+        <br>
         <mat-dialog-content>
             <div class="enunciado">
                 <mat-form-field appearance="fill" class="textarea">
@@ -12,7 +14,7 @@
                 </mat-form-field>
             </div>
         </mat-dialog-content>
-        <mat-dialog-actions class=" globals">
+        <mat-dialog-actions  align="center">
             <button mat-raised-button color="accent" (click)="canceladoResp()">Cancelar</button>
             <button mat-raised-button [mat-dialog-close]="nuevaResp" color="primary"
                 (click)="confirmadoResp()">Confirmar</button>

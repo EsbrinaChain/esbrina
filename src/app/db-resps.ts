@@ -99,7 +99,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "aterrado@cepsa.es",
+        email: "donaruma@cepsa.es",
         id_resp: 2,
         id_preg: 3,
         enunciado: "Whitney, Whitney Houston",

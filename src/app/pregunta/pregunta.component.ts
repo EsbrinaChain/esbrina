@@ -5,7 +5,7 @@ import {pregs} from "../db-pregs"
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from 'firebase/firestore';
 import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { RespuestaComponent } from '../respuesta/respuesta.component';
@@ -131,13 +131,22 @@ async conPregs1Query() {
 
 }
 
-
 async conPregsQuery() {
   const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
   const usSnapshot = await getDocs(queryPregs);
   this.listaPregs = usSnapshot.docs.map(doc => doc.data());
   this.totalPregs = usSnapshot.size;
   //console.log(this.listaPregs[0]);
+
+}
+async conPregsMaxID() {
+  const queryPregs = query(collection(this.db, '/Pregs'),orderBy("order","desc"));
+  const usSnapshot = await getDocs(queryPregs);
+  const docs = usSnapshot.docs.map(doc => doc.data());
+  const docs1 = usSnapshot.docs.map(doc => doc.id);
+  console.log(this.totalPregs);
+  console.log("Docs Id", docs1);
+  console.log("Docs", docs);
 
 }
 
@@ -171,10 +180,11 @@ async getBalanceAddress(address:any) {
           fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
           idioma: "es",
           recompensa: recompensa,
-          email: window.localStorage.getItem('esbrinaUserMail')
+          email: window.localStorage.getItem('esbrinaUserMail'),
+          order: Date.now()
         };
-      console.log(prg);
-      await setDoc(doc(this.db, "Pregs", (this.totalPregs + 1).toString()), prg);
+      console.log(prg,"    -      ",this.totalPregs);
+      await setDoc(doc(this.db, "Pregs", (this.totalPregs).toString()), prg);
       this.conPregsQuery();
     }
     
@@ -222,7 +232,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     const usSnapshot = await getDocs(queryResps);
 
     const listaResps = usSnapshot.docs.map(doc => doc.data());
-    console.log("Lista respuestas", listaResps);
+    //console.log("Lista respuestas", listaResps);
     
     if (usSnapshot.size==0)
     { return true; }
@@ -231,11 +241,13 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
   }
 
   
-  async dialogRespuesta(idPreg: any) {
+  async dialogRespuesta(idPreg: any, email:any) {
   
     const usarDialog = await this.noResps(idPreg);
-    console.log("usarDialog: ",usarDialog)
-    if (usarDialog) {
+    let noAutorPreg = false;
+    if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
+    // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
+    if (usarDialog && noAutorPreg) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '70%';
       dialogConfig.autoFocus = true;
@@ -246,7 +258,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => {
         if (result !== undefined) {
           this.insertaRespuesta(idPreg, result.enunciado);
-          console.log(idPreg, result.enunciado);
+          //console.log(idPreg, result.enunciado);
         }
       });
     } else {

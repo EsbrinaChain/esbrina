@@ -1,3 +1,5 @@
+        <button mat-raised-button color="primary" (click)="conPregsMaxID()">TEST</button><br>
+        
         <button class="nuevaPregunta" mat-raised-button color="primary" (click)="showDialog()">{{idiomaSelPreg.m25}}</button>
         
         <table cols="7" width="95%">
@@ -12,12 +14,11 @@
                 <td class="tdHidden"></td>
                 <td class="tdMetadata">
                     @if(item.anulada){ <div class="textMetadataPregAnulada">ANULADA</div> }
-                    <div class="textMetadata"> Autor:</div><div>{{item.email}}</div>
-                    <div class="textMetadata"> Fecha:</div><div>{{item.creada}}</div>
-                    <div class="textMetadata"> Estado:</div><div>{{item.estado}}</div>
-                    <div class="textMetadata"> Recompensa:<span class="textMetadataRecompensa">{{item.recompensa}}</span></div>
-                    <div class="textMetadata"></div>
-                    <div class="textMetadata"> Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
+                    <div class="labelMetadata">Autor:</div><div>{{item.email}}</div>
+                    <div class="labelMetadata">Fecha:</div><div>{{item.creada}}</div>
+                    <div class="labelMetadata">Estado:<span class="textMetadataEstado">{{item.estado}}</span></div>
+                    <div class="labelMetadata">Recompensa:<span class="textMetadataRecompensa">{{item.recompensa}}</span></div>
+                    <div class="labelMetadata">Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
                 <td colspan="5" width="80%">
                     <app-respuesta [id_preg]="item.idp"></app-respuesta>
@@ -25,7 +26,7 @@
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="activa" && !item.anulada){
                         <label>{{idiomaSel.m26}}</label>
-                        <button class="btnSep" (click)="dialogRespuesta(item.idp)">+</button>
+                        <button class="btnSep" (click)="dialogRespuesta(item.idp,item.email)">+</button>
                     }
                 </td>
             </tr>

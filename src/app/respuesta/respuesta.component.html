@@ -7,7 +7,9 @@
         @for (item of listaResp; track item) {
             <tr>
                 <td width="2%" class="tdRespId">{{item.id_resp}}-</td>
-                <td width="80%"><div [ngClass]="item.ganadora == true ? 'textEnunciado ganadora' : 'textEnunciado'">{{item.enunciado}}</div></td> 
+                <td width="80%" class="textEnunciado">
+                  <div [ngClass]="item.ganadora == true ? 'textEnunciado ganadora' : 'textEnunciado'">{{item.enunciado}}</div>
+                </td> 
                 <td width="10%" class="tdRespAutor">{{item.email}}</td>
                 <td width="8px"><div class="tdRespVotosValor">{{item.votos}} votos</div></td>
             </tr>
