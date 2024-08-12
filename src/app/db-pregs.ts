@@ -96,7 +96,7 @@ export const pregs: any = [
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"carla.santamaria.gmail.com"
+        email:"carla.santamaria@gmail.com"
     },
     {
         idp: 8,

@@ -59,9 +59,9 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  //providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
   
@@ -74,6 +74,7 @@ export class WalletInComponent {
   cupo_respuestas: any;
   total_usuarios: any;
   admin_address: any;
+  preguntasSC: any;
     
     constructor(@Inject(DOCUMENT) private document: Document,
                 private formBuilder: FormBuilder) {
@@ -141,7 +142,7 @@ export class WalletInComponent {
     //this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
     //console.log("contract_address:", this.contract_address);
     this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
-    //this.consultaVariables();
+    this.consultaVariables();
     
   }
   
@@ -149,7 +150,7 @@ export class WalletInComponent {
     var mnemonic = new Mnemonic(seeds);
 
     var seed = await bip39.mnemonicToSeed(mnemonic.toString());
-    var path = "m/44'/60'/0'/0/0";
+    var path = "m/44'/60'/0'/0/3";
 
     var wallet = hdkey.fromMasterSeed(seed).derivePath(path).getWallet();
 
@@ -259,23 +260,29 @@ export class WalletInComponent {
   }
   ngOnInit() {
   
-  }
+    }
+    
+
     // consulta de una variable de S.C. await this.contract.methods.variable().call()
-    async consultaVariables() {
-      
-      this.tiempo_respuesta = await this.contract.methods.tiempo_respuesta().call();
-      this.tiempo_votacion= await this.contract.methods.tiempo_votacion().call();
-      this.total_preg= await this.contract.methods.total_preg().call();
-      this.total_resp= await this.contract.methods.total_resp().call();
-      this.cupo_respuestas = await this.contract.methods.cupo_respuestas().call();
-      
-      
-      /*console.log("tiempo_respuesta:", this.tiempo_respuesta);
-      console.log("tiempo_votacion:", this.tiempo_votacion);
-      console.log("total_pregs:",this.total_preg);
-      console.log("total_resps:", this.total_resp);*/
-      
-      
-    }    
+async consultaVariables() {
+  
+  this.tiempo_respuesta = await this.contract.methods.tiempo_respuesta().call();
+  this.tiempo_votacion= await this.contract.methods.tiempo_votacion().call();
+  this.total_preg= await this.contract.methods.total_preg().call();
+  this.total_resp= await this.contract.methods.total_resp().call();
+  this.cupo_respuestas = await this.contract.methods.cupo_respuestas().call();
+  //this.preguntasSC = await this.contract.methods.preguntas(1).call();
+  
+  
+  console.log("tiempo_respuesta:", this.tiempo_respuesta);
+  console.log("tiempo_votacion:", this.tiempo_votacion);
+  console.log("total_pregs:",this.total_preg);
+  console.log("total_resps:", this.total_resp);
+  
+  //console.log(this.preguntasSC);
+  
+    } 
+
+
 
 }

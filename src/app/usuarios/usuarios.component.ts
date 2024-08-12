@@ -10,21 +10,25 @@ import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp } fro
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import * as CryptoJS from 'crypto-js';
 import { PreguntaComponent } from "../pregunta/pregunta.component";
+import { WalletInComponent } from '../wallet-in/wallet-in.component';
+import { RegistrarComponent } from '../registrar/registrar.component';
+
+
 
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, PreguntaComponent],
+  imports: [FormsModule, ReactiveFormsModule, PreguntaComponent, WalletInComponent, RegistrarComponent],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.scss'
 })
-  
+
 export class UsuariosComponent {
 
   @Input()
-  idiomaSel: any=es;
-  
+  idiomaSel: any = es;
+    
   window: any;
   app: any;
   analytics: any;
@@ -37,10 +41,12 @@ export class UsuariosComponent {
   userCred: any;
   user: any;
   emailIncorrecte = false;
-  altaUser: boolean=false;
+  altaUser: boolean = false;
+  
     
 
-  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
+  constructor(@Inject(DOCUMENT) private document: Document,
+    private formBuilder: FormBuilder) {
     this.window = document.defaultView;
     this.idioma_seleccionat = this.idiomaSel;
     this.regForm = formBuilder.group({
@@ -103,12 +109,14 @@ export class UsuariosComponent {
       this.window.localStorage.setItem('esbrinaUser', CryptoJS.AES.encrypt(email, pass));
       this.window.localStorage.setItem('esbrinaUserMail', email);
       this.altaUser = true;
+      
     }
   }
 
   async sendRegistro(sendData: any) {
     
     this.insertaUsuarioID(sendData.email, sendData.password, sendData.alias);
+    
   }
 
   async conTotalUsuarios() {

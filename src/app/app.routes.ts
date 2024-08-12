@@ -4,6 +4,7 @@ import { RegistrarComponent } from './registrar/registrar.component';
 import { es } from './idioma';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { PreguntaComponent } from './pregunta/pregunta.component';
+import { AppComponent } from './app.component';
 
 export const routes: Routes = [
     {

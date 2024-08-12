@@ -17,6 +17,7 @@ import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 import { ABI } from '../esbrinachain';
 import { GetPregComponent } from '../get-preg/get-preg.component';
 import { GetRespComponent } from '../get-resp/get-resp.component';
+import { intToHex } from '@ethereumjs/util';
 
 
 @Component({
@@ -47,12 +48,13 @@ export class PreguntaComponent {
   balanceWalletAddress: any;
   total_resp: any;
   idPreg: any;
+  lastTransaction: any;
   
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  //providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
 
@@ -71,13 +73,10 @@ export class PreguntaComponent {
     this.idiomaSelPreg = this.idiomaSel;
     this.web3 = this.web3obj;
     this.missCupoResp= this.idiomaSelPreg.m27; 
-    //this.fecha = this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000));
-        
+           
   }
 
-  showMiss() {
-    
-  }
+ 
   creaDate(d:any) {
   var yyyy = d.getFullYear().toString();
   var mm = (d.getMonth()+1).toString();
@@ -107,11 +106,10 @@ export class PreguntaComponent {
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
     this.analytics = getAnalytics(this.app);
+    this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     
   }
   
-  
-
 convertDate(firebaseObject: any) {
     if (!firebaseObject) return null;
     for (const [key, value] of Object.entries(firebaseObject)) {
@@ -163,30 +161,32 @@ async getBalanceAddress(address:any) {
     return valorEther;
 }
   
-  async insertaPregunta(enunciado: any, recompensa: any) {
-    
-    this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
-    
-    if(recompensa < this.balanceWalletAddress){
-      this.totalPregs++;
-        const prg = {
-          idp: this.totalPregs,
-          anulada: false,
-          autor: window.localStorage.getItem('esbrinaUserMail'),
-          autor_address: this.wallet.address,
-          creada: this.creaDate(new Date(new Date().getTime())),
-          enunciado: enunciado,
-          estado: "activa",
-          fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
-          idioma: "es",
-          recompensa: recompensa,
-          email: window.localStorage.getItem('esbrinaUserMail'),
-          order: Date.now()
-        };
-      console.log(prg,"    -      ",this.totalPregs);
-      await setDoc(doc(this.db, "Pregs", (this.totalPregs).toString()), prg);
-      this.conPregsQuery();
-    }
+async insertaPregunta(enunciado: any, recompensa: any) {
+  
+  this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
+  
+  if(recompensa < this.balanceWalletAddress){
+    this.totalPregs++;
+      const prg = {
+        idp: this.totalPregs,
+        anulada: false,
+        autor: window.localStorage.getItem('esbrinaUserMail'),
+        autor_address: this.wallet.address,
+        creada: this.creaDate(new Date(new Date().getTime())),
+        enunciado: enunciado,
+        estado: "activa",
+        fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
+        idioma: "es",
+        recompensa: recompensa,
+        email: window.localStorage.getItem('esbrinaUserMail'),
+        order: Date.now()
+      };
+    console.log(prg,"    -      ",this.totalPregs);
+    await setDoc(doc(this.db, "Pregs", (this.totalPregs).toString()), prg);
+    this.conPregsQuery();
+    this.creaPreguntaSC(prg);
+
+  }
     
 }
 
@@ -195,7 +195,6 @@ async getBalanceAddress(address:any) {
     const usSnapshot = await getDocs(queryResps);
     if (usSnapshot.empty) return 0;
     else return usSnapshot.size;
-
     //console.log("Nº actual de respuestas",this.total_resp);
   }
 
@@ -209,8 +208,7 @@ async getBalanceAddress(address:any) {
 async insertaRespuesta(idPreg:any, enunciado: any) {
     
   const idGlobalResps = await this.numActualResps();
-  const respPregActual = await this.conRespPregQuery(idPreg);
-
+  const respPregActual = await this.conRespPregQuery(idPreg);  
   const rsp = {
         email: window.localStorage.getItem('esbrinaUserMail'),
         id_resp: respPregActual+1,
@@ -223,26 +221,46 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       console.log(rsp);
       await setDoc(doc(this.db, "Resps", (idGlobalResps + 1).toString()), rsp);
       this.conPregsQuery();
-    
+      this.creaRespuestaSC(rsp);
   }
 
+  async creaRespuestaSC(rsp:any) {
+   var rawData = {
+      from: this.wallet.address, // admin (address generada con la semilla facilitada).
+      to: this.contract_address,  
+      value: 0,
+      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasLimit: this.web3obj.utils.toHex(1000000),
+      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.creaRespuesta(rsp.id_preg,rsp.enunciado, rsp.email, rsp.email, rsp.email).encodeABI()
+    }
+    console.log(rawData);
+    console.log(this.wallet.privateKey);
+    
+    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+
+    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+        (receipt: any) => {
+          this.lastTransaction = receipt;
+        },
+        (error: any) => {
+            console.log(error)
+        }
+    ); 
+  }
   async noResps(id_preg: any) {
     const email = window.localStorage.getItem('esbrinaUserMail');
     const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), where("email","==",email));
     const usSnapshot = await getDocs(queryResps);
-
-    const listaResps = usSnapshot.docs.map(doc => doc.data());
+    //const listaResps = usSnapshot.docs.map(doc => doc.data());
     //console.log("Lista respuestas", listaResps);
-    
     if (usSnapshot.size==0)
     { return true; }
     else
     { return false; }
   }
 
-  
   async dialogRespuesta(idPreg: any, email:any) {
-  
     const usarDialog = await this.noResps(idPreg);
     let noAutorPreg = false;
     if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
@@ -252,9 +270,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       dialogConfig.width = '70%';
       dialogConfig.autoFocus = true;
       dialogConfig.data = { enunciado: '' };
-    
       this.dialogRefResp = this.matDialog.open(GetRespComponent, dialogConfig);
-    
       this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => {
         if (result !== undefined) {
           this.insertaRespuesta(idPreg, result.enunciado);
@@ -262,7 +278,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
         }
       });
     } else {
-      
+      // visualizar aviso no se puede hacer más de una respuesta. (opcional)
     }
 }  
 
@@ -271,36 +287,55 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     this.conPregsQuery();
     
   }
-  
-  
-////////////// revisar si usar ///
-creaPregunta() {
-  let novaPreg:any = { };
-  this.service.creaPregunta(this.web3obj, this.wallet, novaPreg);
-  }  
 
 showDialog(){
-    
   const dialogConfig = new MatDialogConfig();
   dialogConfig.width = '70%';
   dialogConfig.autoFocus = true;
   dialogConfig.data = { enunciado: '', recompensa: '0' };
-
   this.dialogRef = this.matDialog.open(GetPregComponent, dialogConfig);
-
   this.datos = this.dialogRef.afterClosed().subscribe((result: any) => { 
     if(result !== undefined) this.insertaPregunta(result.enunciado, result.recompensa);
   });
-  
-  
-  //this.insertaPregunta();  
-  //console.log("Enunciado: ", this.datos.enunciado);
-  //console.log("Recompensa: ", this.datos.recompensa);
   }
 
-}
+////////////// revisar si usar ///
+creaPregunta() {
+  let novaPreg:any = { };
+  this.service.creaPregunta(this.web3obj, this.wallet, novaPreg);
+  } 
 
 
 
+  async creaPreguntaSC(prg:any) {
+    
+    var rawData = {
+      from: this.wallet.address, // admin (address generada con la semilla facilitada).
+      to: this.contract_address,  
+      value: prg.recompensa,
+      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasLimit: this.web3obj.utils.toHex(1000000),
+      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.creaPregunta(prg.enunciado, prg.email, prg.email, prg.email).encodeABI()
+    }
+    console.log(rawData);
+    console.log(this.wallet.privateKey);
+    
+    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+
+    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+        (receipt: any) => {
+          this.lastTransaction = receipt;
+        },
+        (error: any) => {
+            console.log(error)
+        }
+    );
+  }
+
+
+
+
+} // end class
 
 // 0xF562C02033DF4b174885D8c7678dC1489340F6d9

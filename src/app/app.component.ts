@@ -62,6 +62,7 @@ export class AppComponent implements OnInit{
   walletAddr: any;
   encryptedVar: any;
   userDefined: any;
+  usuarioRegistrado: any;
 
   app: any;
   db: any;
@@ -78,6 +79,7 @@ export class AppComponent implements OnInit{
     this.subtitle = this.idioma_seleccionat.m2;
     this.getVarsWalletIn();
     //console.log("altaUser: ",this.UsuariosEsb?.altaUser);
+    
   }
   
   ngOnInit() {
@@ -135,8 +137,9 @@ export class AppComponent implements OnInit{
   }
 
   getVarsWalletIn(){
-      this.encryptedVar = this.WalletIn?.encrypted;
-      this.walletAddr = this.WalletIn?.wallet;
+    this.encryptedVar = this.WalletIn?.encrypted;
+    this.walletAddr = this.WalletIn?.wallet;
+    
   }
 
   async buscaUsuarioAlta() {
