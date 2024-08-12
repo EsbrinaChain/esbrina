@@ -2,73 +2,73 @@ export const pregs: any = [
     {
         idp:1,
         anulada: false,
-        autor: "Bandido James",
-        autor_address: "0xFFF",
-        creada: "19/07/2024",
+        autor: "user19",
+        autor_address: "0x5f39fDA49Ba4f4B2dcBc59967Fd5788d00a5B78a",
+        creada: "12/08/2024",
         enunciado: "¿De qué color tienen los ojos los delfines?",
         // Azules o verdes
         estado: "activa",
-        fecha_votacion: "10 de julio de 2024, 11:05:46 a.m. UTC+2",
+        fecha_votacion: "19/08/2024",
         idioma: "es",
         recompensa: 10,
-        email:"jamesBand@gmail.com"
+        email:"user19@gmail.com"
         
     },
     {
         idp:2,
         anulada: false,
-        autor: "Pedro Carrillo",
-        autor_address: "0xFGFGFG",
+        autor: "user18",
+        autor_address: "0x368F1c37054b11895Eb0D39b768263930352fE3d",
         creada: "20/07/2024",
         enunciado: "¿En que año acabó la II Guerra Mundial?",
         // 1945
         estado: "activa",
-        fecha_votacion: "",
+        fecha_votacion: "19/08/2024",
         idioma: "es",
         recompensa: 50,
-        email:"pedro.carrillo@eresmas.net"
+        email:"user18@gmail.com"
     },
     {
         idp: 3,
         anulada: false,
-        autor: "Alba Terrado",
-        autor_address: "0xBBAA34",
-        creada: "20/07/2024",
+        autor: "user17",
+        autor_address: "0xa0e47e1544b4d976Bc890d1474C6708b523D790d",
+        creada: "12/08/2024",
         enunciado: "¿Cuál es el disco más vendido de la historia?",
         // "Bad", Michael Jackson
         estado: "activa",
-        fecha_votacion: "",
+        fecha_votacion: "19/08/2024",
         idioma: "es",
-        recompensa: 50,
-        email:"aterrado@cepsa.es"
+        recompensa: 50000,
+        email:"user17@gmail.com"
     },
     {
         idp: 4,
         anulada: false,
-        autor: "Carlos Damas",
-        autor_address: "0xCCDA23",
-        creada: "20/07/2024",
+        autor: "user16",
+        autor_address: "0xE1688e37A2A397b11E31E880E2FC190D8283Ff60",
+        creada: "12/08/2024",
         enunciado: "¿Cuál es el himno de la Unión Europea?",
         // Himno de la alegría
         estado: "activa",
-        fecha_votacion: "",
+        fecha_votacion: "19/08/2024",
         idioma: "es",
-        recompensa: 50,
-        email:"carlos.damas@gmail.com"
+        recompensa: 150000000000000000,
+        email:"user16@gmail.com"
     },
     {
         idp: 5,
         anulada: false,
-        autor: "Maria Picado",
-        autor_address: "0xAA4567",
-        creada: "21/07/2024",
+        autor: "user15",
+        autor_address: "0x9A3E4F89C82ef316F3973b4f274bD9F55864CB13",
+        creada: "12/08/2024",
         enunciado: "¿Cuántas veces ha ganado Rafael Nadal el torneo de Wimbledon?",
         // 2
         estado: "activa",
-        fecha_votacion: "",
+        fecha_votacion: "19/08/2024",
         idioma: "es",
-        recompensa: 50,
-        email:"maria.picado@telefonica.net"
+        recompensa: 6000000,
+        email:"user15@gmail.com"
     },
     {
         idp: 6,

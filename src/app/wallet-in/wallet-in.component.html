@@ -5,10 +5,11 @@
         <div>
             @if(!encrypted){
                 <!--placeholder="{{idiomaSel.m15}}" -->
-                <textarea id="n1" formControlName="userSeed" rows="4" cols="30" (onblur)="idiomaSel.m15" onfocus="this.innerHTML='gold afford crawl napkin shove rhythm melody insect exchange grow betray wild'"></textarea><br>
+                <textarea id="n1" formControlName="userSeed" rows="4" cols="30" 
+                (onblur)="idiomaSel.m15"></textarea><br>
             }@else{
             }
-            <input id="n2" formControlName="password" size="20" type="password" placeholder="{{idiomaSel.m13}}" />
+            <input id="n2" formControlName="password" size="20" type="text" placeholder="{{idiomaSel.m13}}" />
         </div>
         <div class="centrado">
             <button type="submit" mat-raised-button color="primary">{{idiomaSel.m14}}</button>
@@ -18,7 +19,6 @@
     <app-pregunta [idiomaSel]="idiomaSel" [web3obj]="web3" [wallet]="wallet"></app-pregunta>
   }@else{
         <img class="imgLogo" src="./assets/logo/Logo-4.jpg" /><br>
-        <app-usuarios [idiomaSel]="idiomaSel"></app-usuarios>
   }
 </div>
 

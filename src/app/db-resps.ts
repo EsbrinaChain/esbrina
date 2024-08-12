@@ -1,6 +1,6 @@
 export const resps: any = [
 {
-        email: "pedro.carrillo@eresmas.net",
+        email: "user1@gmail.com",
         id_resp: 1,
         id_preg: 1,
         enunciado: "Verdes y azules.",
@@ -9,43 +9,34 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "aterrado@cepsa.es",
+        email: "user2@gmail.com",
         id_resp: 2,
         id_preg: 1,
-        enunciado: "Gris oscuro.",
+        enunciado: "Grises.",
         ganadora: false,
         votos: 0,
         anulada: false
     },
     {
-        email: "carlos.damas@gmail.com",
+        email: "user3@gmail.com",
         id_resp: 3,
-        id_preg: 1,
-        enunciado: "Negros.",
-        ganadora: false,
-        votos: 0,
-        anulada: false
-    },
-    {
-        email: "maria.picado@telefonica.net",
-        id_resp: 4,
-        id_preg: 1,
-        enunciado: "Mezcla de negros y marrones.",
-        ganadora: false,
-        votos: 0,
-        anulada: false
-    },
-    {
-        email: "marta.delHierro@sitcom.com",
-        id_resp: 5,
         id_preg: 1,
         enunciado: "El color de los delfines, va cambiando segun su edad. En la edad joven es azul claro, cuando llega a ser adulto tiene los ojos negros y cuando son viejos se les ponen los ojos de un gris oscuro.",
         ganadora: false,
         votos: 0,
         anulada: false
     },
+    {
+        email: "user4@gmail.com",
+        id_resp: 4,
+        id_preg: 1,
+        enunciado: "Negros.",
+        ganadora: false,
+        votos: 0,
+        anulada: false
+    },
 {
-        email: "pedro.carrillo@eresmas.net",
+        email: "user1@gmail.com",
         id_resp: 1,
         id_preg: 2,
         enunciado: "1945",
@@ -54,7 +45,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "aterrado@cepsa.es",
+        email: "user2@gmail.com",
         id_resp: 2,
         id_preg: 2,
         enunciado: "1945",
@@ -63,7 +54,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "carlos.damas@gmail.com",
+        email: "user3@gmail.com",
         id_resp: 3,
         id_preg: 2,
         enunciado: "1944",
@@ -72,7 +63,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "maria.picado@telefonica.net",
+        email: "user4@gmail.com",
         id_resp: 4,
         id_preg: 2,
         enunciado: "1943",
@@ -81,61 +72,43 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "marta.delHierro@sitcom.com",
-        id_resp: 5,
-        id_preg: 2,
-        enunciado: "1946",
-        ganadora: false,
-        votos: 0,
-        anulada: false
-    },
-{
-        email: "pedro.carrillo@eresmas.net",
+        email: "user1@gmail.com",
         id_resp: 1,
         id_preg: 3,
-        enunciado: "Bad, Michael Jackson",
+        enunciado: "Bad - Michael Jackson",
         ganadora: true,
         votos: 0,
         anulada: false
     },
     {
-        email: "donaruma@cepsa.es",
+        email: "user2@gmail.com",
         id_resp: 2,
         id_preg: 3,
-        enunciado: "Whitney, Whitney Houston",
+        enunciado: "Himno de la alegría",
         ganadora: false,
         votos: 0,
         anulada: false
     },
     {
-        email: "carlos.damas@gmail.com",
+        email: "user3@gmail.com",
         id_resp: 3,
         id_preg: 3,
-        enunciado: "Bohemian Rahpsody, Queen",
+        enunciado: "Bohemian Rahpsody - Queen",
         ganadora: false,
         votos: 0,
         anulada: false
     },
     {
-        email: "maria.picado@telefonica.net",
+        email: "user4@gmail.com",
         id_resp: 4,
         id_preg: 3,
-        enunciado: "Daydream, Mariah Carey",
+        enunciado: "Daydream - Mariah Carey",
         ganadora: false,
         votos: 0,
         anulada: false
     },
     {
-        email: "marta.delHierro@sitcom.com",
-        id_resp: 5,
-        id_preg: 3,
-        enunciado: "25, Adele",
-        ganadora: false,
-        votos: 0,
-        anulada: false
-    },
-    {
-        email: "pedro.carrillo@eresmas.net",
+        email: "user1@gmail.com",
         id_resp: 1,
         id_preg: 4,
         enunciado: "We are the champions",
@@ -144,7 +117,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "aterrado@cepsa.es",
+        email: "user2@gmail.com",
         id_resp: 2,
         id_preg: 4,
         enunciado: "Himno de la alegría",
@@ -153,34 +126,25 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "carlos.damas@gmail.com",
+        email: "user3@gmail.com",
         id_resp: 3,
         id_preg: 4,
-        enunciado: "Vaya vaya... aquí no hay playa de The refrescos.",
+        enunciado: "Vaya vaya... aquí no hay playa - The refrescos.",
         ganadora: false,
         votos: 0,
         anulada: false
     },
     {
-        email: "maria.picado@telefonica.net",
+        email: "user4@gmail.com",
         id_resp: 4,
         id_preg: 4,
-        enunciado: "Stayin' Alive de Bee Gees",
+        enunciado: "Stayin' Alive - Bee Gees",
         ganadora: false,
         votos: 0,
         anulada: false
     },
     {
-        email: "marta.delHierro@sitcom.com",
-        id_resp: 5,
-        id_preg: 4,
-        enunciado: "Navajas y Percebes a pares me debes.",
-        ganadora: false,
-        votos: 0,
-        anulada: false
-    },
-{
-        email: "pedro.carrillo@eresmas.net",
+        email: "user1@gmail.com",
         id_resp: 1,
         id_preg: 5,
         enunciado: "14",
@@ -189,7 +153,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "aterrado@cepsa.es",
+        email: "user2@gmail.com",
         id_resp: 2,
         id_preg: 5,
         enunciado: "3",
@@ -198,7 +162,7 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "carlos.damas@gmail.com",
+        email: "user3@gmail.com",
         id_resp: 3,
         id_preg: 5,
         enunciado: "3",
@@ -207,17 +171,8 @@ export const resps: any = [
         anulada: false
     },
     {
-        email: "maria.picado@telefonica.net",
+        email: "user4@gmail.com",
         id_resp: 4,
-        id_preg: 5,
-        enunciado: "2",
-        ganadora: false,
-        votos: 0,
-        anulada: false
-    },
-    {
-        email: "marta.delHierro@sitcom.com",
-        id_resp: 5,
         id_preg: 5,
         enunciado: "2",
         ganadora: false,

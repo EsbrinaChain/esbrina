@@ -6,7 +6,6 @@ import { DOCUMENT } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UsuariosComponent } from '../usuarios/usuarios.component';
 import { ABI } from '../esbrinachain';
 
 
@@ -27,7 +26,7 @@ import { PreguntaComponent } from "../pregunta/pregunta.component";
   selector: 'app-wallet-in',
   standalone: true,
     imports: [CommonModule, RouterOutlet, FormsModule, ReactiveFormsModule,
-    MatButtonModule, MatTooltipModule, MatIconModule, UsuariosComponent, PreguntaComponent],
+    MatButtonModule, MatTooltipModule, MatIconModule, PreguntaComponent],
   templateUrl: './wallet-in.component.html',
     styleUrl: './wallet-in.component.scss',
   
@@ -37,7 +36,9 @@ export class WalletInComponent {
   @Input()
   idiomaSel: any=es;
       
-  // Variables
+    // Variables
+  
+  accountIndex: string ="4";
   title = 'esbrina';
   imgLogoFile: string = "Logo-3.png";
   loginForm: any;
@@ -63,7 +64,7 @@ export class WalletInComponent {
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
+    contract_address: any = "0x6dbb2806f3439D844CaB393d97D45e71372939a2";
   
   // Variable de S.C.
   tiempo_votacion: any;
@@ -99,6 +100,7 @@ export class WalletInComponent {
     else {
       this.userDefined = false;
     }
+    
   }  
     
     
@@ -150,7 +152,7 @@ export class WalletInComponent {
     var mnemonic = new Mnemonic(seeds);
 
     var seed = await bip39.mnemonicToSeed(mnemonic.toString());
-    var path = "m/44'/60'/0'/0/3";
+    var path = "m/44'/60'/0'/0/"+ this.accountIndex;
 
     var wallet = hdkey.fromMasterSeed(seed).derivePath(path).getWallet();
 

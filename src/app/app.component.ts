@@ -1,7 +1,7 @@
 import { Component, Inject, ViewChild, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder,FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { es, en, cat} from "./idioma";
 import {MatSelectModule} from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,22 +12,22 @@ import { MatMenuModule } from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import { WalletInComponent } from './wallet-in/wallet-in.component';
 import { RegistrarComponent } from './registrar/registrar.component';
-import { UsuariosComponent } from "./usuarios/usuarios.component";
 import { PreguntaComponent } from "./pregunta/pregunta.component";
-import { DOCUMENT } from '@angular/common';
+import * as CryptoJS from 'crypto-js';
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp,query, where, deleteDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,
+  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,ReactiveFormsModule, 
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
     MatSidenavModule, MatIconModule, MatMenuModule, MatListModule,
-    WalletInComponent, RegistrarComponent, UsuariosComponent, PreguntaComponent],
+    WalletInComponent, RegistrarComponent, PreguntaComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit{
   subtitle: any;
   loginShow = true;
   registrarShow = false;
-  regUser = false;
+  regUser = true;
   imgLogoFile: string = "Logo-3.png";
   window: any;
   esbrinaUser: string="";
@@ -56,22 +56,27 @@ export class AppComponent implements OnInit{
   @ViewChild(WalletInComponent)
   WalletIn: WalletInComponent | undefined;
 
-  @ViewChild(UsuariosComponent)
-  UsuariosEsb: UsuariosComponent | undefined;
-
   walletAddr: any;
   encryptedVar: any;
   userDefined: any;
   usuarioRegistrado: any;
-
+  listaUsuarios: any;
+  totalUsuarios: any;
+  emailIncorrecte = false;
   app: any;
   db: any;
-  listaUsuarios: any;
+  regForm: any;
+ 
  
 
   
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView;
+    this.regForm = formBuilder.group({
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]],
+      password: "",
+      alias: ""
+    });
     this.selectedLevel = this.levels[0];
     this.idiomes = ["es", "en", "cat"];
     this.idioma_seleccionat = es;
@@ -97,22 +102,95 @@ export class AppComponent implements OnInit{
     this.db = getFirestore(this.app);
     
     this.esbrinaUser = this.window.localStorage.getItem('esbrinaUser');
-    
+    /*
     if (this.esbrinaUser == null)
     { this.userDefined = false; this.regUser = true; }
     else {
       this.userDefined = true; this.regUser = false;
-    }
+    }*/
     this.esbrinaUserMail=this.window.localStorage.getItem('esbrinaUserMail');
     //console.log("UserDefined: ",this.userDefined);
+    this.totalUsuarios = this.conTotalUsuarios();
+    this.miraSiEsbrinaUser();
+    console.log("userDefined: ", this.userDefined);
+  }
+
+async insertaUsuarioID(email: any, pass: any, alias: any) {
+    if(!this.userDefined){
+        await setDoc(doc(this.db, "Usuarios", (this.totalUsuarios + 1).toString()),
+          {
+            aliase: alias,
+            email: email,
+            existe: true,
+            psw: pass,
+            reputacion: 0,
+            vetado: false,
+            creado: Timestamp.fromDate(new Date())
+          });
+      this.window.localStorage.setItem('esbrinaUser', CryptoJS.AES.encrypt(email, pass));
+      this.window.localStorage.setItem('esbrinaUserMail', email);
+      this.userDefined = true;
+      this.regUser = false;
+      
+    }
+  }
+
+  async sendRegistro(sendData: any) {
+    
+    this.insertaUsuarioID(sendData.email, sendData.password, sendData.alias);
+    
+  }
+
+  async conTotalUsuarios() {
+    const numUsuarios = collection(this.db, '/Usuarios');
+    const usSnapshot = await getDocs(numUsuarios);
+    this.totalUsuarios = usSnapshot.docs.length;
+    console.log(this.totalUsuarios);
+
+  }
+
+    /*insUsuario(email:any, password:any) {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        this.userCred = userCredential 
+        this.user = userCredential.user;
+        console.log(this.userCred,this.user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode,errorMessage);
+        // ..
+      });
+  }*/
+
+  signOutUsuario() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+    });
+  }
+
+  testEmail() {
+    if (this.regForm.status == "INVALID") {
+      this.emailIncorrecte = true;
+    }
+    else {
+      this.emailIncorrecte = false;
+    }
   }
 
   miraSiEsbrinaUser() {
     if (this.window.localStorage.getItem('esbrinaUser') != null) {
       this.userDefined = true;
+      this.regUser = false;
     }
     else {
       this.userDefined = false;
+      this.regUser = true;
     }
   }
 

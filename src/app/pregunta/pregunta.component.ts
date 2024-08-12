@@ -56,8 +56,8 @@ export class PreguntaComponent {
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x3823FFDd21278C0c9A3b4174992156beF4A285B3";
-
+  contract_address: any = "0x6dbb2806f3439D844CaB393d97D45e71372939a2";
+  
 
   preg = {
     enunciado: "",
@@ -163,9 +163,14 @@ async getBalanceAddress(address:any) {
   
 async insertaPregunta(enunciado: any, recompensa: any) {
   
+  console.log("LLEGA1");
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
-  
-  if(recompensa < this.balanceWalletAddress){
+  // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
+  const recompensaETH = this.web3obj.utils.fromWei(recompensa,"ether");
+  console.log(this.balanceWalletAddress);
+  console.log("Recompensa: ", recompensa);
+  console.log("RecompensaETH: ", recompensaETH);
+  if(recompensaETH < this.balanceWalletAddress){
     this.totalPregs++;
       const prg = {
         idp: this.totalPregs,
