@@ -32,7 +32,7 @@ El sistema será capaz de realizar una clasificación de la temática de las pre
 # Proyecto Esbrina
 Este proyecto se generó con [Angular CLI](https://github.com/angular/angular-cli) versión 17.0.5.
 ## Desarrollo
-Ejecute `ngserve` para un servidor de desarrollo. Navegue hasta `http://localhost:4200/`. La aplicación se recargará automáticamente si cambia alguno de los archivos fuente.
+Ejecute `ng serve` para un servidor de desarrollo. Navegue hasta `http://localhost:4200/`. La aplicación se recargará automáticamente si cambia alguno de los archivos fuente.
 ## Build
 Ejecute `ng build` para construir el proyecto. Los artefactos de compilación se almacenarán en el directorio `docs/`.
 ## Ayuda
