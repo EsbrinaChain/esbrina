@@ -10,7 +10,8 @@
 
 export let ABI = {
 
-    default: [
+	default: [
+		
 	{
 		"inputs": [
 			{
@@ -252,25 +253,6 @@ export let ABI = {
 			}
 		],
 		"name": "PreguntaCreada",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "_id_preg",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "_autor",
-				"type": "address"
-			}
-		],
-		"name": "RespuestaCreada",
 		"type": "event"
 	},
 	{
@@ -793,4 +775,5 @@ export let ABI = {
 		"type": "function"
 	}
 ]
+
 }

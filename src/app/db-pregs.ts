@@ -7,10 +7,10 @@ export const pregs: any = [
         creada: "12/08/2024",
         enunciado: "¿De qué color tienen los ojos los delfines?",
         // Azules o verdes
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "19/08/2024",
         idioma: "es",
-        recompensa: 10,
+        recompensa: 1000000000000000000,
         email:"user19@gmail.com"
         
     },
@@ -22,7 +22,7 @@ export const pregs: any = [
         creada: "20/07/2024",
         enunciado: "¿En que año acabó la II Guerra Mundial?",
         // 1945
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "19/08/2024",
         idioma: "es",
         recompensa: 50,
@@ -36,7 +36,7 @@ export const pregs: any = [
         creada: "12/08/2024",
         enunciado: "¿Cuál es el disco más vendido de la historia?",
         // "Bad", Michael Jackson
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "19/08/2024",
         idioma: "es",
         recompensa: 50000,
@@ -50,7 +50,7 @@ export const pregs: any = [
         creada: "12/08/2024",
         enunciado: "¿Cuál es el himno de la Unión Europea?",
         // Himno de la alegría
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "19/08/2024",
         idioma: "es",
         recompensa: 150000000000000000,
@@ -64,7 +64,7 @@ export const pregs: any = [
         creada: "12/08/2024",
         enunciado: "¿Cuántas veces ha ganado Rafael Nadal el torneo de Wimbledon?",
         // 2
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "19/08/2024",
         idioma: "es",
         recompensa: 6000000,
@@ -73,142 +73,142 @@ export const pregs: any = [
     {
         idp: 6,
         anulada: false,
-        autor: "Marta Fernández",
+        autor: "user14",
         autor_address: "0xCA3344",
         creada: "21/07/2024",
         enunciado: "¿En qué ciudad vivían Romeo y Julieta?",
         // Verona
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"marta.ferz@sitcom.com"
+        email:"user14@gmail.com"
     },
     {
         idp: 7,
         anulada: false,
-        autor: "Carla Santamaría",
-        autor_address: "0xDBAA88",
+        autor: "user13",
+        autor_address: "0xdE264d6D10222a1DAb5d0e288809A0E0A57E864A",
         creada: "21/07/2024",
-        enunciado: "¿Quién es el actor que interpreta a Jon Nieve en ‘Juego de Tronos?",
+        enunciado: "¿Quién es el actor que interpreta a Jon Nieve en Juego de Tronos?",
         // Kit Harington
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
-        recompensa: 50,
-        email:"carla.santamaria@gmail.com"
+        recompensa: 500000,
+        email:"user13@gmail.com"
     },
     {
         idp: 8,
         anulada: false,
-        autor: "Peter Crutchford",
-        autor_address: "0x2233FFA",
+        autor: "user12",
+        autor_address: "0x37F03e9201afF069e75eb709C41596B7c74bAB5C",
         creada: "22/07/2024",
         enunciado: "¿Qué actriz interpretó a Claire Underwood en la serie 'House of Cards?",
         // Robin Wright
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"crutchford-peter@gmail.com"
+        email:"user12@gmail.com"
     },
     {
         idp: 9,
         anulada: false,
-        autor: "Santiago Varriloche",
-        autor_address: "0xDCAACB",
+        autor: "user11",
+        autor_address: "0x9d5c87319Ec542b00DF7cC0583A2883872e60ce5",
         creada: "19/07/2024",
         enunciado: "¿En qué año cayó el muro de Berlín?",
         // 1989
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"svarriloche@aol.com"
+        email:"user11@gmail.com"
     },
     {
         idp: 10,
         anulada: false,
-        autor: "Carolina Marcos",
-        autor_address: "0x6577BA",
+        autor: "user10",
+        autor_address: "0x452e6317e4331622d91E97CAEb1eD173c6aA2Bfc",
         creada: "19/07/2024",
         enunciado: "¿En qué país nació Adolf Hitler?",
         // Austria
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"caromarcos45@hotmail.com"
+        email:"user10@gmail.com"
     },
     {
         idp:11,
         anulada: false,
-        autor: "Sergio Manila",
-        autor_address: "0ABC49",
+        autor: "user9",
+        autor_address: "0x160424c823dc3F2864afF5849aFc6AC4DfE1b7f8",
         creada: "19/07/2024",
         enunciado: "¿Cuándo se fundó la OTAN?",
         // 1949
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"sergioalberto.manila@gmail.com"
+        email:"user9@gmail.com"
     },
     {
         idp: 12,
         anulada: false,
-        autor: "Sílvia Garrigues",
-        autor_address: "0xAC213F",
+        autor: "user8",
+        autor_address: "0xa2450172CA2D5DaB6fFEe7a64b104Fc39DFD2A88",
         creada: "19/07/2024",
         enunciado: "¿Bajo el reinado de quién se creó la Guardia Civil?",
         // Isabel II
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"silgarrigues@gmail.com"
+        email:"user8@gmail.com"
     },
     {
         idp: 13,
         anulada: false,
-        autor: "Uke Kanatoga",
-        autor_address: "0x45ACD",
+        autor: "user7",
+        autor_address: "0xe29eFE4EE1f6f011C2E6EF0f3a0FFB7f6D1255Dc",
         creada: "19/07/2024",
         enunciado: "¿Quién fue el fundador de la escuela de pintura 'Impresionismo'?",
         // Claude Monet
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"ukekana@gmail.com"
+        email:"user7@gmail.com"
     },
     {
         idp: 14,
         anulada: false,
-        autor: "Ángel Daive",
-        autor_address: "0xFFGG22",
+        autor: "user6",
+        autor_address: "0x59134ca59Dbb815b4040B48EA2c58268BfAb0b22",
         creada: "19/07/2024",
         enunciado: "¿Cuál tiene más oscars, 'Titanic', 'Ben-Hur' o el 'Señor de los anillos?",
         // 13
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"angelitodaive@gmail.com"
+        email:"user6@gmail.com"
     },
     {
         idp: 15,
         anulada: false,
-        autor: "Magdalena Herrero",
-        autor_address: "0xDCA4455",
+        autor: "user5",
+        autor_address: "0x618bF8eC18B93467b3B8f93F4BD8dfAcaF55EA20",
         creada: "19/07/2024",
         enunciado: "¿Quién cantó la canción 'Girls Just Wanna Have Fun'?",
         // Cindy Lauper
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: "",
         idioma: "es",
         recompensa: 50,
-        email:"maggi.Herrero1000@gmail.com"
+        email:"user5@gmail.com"
     }
 ];
 

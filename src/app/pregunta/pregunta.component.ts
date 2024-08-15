@@ -18,12 +18,13 @@ import { ABI } from '../esbrinachain';
 import { GetPregComponent } from '../get-preg/get-preg.component';
 import { GetRespComponent } from '../get-resp/get-resp.component';
 import { intToHex } from '@ethereumjs/util';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-pregunta',
   standalone: true,
-  imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, GetPregComponent],
+  imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, CommonModule, GetPregComponent],
   templateUrl: './pregunta.component.html',
   styleUrl: './pregunta.component.scss'
 })
@@ -49,14 +50,24 @@ export class PreguntaComponent {
   total_resp: any;
   idPreg: any;
   lastTransaction: any;
-  
+  eventPreguntaCreada: any;
+  eventRespuestaCreada: any;
+  // Variable de S.C.
+  tiempo_votacion_sc: any;
+  tiempo_respuesta_sc: any;
+  num_incr_recompensa_sc: any;
+  cupo_respuestas_sc: any;
+  tiempo_respuesta_convertido: any;
+  //total_usuarios: any;
+  //admin_address: any;
+
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  //providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x6dbb2806f3439D844CaB393d97D45e71372939a2";
+  contract_address: any = "0x50b6b8a5fa7bAE4237D9b7a07A160952c62E6f3d";
   
 
   preg = {
@@ -73,9 +84,29 @@ export class PreguntaComponent {
     this.idiomaSelPreg = this.idiomaSel;
     this.web3 = this.web3obj;
     this.missCupoResp= this.idiomaSelPreg.m27; 
-           
+        
   }
+secondsToDhms(seconds:any) {
+seconds = Number(seconds);
+var d = Math.floor(seconds / (3600*24));
+var h = Math.floor(seconds % (3600*24) / 3600);
+var m = Math.floor(seconds % 3600 / 60);
+var s = Math.floor(seconds % 60);
 
+var dDisplay = d > 0 ? d + (d == 1 ? " dia " : " dias ") : "";
+var hDisplay = h > 0 ? h + (h == 1 ? " hora " : " horas, ") : "";
+var mDisplay = m > 0 ? m + (m == 1 ? " min. " : " min. ") : "";
+var sDisplay = s > 0 ? s + (s == 1 ? " seg." : " seg.") : "";
+return dDisplay + hDisplay + mDisplay + sDisplay;
+}
+  // consulta de una variable de S.C. await this.contract.methods.variable().call()
+async consultaVariables() {
+  
+  this.tiempo_respuesta_sc = this.secondsToDhms(await this.contract.methods.tiempo_respuesta().call());
+  this.tiempo_votacion_sc = this.secondsToDhms(await this.contract.methods.tiempo_votacion().call());
+  this.cupo_respuestas_sc = await this.contract.methods.cupo_respuestas().call();
+
+} 
  
   creaDate(d:any) {
   var yyyy = d.getFullYear().toString();
@@ -107,7 +138,7 @@ export class PreguntaComponent {
     this.db = getFirestore(this.app);
     this.analytics = getAnalytics(this.app);
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
-    
+    this.consultaVariables();
   }
   
 convertDate(firebaseObject: any) {
@@ -163,13 +194,12 @@ async getBalanceAddress(address:any) {
   
 async insertaPregunta(enunciado: any, recompensa: any) {
   
-  console.log("LLEGA1");
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
   // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
   const recompensaETH = this.web3obj.utils.fromWei(recompensa,"ether");
-  console.log(this.balanceWalletAddress);
-  console.log("Recompensa: ", recompensa);
-  console.log("RecompensaETH: ", recompensaETH);
+  //console.log(this.balanceWalletAddress);
+  //console.log("Recompensa: ", recompensa);
+  //console.log("RecompensaETH: ", recompensaETH);
   if(recompensaETH < this.balanceWalletAddress){
     this.totalPregs++;
       const prg = {
@@ -179,17 +209,18 @@ async insertaPregunta(enunciado: any, recompensa: any) {
         autor_address: this.wallet.address,
         creada: this.creaDate(new Date(new Date().getTime())),
         enunciado: enunciado,
-        estado: "activa",
+        estado: "abierta",
         fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
         idioma: "es",
         recompensa: recompensa,
         email: window.localStorage.getItem('esbrinaUserMail'),
         order: Date.now()
       };
-    console.log(prg,"    -      ",this.totalPregs);
+    //console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
     await setDoc(doc(this.db, "Pregs", (this.totalPregs).toString()), prg);
     this.conPregsQuery();
     this.creaPreguntaSC(prg);
+    //this.getLog(this.totalPregs);
 
   }
     
@@ -223,7 +254,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
         votos: 0,
         anulada: false
         };
-      console.log(rsp);
+      console.log("Respuesta introducida: ",rsp);
       await setDoc(doc(this.db, "Resps", (idGlobalResps + 1).toString()), rsp);
       this.conPregsQuery();
       this.creaRespuestaSC(rsp);
@@ -239,8 +270,8 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.creaRespuesta(rsp.id_preg,rsp.enunciado, rsp.email, rsp.email, rsp.email).encodeABI()
     }
-    console.log(rawData);
-    console.log(this.wallet.privateKey);
+    //console.log(rawData);
+    //console.log(this.wallet.privateKey);
     
     var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
 
@@ -323,8 +354,7 @@ creaPregunta() {
       nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.creaPregunta(prg.enunciado, prg.email, prg.email, prg.email).encodeABI()
     }
-    console.log(rawData);
-    console.log(this.wallet.privateKey);
+    //console.log(rawData);
     
     var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
 
@@ -338,7 +368,22 @@ creaPregunta() {
     );
   }
 
+  async getLog(id_preg:any) {
+   
+    //const res = await this.contract.events.PreguntaCreada("data"); 
+    
 
+    const ev = await this.contract.events.PreguntaCreada({
+      filter: { _id_preg: id_preg }, fromBlock: 0});
+    
+    this.eventPreguntaCreada = ev.on("data", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+  }
+  async getData(datos:any) {
+    console.log(datos.returnValues);
+  }
 
 
 } // end class

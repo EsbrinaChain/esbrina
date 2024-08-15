@@ -1,6 +1,38 @@
         <!--<button mat-raised-button color="primary" (click)="conPregsMaxID()">TEST</button><br>-->
         
-        <button class="nuevaPregunta" mat-raised-button color="primary" (click)="showDialog()">{{idiomaSelPreg.m25}}</button>
+        <table cols="2" width="95%">
+            <tr>
+                <td align="right" border="1px">
+                    <table align="right" class="datos_gen">
+                        <tr>
+                            <td align="right">
+                                <span>Tiempo de respuesta:</span>
+                            <td align="left" class="datos_gen_dato">
+                                <span>{{this.tiempo_respuesta_sc}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <span>Tiempo de Votación:</span>
+                            <td align="left" class="datos_gen_dato">
+                                <span>{{tiempo_votacion_sc}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <span>Cupo de respuestas:</span>
+                            <td align="left" class="datos_gen_dato">
+                                <span>{{cupo_respuestas_sc}}</span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <button class="nuevaPregunta" mat-raised-button color="primary"
+                        (click)="showDialog()">{{idiomaSelPreg.m25}}</button>
+                </td>
+            </tr>
+        </table>
         
         <table cols="7" width="95%">
         @for (item of listaPregs; track item) {
@@ -25,7 +57,7 @@
                     <app-respuesta [id_preg]="item.idp"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp">
-                    @if(item.estado=="activa" && !item.anulada){
+                    @if(item.estado=="abierta" && !item.anulada){
                         <label>{{idiomaSel.m26}}</label>
                         <button class="btnSep" (click)="dialogRespuesta(item.idp,item.email)">+</button>
                     }

@@ -38,7 +38,7 @@ export class WalletInComponent {
       
     // Variables
   
-  accountIndex: string ="4";
+  accountIndex: string ="19";
   title = 'esbrina';
   imgLogoFile: string = "Logo-3.png";
   loginForm: any;
@@ -60,11 +60,11 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  //providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-    contract_address: any = "0x6dbb2806f3439D844CaB393d97D45e71372939a2";
+  contract_address: any = "0x50b6b8a5fa7bAE4237D9b7a07A160952c62E6f3d";
   
   // Variable de S.C.
   tiempo_votacion: any;
@@ -73,9 +73,9 @@ export class WalletInComponent {
   total_preg: any;
   total_resp: any;
   cupo_respuestas: any;
-  total_usuarios: any;
-  admin_address: any;
-  preguntasSC: any;
+  //total_usuarios: any;
+  //admin_address: any;
+  //preguntasSC: any;
     
     constructor(@Inject(DOCUMENT) private document: Document,
                 private formBuilder: FormBuilder) {
