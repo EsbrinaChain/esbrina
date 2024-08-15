@@ -1,5 +1,4 @@
-        <!--<button mat-raised-button color="primary" (click)="conPregsMaxID()">TEST</button><br>-->
-        
+        <!--<button mat-raised-button color="primary" (click)="fechaUnixToDDMMAAAA(1723738545)">TEST</button><br>{{test}}<br>-->
         <table cols="2" width="95%">
             <tr>
                 <td align="right" border="1px">
@@ -61,6 +60,25 @@
                         <label>{{idiomaSel.m26}}</label>
                         <button class="btnSep" (click)="dialogRespuesta(item.idp,item.email)">+</button>
                     }
+                    <br>
+                    <div>
+                        @if(item.estado=="votando" && !item.anulada){
+                        <div class="top-right">
+                            <br>
+                                <label>{{idiomaSel.m29}}</label>
+                                <select id="selVoto" #opVoto class="selectVoto" (ng-mouseover)="getResp(item.idp)">
+                                    @for (itemSel of listaRespSelect; track itemSel) {
+                                        <option  value="itemSel.id_resp">{{itemSel.id_resp}}</option>
+                                    }
+                                </select>
+                                <br>
+                        </div>
+                        <div>
+                            <div><label>{{idiomaSel.m28}}</label></div>
+                            <button class="btnVoto" (click)="selectVoto(opVoto.value)">+</button>
+                        </div>
+                        }
+                    </div>
                 </td>
             </tr>
         } 

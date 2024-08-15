@@ -1,11 +1,14 @@
 import { Component, Input, Inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import {MatSelectModule} from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatListModule} from '@angular/material/list';
 import { es, en, cat } from "../idioma";
 import {pregs} from "../db-pregs"
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { RespuestaComponent } from '../respuesta/respuesta.component';
@@ -24,7 +27,8 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-pregunta',
   standalone: true,
-  imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, CommonModule, GetPregComponent],
+  imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, CommonModule,
+    GetPregComponent, MatSelectModule, MatFormFieldModule, MatListModule],
   templateUrl: './pregunta.component.html',
   styleUrl: './pregunta.component.scss'
 })
@@ -38,6 +42,9 @@ export class PreguntaComponent {
   wallet: any;
   
   idiomaSelPreg: any;
+  respOps = []; 
+  respSel: any;
+  respNum: any;
   app: any;
   db: any;
   analytics: any;
@@ -45,6 +52,7 @@ export class PreguntaComponent {
   totalPregs: any;
   listaPregs1: any;
   totalPregs1: any;
+  listaRespSelect: any;
   web3: any;
   balanceWalletAddress: any;
   total_resp: any;
@@ -58,16 +66,16 @@ export class PreguntaComponent {
   num_incr_recompensa_sc: any;
   cupo_respuestas_sc: any;
   tiempo_respuesta_convertido: any;
-  //total_usuarios: any;
+  datosActualizadosPregunta: any;
   //admin_address: any;
-
+  test: any;
   provider: any;
   userDefined: any;
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x50b6b8a5fa7bAE4237D9b7a07A160952c62E6f3d";
+  contract_address: any = "0xee49E38D1C03Aed960C2659349809fe477Bd2A09";
   
 
   preg = {
@@ -86,6 +94,25 @@ export class PreguntaComponent {
     this.missCupoResp= this.idiomaSelPreg.m27; 
         
   }
+
+  selectVoto(op:any) {
+    
+    console.log("Voto para la respuesta: ",op);
+
+  }
+
+  async conRespPregSelect(id_preg: any) {
+    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
+    const usSnapshot = await getDocs(queryPregs);
+    this.listaRespSelect = usSnapshot.docs.map(doc => doc.data());
+    console.log(this.listaRespSelect);
+    
+  }
+
+  getResp(id_preg: any) {
+    this.conRespPregSelect(id_preg);
+  }
+
 secondsToDhms(seconds:any) {
 seconds = Number(seconds);
 var d = Math.floor(seconds / (3600*24));
@@ -139,6 +166,7 @@ async consultaVariables() {
     this.analytics = getAnalytics(this.app);
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
+    //this.actualizaDatosListaPregSC();
   }
   
 convertDate(firebaseObject: any) {
@@ -193,7 +221,6 @@ async getBalanceAddress(address:any) {
 }
   
 async insertaPregunta(enunciado: any, recompensa: any) {
-  
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
   // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
   const recompensaETH = this.web3obj.utils.fromWei(recompensa,"ether");
@@ -220,7 +247,7 @@ async insertaPregunta(enunciado: any, recompensa: any) {
     await setDoc(doc(this.db, "Pregs", (this.totalPregs).toString()), prg);
     this.conPregsQuery();
     this.creaPreguntaSC(prg);
-    //this.getLog(this.totalPregs);
+    this.getLogPreguntaCreada(this.totalPregs);
 
   }
     
@@ -295,12 +322,68 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     else
     { return false; }
   }
+fechaUnixToDDMMAAAA(f_vot:any) {
+    // const fecha_votacion = new Date(f_vot * 1000).getDay + '/' + new Date(f_vot * 1000).getMonth + '/' + new Date(f_vot * 1000).getFullYear;
+    let f = new Date(Number(f_vot)*1000);
+    let dia = f.getDate();
+    let mes = f.getMonth() + 1;
+    let mes1 = (mes < 9) ? "0" + mes : mes;
+    let aaaa = f.getFullYear();
+    this.test = dia + "/" + mes1 + "/" + aaaa;
+    return  this.test;
+  
+  }
+  async updPregBackend(id_preg: any, estado: any, rcp: any, f_vot: any) {
+    console.log(id_preg);
+    const pregRef = doc(this.db, "/Pregs", id_preg.toString());
+    const fecha_votacion = this.fechaUnixToDDMMAAAA(f_vot);
+    console.log("Fecha Votación: ",fecha_votacion);
+    
+    const prg = {
+        idp: id_preg,
+        anulada: false,
+        estado: estado,
+        fecha_votacion: fecha_votacion,
+        recompensa: rcp,
+      };
+    
+    console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
+    await updateDoc(pregRef, prg);
+    
+  }
 
-  async dialogRespuesta(idPreg: any, email:any) {
+  
+  /*async actualizaDatosListaPregSC() {
+    for (let j = 1; j <= this.totalPregs; j++){
+      this.datosActualizadosPregunta = await this.contract.methods.pregunta(j).call();
+      this.listaPregs[j-1].estado = this.datosActualizadosPregunta.estado;
+      this.listaPregs[j-1].recompensa = this.datosActualizadosPregunta.recompensa;
+      this.listaPregs[j - 1].fecha_votacion = this.datosActualizadosPregunta.fecha_votacion;
+      //this.updPregBackend(j, this.datosActualizadosPregunta.estado, this.datosActualizadosPregunta.recompensa, "");
+    }
+  }*/
+  
+  async actualizaDatosPregSC(id_preg:any) {
+    this.datosActualizadosPregunta = await this.contract.methods.preguntas(Number(id_preg)).call();
+    console.log(this.datosActualizadosPregunta);
+    const estado_blk = this.datosActualizadosPregunta.estado;
+    const estado_txt = (estado_blk == 0) ? "abierta" : (estado_blk == 1) ? "votando" : (estado_blk == 2) ? "consulta" : (estado_blk == 3) ? "anulada": undefined;
+    this.listaPregs[id_preg-1].estado = estado_txt;
+    this.listaPregs[id_preg-1].recompensa = this.datosActualizadosPregunta.recompensa;
+    this.listaPregs[id_preg-1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
+    this.updPregBackend(id_preg,
+                        this.datosActualizadosPregunta.estado,
+                        this.datosActualizadosPregunta.recompensa,
+                        this.datosActualizadosPregunta.fecha_votacion);
+  }
+
+  async dialogRespuesta(idPreg: any, email: any) {
+    this.actualizaDatosPregSC(idPreg);
     const usarDialog = await this.noResps(idPreg);
     let noAutorPreg = false;
     if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
+    //this.actualizaDatosPregSC(idPreg);
     if (usarDialog && noAutorPreg) {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '70%';
@@ -368,7 +451,7 @@ creaPregunta() {
     );
   }
 
-  async getLog(id_preg:any) {
+  async getLogPreguntaCreada(id_preg:any) {
    
     //const res = await this.contract.events.PreguntaCreada("data"); 
     

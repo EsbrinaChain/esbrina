@@ -26,8 +26,8 @@ export const es = {
     m25: "Realizar una Nueva Pregunta",
     m26: "Responder",
     m27: "Sólo 1 vez",
-    m28: "",
-    m29: "",
+    m28: "Votar",
+    m29: "Elige respuesta",
     m30: ""
 };
 
@@ -59,8 +59,8 @@ export const en = {
     m25: "Make a New Question",
     m26: "Post a New Answer",
     m27: "Only one answer by question",
-    m28: "",
-    m29: "",
+    m28: "To Vote",
+    m29: "Pick up the answer",
     m30: ""
 };
 
@@ -92,8 +92,8 @@ export const cat = {
     m25: "Crear una Nova Pregunta",
     m26: "Respondre",
     m27: "Només 1 resposta per pregunta",
-    m28: "",
-    m29: "",
+    m28: "Votar",
+    m29: "Escull una resposta",
     m30: ""
 
 };
