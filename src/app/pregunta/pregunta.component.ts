@@ -75,7 +75,7 @@ export class PreguntaComponent {
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0xee49E38D1C03Aed960C2659349809fe477Bd2A09";
+  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
   
 
   preg = {
@@ -239,7 +239,7 @@ async insertaPregunta(enunciado: any, recompensa: any) {
         estado: "abierta",
         fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
         idioma: "es",
-        recompensa: recompensa,
+        recompensa: Number(recompensa),
         email: window.localStorage.getItem('esbrinaUserMail'),
         order: Date.now()
       };
@@ -322,33 +322,56 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     else
     { return false; }
   }
-fechaUnixToDDMMAAAA(f_vot:any) {
-    // const fecha_votacion = new Date(f_vot * 1000).getDay + '/' + new Date(f_vot * 1000).getMonth + '/' + new Date(f_vot * 1000).getFullYear;
-    let f = new Date(Number(f_vot)*1000);
+  fechaUnixToDDMMAAAA(f_vot: any) {
+    const valor = Number(f_vot) * 1000;
+    let f = new Date(valor);
+    
     let dia = f.getDate();
+    let dia1=(dia < 10) ? "0" + dia : dia;
     let mes = f.getMonth() + 1;
-    let mes1 = (mes < 9) ? "0" + mes : mes;
+    let mes1 = (mes < 10) ? "0" + mes : mes;
     let aaaa = f.getFullYear();
-    this.test = dia + "/" + mes1 + "/" + aaaa;
-    return  this.test;
+    const fecha = dia1 + "/" + mes1 + "/" + aaaa;
+ 
+    return  fecha;
   
   }
   async updPregBackend(id_preg: any, estado: any, rcp: any, f_vot: any) {
-    console.log(id_preg);
-    const pregRef = doc(this.db, "/Pregs", id_preg.toString());
-    const fecha_votacion = this.fechaUnixToDDMMAAAA(f_vot);
-    console.log("Fecha Votación: ",fecha_votacion);
     
-    const prg = {
-        idp: id_preg,
-        anulada: false,
+    const docRef = doc(this.db, "Pregs", id_preg.toString());
+    const docSnap = await getDoc(docRef);
+        
+    /*if (docSnap.exists()) {
+      const prg = {
+        idp: docSnap.data()['idp'],
+        anulada: docSnap.data()['anulada'],
+        autor: docSnap.data()['autor'],
+        autor_address: docSnap.data()['autor_address'],
+        creada: docSnap.data()['creada'],
+        enunciado: docSnap.data()['enunciado'],
+        //estado: docSnap.data()['estado'],
         estado: estado,
-        fecha_votacion: fecha_votacion,
-        recompensa: rcp,
+        fecha_votacion: docSnap.data()['fecha_votacion'],
+        idioma: docSnap.data()['idioma'],
+        recompensa: docSnap.data()['recompensa'],
+        email: docSnap.data()['email'],
+        order: docSnap.data()['order']
       };
-    
-    console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
-    await updateDoc(pregRef, prg);
+      console.log("ANTES SET",prg);
+      await setDoc(docRef, prg);
+    }*/
+
+    const estado_txt = (estado == 0) ? "abierta" : (estado == 1) ? "votando" : (estado == 2) ? "consulta" : (estado == 3) ? "anulada": undefined;
+    if (docSnap.exists()) {
+      let prg = docSnap.data();
+      console.log("prg antes: ", prg);
+      prg['estado'] = estado_txt;
+      prg['anulada'] = (estado == 3) ? true : false;
+      prg['recompensa'] = Number(rcp);
+      if (f_vot != 0) { prg['fecha_votacion'] = this.fechaUnixToDDMMAAAA(f_vot); }
+      console.log("prg después: ", prg);
+      await setDoc(docRef, prg);
+    } 
     
   }
 
@@ -365,16 +388,20 @@ fechaUnixToDDMMAAAA(f_vot:any) {
   
   async actualizaDatosPregSC(id_preg:any) {
     this.datosActualizadosPregunta = await this.contract.methods.preguntas(Number(id_preg)).call();
-    console.log(this.datosActualizadosPregunta);
+    //console.log("Datos leidos pregunta: ",id_preg, this.datosActualizadosPregunta);
     const estado_blk = this.datosActualizadosPregunta.estado;
     const estado_txt = (estado_blk == 0) ? "abierta" : (estado_blk == 1) ? "votando" : (estado_blk == 2) ? "consulta" : (estado_blk == 3) ? "anulada": undefined;
-    this.listaPregs[id_preg-1].estado = estado_txt;
-    this.listaPregs[id_preg-1].recompensa = this.datosActualizadosPregunta.recompensa;
-    this.listaPregs[id_preg-1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
+    this.listaPregs[id_preg - 1].estado = estado_txt;
+    this.listaPregs[id_preg - 1].recompensa = this.datosActualizadosPregunta.recompensa;
+    if (this.datosActualizadosPregunta.fecha_votacion != 0) {
+      this.listaPregs[id_preg - 1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
+    }
     this.updPregBackend(id_preg,
                         this.datosActualizadosPregunta.estado,
                         this.datosActualizadosPregunta.recompensa,
                         this.datosActualizadosPregunta.fecha_votacion);
+
+    
   }
 
   async dialogRespuesta(idPreg: any, email: any) {
@@ -460,6 +487,10 @@ creaPregunta() {
       filter: { _id_preg: id_preg }, fromBlock: 0});
     
     this.eventPreguntaCreada = ev.on("data", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+    this.eventPreguntaCreada = ev.on("error", (event: any) => {
       //console.log("Data: ", event)
       this.getData(event);
     });

@@ -38,7 +38,7 @@ export class WalletInComponent {
       
     // Variables
   
-  accountIndex: string ="5";
+  accountIndex: string ="4";
   title = 'esbrina';
   imgLogoFile: string = "Logo-3.png";
   loginForm: any;
@@ -64,7 +64,7 @@ export class WalletInComponent {
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0xee49E38D1C03Aed960C2659349809fe477Bd2A09";
+  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
   
   // Variable de S.C.
   tiempo_votacion: any;
