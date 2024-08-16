@@ -8,8 +8,8 @@ import {pregs} from "../db-pregs"
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
-import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, documentId} from 'firebase/firestore';
+import { addDoc, Timestamp, query, orderBy, where, and } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { RespuestaComponent } from '../respuesta/respuesta.component';
 import { AskEsbrinaService } from '../ask-esbrina.service';
@@ -61,8 +61,7 @@ export class PreguntaComponent {
   total_resp: any;
   idPreg: any;
   lastTransaction: any;
-  eventPreguntaCreada: any;
-  eventRespuestaCreada: any;
+  
   // Variable de S.C.
   tiempo_votacion_sc: any;
   tiempo_respuesta_sc: any;
@@ -91,6 +90,19 @@ export class PreguntaComponent {
   datos: any;
   missCupoResp: Boolean;
 
+  // Event variables
+
+  eventPreguntaCreada: any;
+  eventPreguntaAnulada: any;
+
+  eventRespuestaCreada: any;
+  eventRespuestaFueraDeTiempo: any;
+  eventRespuestaFueraDeCupo: any;
+  
+  eventInicioVotacion: any;
+  eventFinalVotacion: any;
+  
+
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
     this.idiomaSelPreg = this.idiomaSel;
     this.web3 = this.web3obj;
@@ -98,10 +110,84 @@ export class PreguntaComponent {
         
   }
 
-  selectVoto() {
-    
-    console.log(this.respSel);
+  
 
+  async votarRespuestaSC(id_preg:any, id_resp:any) {
+    //console.log("Parametros votacion: ", id_preg, id_resp);
+    var rawData = {
+      from: this.wallet.address, 
+      to: this.contract_address,  
+      value: 0,
+      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasLimit: this.web3obj.utils.toHex(1000000),
+      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
+    }
+    //console.log(rawData);
+
+    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+
+    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+        (receipt: any) => {
+          this.lastTransaction = receipt;
+        },
+        (error: any) => {
+            console.log(error)
+        }
+    );
+  }
+
+async noEsAutorDeRespuestas(id_preg: any) {
+  const autor_mail = window.localStorage.getItem("esbrinaUserMail");
+  //console.log(autor_mail);
+  const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", Number(id_preg)), where("email", "==", autor_mail));
+  const usSnapshot = await getDocs(queryResps);
+  const llista_resp = usSnapshot.docs.map(doc => doc.data());
+  if (llista_resp.length > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+  async sinVoto(id_preg: any) {
+    const autor_addr = this.wallet.address; 
+    const votado = await this.contract.methods.votaciones(autor_addr, id_preg).call();
+    if (votado == 0) {
+      return true; 
+    } else {
+      return false;
+    } 
+  } 
+async updVotoBackend(id_preg: any, id_resp: any) {
+    
+  const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",Number(id_preg)), where("id_resp","==",Number(id_resp)));
+  const usSnapshot = await getDocs(queryResps);
+  const id = usSnapshot.docs.map(doc => doc.ref.id);
+  const item = doc(this.db, "Resps", id[0]);
+  let docSnap = await getDoc(item);
+  let updData: any; 
+  if (docSnap.exists()) {
+    updData = docSnap.data();
+    updData.votos += 1;
+  }
+  await setDoc(item, updData);
+  }
+  async selectVoto(id_preg:any) {
+    // this.respSel contiene la respuesta votada de la pregunta id_preg.
+    //console.log("Respuesta votada: ", this.respSel);
+
+    // No ha votado otras respuestas => solo puede votar 1 vez
+    const noEsAutorResp = await this.noEsAutorDeRespuestas(id_preg);
+    let noHaVotado = await this.sinVoto(id_preg);
+    if(noEsAutorResp && noHaVotado){
+    this.updVotoBackend(id_preg, this.respSel);
+    this.votarRespuestaSC(id_preg, this.respSel);
+    //this.getLogFinalVotacion(id_preg);
+    this.conPregsQuery();
+    }
+    
+    //console.log("noEsAutorResp: ", noEsAutorResp);
+    //console.log("noHaVotado: ", noHaVotado);
   }
 
   async conRespPregSelect(id_preg: any) {
@@ -179,15 +265,6 @@ convertDate(firebaseObject: any) {
     }
     return firebaseObject;
   }
-
-async conPregs1Query() {
-    const queryPregs = query(collection(this.db, '/Pregs1'),orderBy('idp','asc'));
-    const usSnapshot = await getDocs(queryPregs);
-    this.listaPregs1 = usSnapshot.docs.map(doc => doc.data());
-  this.totalPregs1 = usSnapshot.size;
-  console.log(this.listaPregs1[0]);
-
-}
 
 async conPregsQuery() {
   const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
@@ -323,6 +400,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     else
     { return false; }
   }
+
   fechaUnixToDDMMAAAA(f_vot: any) {
     const valor = Number(f_vot) * 1000;
     let f = new Date(valor);
@@ -341,26 +419,6 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     
     const docRef = doc(this.db, "Pregs", id_preg.toString());
     const docSnap = await getDoc(docRef);
-        
-    /*if (docSnap.exists()) {
-      const prg = {
-        idp: docSnap.data()['idp'],
-        anulada: docSnap.data()['anulada'],
-        autor: docSnap.data()['autor'],
-        autor_address: docSnap.data()['autor_address'],
-        creada: docSnap.data()['creada'],
-        enunciado: docSnap.data()['enunciado'],
-        //estado: docSnap.data()['estado'],
-        estado: estado,
-        fecha_votacion: docSnap.data()['fecha_votacion'],
-        idioma: docSnap.data()['idioma'],
-        recompensa: docSnap.data()['recompensa'],
-        email: docSnap.data()['email'],
-        order: docSnap.data()['order']
-      };
-      console.log("ANTES SET",prg);
-      await setDoc(docRef, prg);
-    }*/
 
     const estado_txt = (estado == 0) ? "abierta" : (estado == 1) ? "votando" : (estado == 2) ? "consulta" : (estado == 3) ? "anulada": undefined;
     if (docSnap.exists()) {
@@ -375,17 +433,6 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     } 
     
   }
-
-  
-  /*async actualizaDatosListaPregSC() {
-    for (let j = 1; j <= this.totalPregs; j++){
-      this.datosActualizadosPregunta = await this.contract.methods.pregunta(j).call();
-      this.listaPregs[j-1].estado = this.datosActualizadosPregunta.estado;
-      this.listaPregs[j-1].recompensa = this.datosActualizadosPregunta.recompensa;
-      this.listaPregs[j - 1].fecha_votacion = this.datosActualizadosPregunta.fecha_votacion;
-      //this.updPregBackend(j, this.datosActualizadosPregunta.estado, this.datosActualizadosPregunta.recompensa, "");
-    }
-  }*/
   
   async actualizaDatosPregSC(id_preg:any) {
     this.datosActualizadosPregunta = await this.contract.methods.preguntas(Number(id_preg)).call();
@@ -481,9 +528,6 @@ creaPregunta() {
 
   async getLogPreguntaCreada(id_preg:any) {
    
-    //const res = await this.contract.events.PreguntaCreada("data"); 
-    
-
     const ev = await this.contract.events.PreguntaCreada({
       filter: { _id_preg: id_preg }, fromBlock: 0});
     
@@ -500,9 +544,50 @@ creaPregunta() {
     console.log(datos.returnValues);
   }
 
+  async getLogPreguntaAnulada(id_preg:any) {
 
+    const ev = await this.contract.events.PreguntaAnulada({
+      filter: { _id_preg: id_preg }, fromBlock: 0});
+    
+    this.eventPreguntaAnulada = ev.on("data", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+    this.eventPreguntaAnulada = ev.on("error", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+  }
+  
+  async getLogInicioVotacion(id_preg:any) {
 
+    const ev = await this.contract.events.InicioVotacion({
+      filter: { _id_preg: id_preg }, fromBlock: 0});
+    
+    this.eventInicioVotacion = ev.on("data", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+    this.eventInicioVotacion = ev.on("error", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+  }
 
+  async getLogFinalVotacion(id_preg:any) {
+
+    const ev = await this.contract.events.FinalVotacion({
+      filter: { _id_preg: id_preg }, fromBlock: 0});
+    
+    this.eventFinalVotacion = ev.on("data", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+    this.eventFinalVotacion = ev.on("error", (event: any) => {
+      //console.log("Data: ", event)
+      this.getData(event);
+    });
+  }
 
 } // end class
 

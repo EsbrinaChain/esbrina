@@ -65,7 +65,7 @@
                         @if(item.estado=="votando" && !item.anulada){
                         <div class="top-right">
                             <br>
-                                <label>{{idiomaSel.m29}}</label><br>
+                                <label>{{idiomaSel.m28}}</label><br>
                                 <select id="selVoto" #opVoto class="selectVoto" (click)="getResp(item.idp)" [(ngModel)]="respSel">
                                     @for (itemSel of listaRespSelect; track itemSel) {
                                         <option  value="{{itemSel}}">{{itemSel}}</option>
@@ -74,8 +74,8 @@
                                 <br>
                         </div>
                         <div>
-                            <div><label>{{idiomaSel.m28}}</label></div>
-                            <button class="btnVoto" (click)="selectVoto()">+</button>
+                            <!--<div><label>{{idiomaSel.m28}}</label></div>-->
+                            <button class="btnVoto" (click)="selectVoto(item.idp)">+</button>
                         </div>
                         }
                     </div>
