@@ -22,13 +22,14 @@ import { GetPregComponent } from '../get-preg/get-preg.component';
 import { GetRespComponent } from '../get-resp/get-resp.component';
 import { intToHex } from '@ethereumjs/util';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-pregunta',
   standalone: true,
   imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, CommonModule,
-    GetPregComponent, MatSelectModule, MatFormFieldModule, MatListModule],
+    GetPregComponent, MatSelectModule, MatFormFieldModule, MatListModule,FormsModule, ReactiveFormsModule],
   templateUrl: './pregunta.component.html',
   styleUrl: './pregunta.component.scss'
 })
@@ -44,7 +45,9 @@ export class PreguntaComponent {
   idiomaSelPreg: any;
   respOps = []; 
   respSel: any;
-  respNum: any;
+  //respNum: any;
+  listaRespSelect: any = [];
+  
   app: any;
   db: any;
   analytics: any;
@@ -52,7 +55,7 @@ export class PreguntaComponent {
   totalPregs: any;
   listaPregs1: any;
   totalPregs1: any;
-  listaRespSelect: any;
+  
   web3: any;
   balanceWalletAddress: any;
   total_resp: any;
@@ -95,18 +98,16 @@ export class PreguntaComponent {
         
   }
 
-  selectVoto(op:any) {
+  selectVoto() {
     
-    console.log("Voto para la respuesta: ",op);
+    console.log(this.respSel);
 
   }
 
   async conRespPregSelect(id_preg: any) {
     const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
     const usSnapshot = await getDocs(queryPregs);
-    this.listaRespSelect = usSnapshot.docs.map(doc => doc.data());
-    console.log(this.listaRespSelect);
-    
+    this.listaRespSelect = usSnapshot.docs.map(doc => doc.data()['id_resp']);
   }
 
   getResp(id_preg: any) {
@@ -498,6 +499,9 @@ creaPregunta() {
   async getData(datos:any) {
     console.log(datos.returnValues);
   }
+
+
+
 
 
 } // end class
