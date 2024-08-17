@@ -1,0 +1,155 @@
+Users Update Esbrina-Project
+
+user0: user0@gmail.com (admin)
+pass0: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (0): 0x51fFb51E1F5C497631867Dc1515aa876C9954e0B
+seed: U2FsdGVkX19bDopIBNNp3AAw/KB4HxBTsSpAE/TB2rZXn1TWCFTuraqAv1KeyzHdbPTcFn0JGsBRLbgnG9ZxPV6blOy/OHKacV+wTk4aSJ51EnqNESqUu52sUjctQLVt
+----------------------------------------------------------------------------------------
+user1: user1@gmail.com
+pass1: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (1):0xDc158d20953ff143B4Fb6Af08Dc2dAF308222AAc 
+seed: U2FsdGVkX1+m/jKiJM7eaQWC9VGvJyhxhQaxVEu2nyA38FdtMd6iiiM6IN2W6DnGaxM7MUIgNmzC6G7zETra07+JrkDara8A8+2i2DD4G581HkvmUkKo1kypFgw5lesJ
+----------------------------------------------------------------------------------------
+user2: user2@gmail.com
+pass2: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (2): 0x9809c8bfd802f8559d44a109BCEf74039D9d89a6
+seed: U2FsdGVkX18M+IjfBoSUSEPCejlCyJB/Yi4fv/U9mITFPgICVuTbDs+fjl0sIr4OOTaSeiUVZzArCmQpMFSBFER1hnsCUWj06+HtpWmtgbVeU7S8OCw7UQrXhKlKAVPt
+----------------------------------------------------------------------------------------
+user3: user3@gmail.com
+pass3: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (3): 0x9df033E45604b62Ec2Aa6014E50C6FF8cc4642ec
+seed: U2FsdGVkX1+8wmpJyPZhX0+a3pJcVofj+anQF9j8Zs8s326pHeCJLwh3sXjbLfJq/j2BBFjySxBK9C6TfiejgTnEq3vexQOrHY5RyqEZknLX5WmGKoKFcvH83W1fo/1J
+----------------------------------------------------------------------------------------
+user4: user4@gmail.com
+pass4: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (4): 0xbfFD580fCfA3227F12386F4B0719b5761AD09a02
+seed: U2FsdGVkX1/sppp1fGy3Hw1nm7LJWSOTdzL0yTXuYRnyCb1ue/HP3qhVtVfkLkBCKe3DUYmyIHBE2udToUxtcH6wRwDF1VYqqPX1bV0ZXDVmD0UtdKmXWs7Hc/6Hw+2s
+----------------------------------------------------------------------------------------
+esbrinaUser user5: user5@gmail.com
+pass5: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (5): 0x618bF8eC18B93467b3B8f93F4BD8dfAcaF55EA20
+seed: U2FsdGVkX1+PUrX/2ks2hSzcSCzyUizErbq/+sKlgIfd8mCChT+yaHTo1yPl+wvGjAOL6v7mxTuSuUndoJyyvmceeZCteagOG13rC59W185VgF289WzsTEAalvjVK84G
+----------------------------------------------------------------------------------------
+user6: use6r@gmail.com
+pass6: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (6): 0x59134ca59Dbb815b4040B48EA2c58268BfAb0b22
+seed: U2FsdGVkX19HVMiK57+iZ8k2tyhf4G2+PyS69szunkhBsfIz5Wc4+D+s2jLtw06+9SweadNvLd1yMs118fCwYgRgW+cgQy9mSq3HsuGrGrS8FCdttJ5dhvNpDRU5sBdp
+----------------------------------------------------------------------------------------
+user7: user7@gmail.com
+pass7: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (7): 0xe29eFE4EE1f6f011C2E6EF0f3a0FFB7f6D1255Dc
+seed: U2FsdGVkX18yT9J1Skw30xWblnp7bmpBpnQQ5Ao1+JuBFXItt7rfktaSZNKJQAmrBsbxZsxNqUL53xE96HxzNXqd6ZJCCFPdKCpjMTFgjHLPCm7kyQPTS+ZJCts/ix2v
+----------------------------------------------------------------------------------------
+user8: user8@gmail.com
+pass8: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (8): 0xa2450172CA2D5DaB6fFEe7a64b104Fc39DFD2A88
+seed: U2FsdGVkX198R83MqQafer3AoOXeomIdbkcoNqf2iM59tARQpF+zRi07dzBms/k1EFwbG7mvLnK9BWFjPeE749Q04JjZb2kkCTKtT/cHBDZ1Dc6ci1Bl5nDadJmeImG2
+----------------------------------------------------------------------------------------
+user9: user9@gmail.com
+pass9: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (9): 0x160424c823dc3F2864afF5849aFc6AC4DfE1b7f8
+seed: U2FsdGVkX1+oJ7TofFw/ssXPT18GTnGW6bvyGfn7WbgOsKZTjEFXL4W3gxaJgGltl0wSwqUpvFIxtYvRZ8c69b32RD92/2PyXB3wh6+ISxer4ne48QmFgomfczhm0GBd
+----------------------------------------------------------------------------------------
+user10: user10@gmail.com
+pass10: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (10): 0x452e6317e4331622d91E97CAEb1eD173c6aA2Bfc
+seed: U2FsdGVkX19FloTq24TiN6Z3390GYl5XkWQQnHCD/u0jlE/QISkRUueSGKKPOdOObAMhjnDic+D4rGuE0L60TY4OeaBWcarTzJZ+1h+jhXss5XJ+IMWjFjikgAFPhAGD
+----------------------------------------------------------------------------------------
+user11: user11@gmail.com
+pass11: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (11): 0x9d5c87319Ec542b00DF7cC0583A2883872e60ce5
+seed: U2FsdGVkX1/847Tsyt9jaQfUuH6V6jSVMaln17cXQVgXz+Nc3MivA0WI+AM+okKIdiom5OPz1tBaSk1XfGPX771dRLUn1PhGBqN6uXG3mvbL7gu7gSyaNKoGJZL9+f4I
+----------------------------------------------------------------------------------------
+user12: user12@gmail.com
+pass12: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (12): 0x37F03e9201afF069e75eb709C41596B7c74bAB5C
+seed: U2FsdGVkX1/tdN87adCOwRXeuVEzbPjVVIv9o3tJOQ3pIRRBPO0i7IBdmr3jnkrlb0WArMkTqVmqvAOOq3fl0UocoldtfDthzYwp/TkK2nruV+hvVsMa+3gDv35xWggv
+----------------------------------------------------------------------------------------
+user13: user13@gmail.com
+pass13: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (13): 0xdE264d6D10222a1DAb5d0e288809A0E0A57E864A
+seed: U2FsdGVkX19UjGGrefAHObNNLtnnGuzkgPruNpIOzwODXzwRL5ZzkEGh3YNUkwTmMj1NPqvHEzhF8lZMO5bvhJ4D/UmuUJTODeqdckEVjGFi8HlcJm2ZFdrildpQwAL1
+----------------------------------------------------------------------------------------
+user14: user14@gmail.com
+pass14: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (14): 0x4ddD2f8e23B7510e87A7fBd61ED9a7B64676A408
+seed: U2FsdGVkX19TwtAgFjYzCFPl/yKFA701qwgmuXbzPFw/oEKDjfb1Izk3D4bIp9I3SiI7atCTmvWLtc8uym25X4/XWjH5MpHkNSd2e3bUmcKl6QBvYqJhrMfL8M8mTgeJ
+----------------------------------------------------------------------------------------
+user15: user15@gmail.com
+pass15: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (15): 0x9A3E4F89C82ef316F3973b4f274bD9F55864CB13
+seed: U2FsdGVkX18/Uk1KvKIM3FhkjkZE6B3MHaamDWKyKQbNfy+rxun1eqR6N2Mo+CW00VkvYG9QRkY/leC5iKw26M/NxNx6FY4B3QySJ2MYuhtYZYgUfhOND9FJMMJIPNwb
+----------------------------------------------------------------------------------------
+user16: user16@gmail.com
+pass16: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (16): 0xE1688e37A2A397b11E31E880E2FC190D8283Ff60
+seed: U2FsdGVkX1/RlBk1HApHP8JmE8lOTbti9FgWEpswACwM4Xg4JOALp8Hj+HmcSenAhrm4s7X98Fq/YxrGQQtDAv9X7jdINDUxpATom3ZkhRX/GI/ytOf30x27Bssad24r
+----------------------------------------------------------------------------------------
+user17: user17@gmail.com
+pass17: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (17): 0xa0e47e1544b4d976Bc890d1474C6708b523D790d
+seed: U2FsdGVkX1+sFk2kFEQuZkuYZm99cLNbSZ7ZhUkYO/OEBPn6vDLDA/qDNVCSQsUNzjTZUPmBVUqGWAAJXBK+5cTh2C/H04KiJA43CKpBDGu2+FHa8mfTnsDzqJzxMJ52
+----------------------------------------------------------------------------------------
+user18: user18@gmail.com
+pass18: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (18): 0x368F1c37054b11895Eb0D39b768263930352fE3d
+seed: U2FsdGVkX19N0XqmUsR27KNmHfwkTSS/vXYnxrO3Q0So+QnBpU96Xeoi7jFXawVsb2l1gWPk3bbj2CQ20N5g7fy0oFYa0ube5674HvOOZNFBH3OwDldXK0hlCSVd5uTX
+----------------------------------------------------------------------------------------
+user19: user19@gmail.com
+pass19: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (19): 0x5f39fDA49Ba4f4B2dcBc59967Fd5788d00a5B78a
+seed: U2FsdGVkX18KSwbUXv77uisNNGne1lcA2Wz2rwLULz5UOb4NsUKatsA9eGYmgDTmGhb+6X5g+U5q5PG0V+Z/2I/T3eylzO//RETJdHPLEWFZCIQ+Rq1z93c4xHlaV4SA
+----------------------------------------------------------------------------------------
+user: user@gmail.com
+pass: xxx
+seed: tip joy antenna scissors soft axis shift dinosaur cause border earth kick
+pass: xxx
+wallet-address (): 
+
+
+
+
+
+
+
+
