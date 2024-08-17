@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { es, en, cat } from "../idioma";
@@ -6,33 +6,53 @@ import {resps} from "../db-resps"
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, doc, setDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from 'firebase/firestore';
 import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { ABI } from '../esbrinachain';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
 @Component({
   selector: 'app-respuesta',
   standalone: true,
-  imports: [MatButtonModule, CommonModule],
+  imports: [MatButtonModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './respuesta.component.html',
   styleUrl: './respuesta.component.scss'
 })
 export class RespuestaComponent {
 
+  @Output()
+  refresh = new EventEmitter<void>();  
+    
   @Input()
   idiomaSel: any = es;
   
   @Input({required: true})
   id_preg: any;
    
+  @Input()
+  web3obj: any;
+  @Input()
+  wallet: any;
+
+  @Input()
+  estado_actual:any;
+
+  lastTransaction: any;
   
   idiomaSelPreg: any;
   app: any;
   db: any;
   listaResp: any;
   total_resp: any;
+
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+    
+  providerETH = 'http://127.0.0.1:7545/'; 
+  contract: any;
+  contract_address: any = "0x653249F36bd054F26cb03e3d97dd1d1621deb7FC";
 
   constructor() {
     this.idiomaSelPreg = this.idiomaSel;
@@ -55,6 +75,7 @@ export class RespuestaComponent {
         
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
+    this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     
   }
   
@@ -67,6 +88,7 @@ export class RespuestaComponent {
     const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
     const usSnapshot = await getDocs(queryPregs);
     this.listaResp = usSnapshot.docs.map(doc => doc.data());
+    
   }
 
   async numActualResps() {
@@ -84,6 +106,85 @@ export class RespuestaComponent {
       await setDoc(doc(this.db, "Resps", (i).toString()), resps[i-1]);
       console.log(i, resps[i]);
       }
+  }
+
+  async votarRespuestaSC(id_preg:any, id_resp:any) {
+    //console.log("Parametros votacion: ", id_preg, id_resp);
+    var rawData = {
+      from: this.wallet.address, 
+      to: this.contract_address,  
+      value: 0,
+      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasLimit: this.web3obj.utils.toHex(1000000),
+      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
+    }
+    //console.log(rawData);
+
+    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+
+    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+        (receipt: any) => {
+          this.lastTransaction = receipt;
+        },
+        (error: any) => {
+            console.log(error)
+        }
+    );
+  }
+
+async noEsAutorDeRespuestas(id_preg: any) {
+  const autor_mail = window.localStorage.getItem("esbrinaUserMail");
+  //console.log(autor_mail);
+  const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", Number(id_preg)), where("email", "==", autor_mail));
+  const usSnapshot = await getDocs(queryResps);
+  const llista_resp = usSnapshot.docs.map(doc => doc.data());
+  if (llista_resp.length > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
+  async sinVoto(id_preg: any) {
+    const autor_addr = this.wallet.address; 
+    const votado = await this.contract.methods.votaciones(autor_addr, id_preg).call();
+    if (votado == 0) {
+      return true; 
+    } else {
+      return false;
+    } 
+  } 
+async updVotoBackend(id_preg: any, id_resp: any) {
+    
+  const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",Number(id_preg)), where("id_resp","==",Number(id_resp)));
+  const usSnapshot = await getDocs(queryResps);
+  const id = usSnapshot.docs.map(doc => doc.ref.id);
+  const item = doc(this.db, "Resps", id[0]);
+  let docSnap = await getDoc(item);
+  let updData: any; 
+  if (docSnap.exists()) {
+    updData = docSnap.data();
+    updData.votos += 1;
+    console.log("updData: ",updData);
+  }
+  await setDoc(item, updData);
+}
+  
+  async selectVoto(id_preg:any, id_resp:any) {
+
+    // No es autor de ninguna respuesta en la pregunta
+    const noEsAutorResp = await this.noEsAutorDeRespuestas(id_preg);
+    // No ha votado otras respuestas => solo puede votar 1 vez
+    const noHaVotado = await this.sinVoto(id_preg);
+    if(noEsAutorResp && noHaVotado){
+    await this.updVotoBackend(id_preg, id_resp);
+    await this.votarRespuestaSC(id_preg, id_resp);
+    //this.getLogFinalVotacion(id_preg);
+    this.refresh.emit();
+  }
+    
+    console.log("noEsAutorResp: ", noEsAutorResp);
+    console.log("noHaVotado: ", noHaVotado);
   }
 
 

@@ -1,4 +1,4 @@
-        <!--<button mat-raised-button color="primary" (click)="fechaUnixToDDMMAAAA(1723738545)">TEST</button><br>{{test}}<br>-->
+        <!--<button mat-raised-button color="primary" (click)="conPregsQuery()">TEST</button><br>{{test}}<br>-->
         <table cols="2" width="95%">
             <tr>
                 <td align="right" border="1px">
@@ -53,32 +53,14 @@
                     <div class="labelMetadata">Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
                 <td colspan="5" width="80%">
-                    <app-respuesta [id_preg]="item.idp"></app-respuesta>
+                    <app-respuesta (refresh)="actualizaListaPregs()" [id_preg]="item.idp" 
+                    [web3obj]="web3obj" [wallet]="wallet" [estado_actual]="item.estado"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="abierta" && !item.anulada){
                         <label>{{idiomaSel.m26}}</label>
                         <button class="btnSep" (click)="dialogRespuesta(item.idp,item.email)">+</button>
                     }
-                    <br>
-                    <div>
-                        @if(item.estado=="votando" && !item.anulada){
-                        <div class="top-right">
-                            <br>
-                                <label>{{idiomaSel.m28}}</label><br>
-                                <select id="selVoto" #opVoto class="selectVoto" (click)="getResp(item.idp)" [(ngModel)]="respSel">
-                                    @for (itemSel of listaRespSelect; track itemSel) {
-                                        <option  value="{{itemSel}}">{{itemSel}}</option>
-                                    }
-                                </select>
-                                <br>
-                        </div>
-                        <div>
-                            <!--<div><label>{{idiomaSel.m28}}</label></div>-->
-                            <button class="btnVoto" (click)="selectVoto(item.idp)">+</button>
-                        </div>
-                        }
-                    </div>
                 </td>
             </tr>
         } 

@@ -43,10 +43,7 @@ export class PreguntaComponent {
   wallet: any;
   
   idiomaSelPreg: any;
-  respOps = []; 
-  respSel: any;
-  //respNum: any;
-  listaRespSelect: any = [];
+
   
   app: any;
   db: any;
@@ -77,7 +74,7 @@ export class PreguntaComponent {
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
+  contract_address: any = "0x653249F36bd054F26cb03e3d97dd1d1621deb7FC";
   
 
   preg = {
@@ -110,95 +107,6 @@ export class PreguntaComponent {
         
   }
 
-  
-
-  async votarRespuestaSC(id_preg:any, id_resp:any) {
-    //console.log("Parametros votacion: ", id_preg, id_resp);
-    var rawData = {
-      from: this.wallet.address, 
-      to: this.contract_address,  
-      value: 0,
-      gasPrice: this.web3obj.utils.toHex(10000000000),
-      gasLimit: this.web3obj.utils.toHex(1000000),
-      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
-      data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
-    }
-    //console.log(rawData);
-
-    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-
-    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          this.lastTransaction = receipt;
-        },
-        (error: any) => {
-            console.log(error)
-        }
-    );
-  }
-
-async noEsAutorDeRespuestas(id_preg: any) {
-  const autor_mail = window.localStorage.getItem("esbrinaUserMail");
-  //console.log(autor_mail);
-  const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", Number(id_preg)), where("email", "==", autor_mail));
-  const usSnapshot = await getDocs(queryResps);
-  const llista_resp = usSnapshot.docs.map(doc => doc.data());
-  if (llista_resp.length > 0) {
-    return false;
-  } else {
-    return true;
-  }
-}
-  async sinVoto(id_preg: any) {
-    const autor_addr = this.wallet.address; 
-    const votado = await this.contract.methods.votaciones(autor_addr, id_preg).call();
-    if (votado == 0) {
-      return true; 
-    } else {
-      return false;
-    } 
-  } 
-async updVotoBackend(id_preg: any, id_resp: any) {
-    
-  const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",Number(id_preg)), where("id_resp","==",Number(id_resp)));
-  const usSnapshot = await getDocs(queryResps);
-  const id = usSnapshot.docs.map(doc => doc.ref.id);
-  const item = doc(this.db, "Resps", id[0]);
-  let docSnap = await getDoc(item);
-  let updData: any; 
-  if (docSnap.exists()) {
-    updData = docSnap.data();
-    updData.votos += 1;
-  }
-  await setDoc(item, updData);
-  }
-  async selectVoto(id_preg:any) {
-    // this.respSel contiene la respuesta votada de la pregunta id_preg.
-    //console.log("Respuesta votada: ", this.respSel);
-
-    // No ha votado otras respuestas => solo puede votar 1 vez
-    const noEsAutorResp = await this.noEsAutorDeRespuestas(id_preg);
-    let noHaVotado = await this.sinVoto(id_preg);
-    if(noEsAutorResp && noHaVotado){
-    this.updVotoBackend(id_preg, this.respSel);
-    this.votarRespuestaSC(id_preg, this.respSel);
-    //this.getLogFinalVotacion(id_preg);
-    this.conPregsQuery();
-    }
-    
-    //console.log("noEsAutorResp: ", noEsAutorResp);
-    //console.log("noHaVotado: ", noHaVotado);
-  }
-
-  async conRespPregSelect(id_preg: any) {
-    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
-    const usSnapshot = await getDocs(queryPregs);
-    this.listaRespSelect = usSnapshot.docs.map(doc => doc.data()['id_resp']);
-  }
-
-  getResp(id_preg: any) {
-    this.conRespPregSelect(id_preg);
-  }
 
 secondsToDhms(seconds:any) {
 seconds = Number(seconds);
@@ -588,6 +496,11 @@ creaPregunta() {
       this.getData(event);
     });
   }
+
+  async actualizaListaPregs() {
+    this.conPregsQuery();
+}
+
 
 } // end class
 

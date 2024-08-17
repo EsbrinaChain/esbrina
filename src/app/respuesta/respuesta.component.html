@@ -12,6 +12,17 @@
                 </td> 
                 <td width="10%" class="tdRespAutor">{{item.email}}</td>
                 <td width="8px"><div class="tdRespVotosValor">{{item.votos}} votos</div></td>
+                @if(estado_actual=="votando"){
+                    <td class="tdVotarButton">
+                      <div>
+                        <label>{{idiomaSel.m28}}</label><br>
+                      </div>
+                      <div>
+                        <button class="btnVoto" (click)="selectVoto(item.id_preg,item.id_resp)">+</button>
+                      </div>
+                    </td>
+                }
             </tr>
+            
         }
     </table>
