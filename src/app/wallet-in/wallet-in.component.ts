@@ -38,7 +38,7 @@ export class WalletInComponent {
       
     // Variables
   
-  accountIndex: string ="18";
+  accountIndex: string ="8";
   title = 'esbrina';
   imgLogoFile: string = "Logo-3.png";
   loginForm: any;
@@ -60,9 +60,9 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  //providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
   contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
   

@@ -48,11 +48,14 @@ export class RespuestaComponent {
   listaResp: any;
   total_resp: any;
 
+  // Event variables
+  eventFinalVotacion: any;
+  
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
   providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x653249F36bd054F26cb03e3d97dd1d1621deb7FC";
+  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
 
   constructor() {
     this.idiomaSelPreg = this.idiomaSel;
@@ -165,9 +168,10 @@ async updVotoBackend(id_preg: any, id_resp: any) {
   if (docSnap.exists()) {
     updData = docSnap.data();
     updData.votos += 1;
-    console.log("updData: ",updData);
+    console.log("updData: ", updData);
+    await setDoc(item, updData);
   }
-  await setDoc(item, updData);
+  
 }
   
   async selectVoto(id_preg:any, id_resp:any) {
@@ -176,16 +180,53 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     const noEsAutorResp = await this.noEsAutorDeRespuestas(id_preg);
     // No ha votado otras respuestas => solo puede votar 1 vez
     const noHaVotado = await this.sinVoto(id_preg);
-    if(noEsAutorResp && noHaVotado){
-    await this.updVotoBackend(id_preg, id_resp);
-    await this.votarRespuestaSC(id_preg, id_resp);
-    //this.getLogFinalVotacion(id_preg);
-    this.refresh.emit();
+    const estado_actual = await this.contract.methods.estadoPreg(id_preg).call();
+    if(noEsAutorResp && noHaVotado && estado_actual=="Votando."){
+        await this.updVotoBackend(id_preg, id_resp);
+        await this.votarRespuestaSC(id_preg, id_resp);
+        this.refresh.emit();
+        this.getLogFinalVotacion(id_preg);  
+    } else if(estado_actual=="Consulta.") {
+        console.log("La pregunta", id_preg, " no está en estado 'votando'");
+        this.updEstadoPregBackend(id_preg, "consulta");
+      
   }
     
     console.log("noEsAutorResp: ", noEsAutorResp);
     console.log("noHaVotado: ", noHaVotado);
   }
+  async updEstadoPregBackend(id_preg: any, estado_actual: any) {
+    const queryPreg = query(collection(this.db, '/Pregs'), where("idp","==",Number(id_preg)));
+    const usSnapshot = await getDocs(queryPreg);
+    
+    const id = usSnapshot.docs.map(doc => doc.ref.id);
+    const item = doc(this.db, "Pregs", id[0]);
+    let docSnap = await getDoc(item);
+    let updData: any; 
+    if (docSnap.exists()) {
+      updData = docSnap.data();
+      updData.estado = estado_actual;
+      await setDoc(item, updData);
+      console.log("La pregunta ", id_preg, " ha cambiado a estado", updData.estado);
+      this.refresh.emit();
+    }
+}
+  async getLogFinalVotacion(id_preg:any) {
 
+    const ev = await this.contract.events.FinalVotacion({
+      filter: { _id_preg: id_preg }, fromBlock: 0});
+    
+    this.eventFinalVotacion = ev.on("data", (event: any) => {
+      console.log("Data: ", event)
+      this.getData(event);
+    });
+    this.eventFinalVotacion = ev.on("error", (event: any) => {
+      console.log("Data: ", event)
+      this.getData(event);
+    });
+  }
 
+  async getData(datos:any) {
+    console.log(datos.returnValues);
+  }
 }

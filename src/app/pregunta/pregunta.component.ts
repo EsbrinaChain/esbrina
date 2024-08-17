@@ -70,11 +70,11 @@ export class PreguntaComponent {
   test: any;
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
     
-  //providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'http://127.0.0.1:7545/'; 
   contract: any;
-  contract_address: any = "0x653249F36bd054F26cb03e3d97dd1d1621deb7FC";
+  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
   
 
   preg = {
@@ -367,7 +367,9 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
     //this.actualizaDatosPregSC(idPreg);
-    if (usarDialog && noAutorPreg) {
+    const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
+    console.log("estado_actual: ",estado_actual);
+    if (usarDialog && noAutorPreg && estado_actual=='Abierta.') {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '70%';
       dialogConfig.autoFocus = true;

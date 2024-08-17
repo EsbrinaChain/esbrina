@@ -93,7 +93,7 @@ export const resps: any = [
         email: "user3@gmail.com",
         id_resp: 3,
         id_preg: 3,
-        enunciado: "Bohemian Rahpsody - Queen",
+        enunciado: "Bohemian Raphsody - Queen",
         ganadora: false,
         votos: 0,
         anulada: false
