@@ -6,13 +6,16 @@
                         <tr>
                             <td align="right">
                                 <span>Tiempo de respuesta:</span>
+                            </td>
                             <td align="left" class="datos_gen_dato">
                                 <span>{{this.tiempo_respuesta_sc}}</span>
                             </td>
+                            
                         </tr>
                         <tr>
                             <td align="right">
                                 <span>Tiempo de Votación:</span>
+                            </td>
                             <td align="left" class="datos_gen_dato">
                                 <span>{{tiempo_votacion_sc}}</span>
                             </td>
@@ -20,10 +23,12 @@
                         <tr>
                             <td align="right">
                                 <span>Cupo de respuestas:</span>
+                            </td>
                             <td align="left" class="datos_gen_dato">
                                 <span>{{cupo_respuestas_sc}}</span>
                             </td>
                         </tr>
+                        <tr><td colspan="2"><button (click)="refrescar()">{{idiomaSelPreg.m29}}</button></td></tr>
                     </table>
                 </td>
                 <td>

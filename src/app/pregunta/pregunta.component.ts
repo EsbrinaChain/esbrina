@@ -166,6 +166,7 @@ async consultaVariables() {
     this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
+    setTimeout(() => { this.conPregsQuery() }, 60000);
     //this.actualizaDatosListaPregSC();
   }
 
@@ -520,6 +521,11 @@ async test(num:any,t:any,units:any) {
     this.enviaTxFirmada(rawData,this.wallet.privateKey.toString('hex'));
 }
 
+  refrescar() {
+  
+}
+  
+  
 } // end class
 
 // 0xF562C02033DF4b174885D8c7678dC1489340F6d9

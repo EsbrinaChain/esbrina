@@ -27,7 +27,7 @@ export const es = {
     m26: "Responder",
     m27: "Sólo 1 vez",
     m28: "Votar",
-    m29: "",
+    m29: "Datos más recientes",
     m30: ""
 };
 
@@ -60,7 +60,7 @@ export const en = {
     m26: "Post a New Answer",
     m27: "Only one answer by question",
     m28: "To Vote",
-    m29: "",
+    m29: "Most recent data",
     m30: ""
 };
 
@@ -93,7 +93,7 @@ export const cat = {
     m26: "Respondre",
     m27: "Només 1 resposta per pregunta",
     m28: "Votar",
-    m29: "",
+    m29: "Dades més recents",
     m30: ""
 
 };
