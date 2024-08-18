@@ -49,8 +49,12 @@ export class RegistrarComponent {
   web3: any;
   userDefined: any;
   contract: any;
-  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+  // Sepolia contract
   contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
+
+  // Ganache contract
+  //contract_address: any = "0xB7AeE796c6FA0D91053F967D095ebdAFAbC368Ee";
+  
 
   // Variable de S.C.
   tiempo_votacion: any;

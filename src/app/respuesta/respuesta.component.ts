@@ -58,7 +58,7 @@ export class RespuestaComponent {
    
   contract: any;
   //providerETH = 'http://127.0.0.1:7545/';
-  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+  //contract_address: any = "0xB7AeE796c6FA0D91053F967D095ebdAFAbC368Ee";
   
 
   constructor() {

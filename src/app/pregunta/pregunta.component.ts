@@ -75,10 +75,9 @@ export class PreguntaComponent {
   providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
   contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
     
-  
   contract: any;
   //providerETH = 'http://127.0.0.1:7545/'; 
-  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+  //contract_address: any = "0xB7AeE796c6FA0D91053F967D095ebdAFAbC368Ee";
   
   
 
