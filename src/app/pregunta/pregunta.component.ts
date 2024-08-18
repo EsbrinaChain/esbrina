@@ -41,7 +41,9 @@ export class PreguntaComponent {
   web3obj: any;
   @Input()
   wallet: any;
-  
+  @Input()
+  metamask: any = false;
+
   idiomaSelPreg: any;
 
   
@@ -67,14 +69,17 @@ export class PreguntaComponent {
   tiempo_respuesta_convertido: any;
   datosActualizadosPregunta: any;
   //admin_address: any;
-  test: any;
+  
   provider: any;
   userDefined: any;
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
     
-  providerETH = 'http://127.0.0.1:7545/'; 
+  
   contract: any;
-  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
+  //providerETH = 'http://127.0.0.1:7545/'; 
+  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+  
   
 
   preg = {
@@ -102,7 +107,6 @@ export class PreguntaComponent {
 
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
     this.idiomaSelPreg = this.idiomaSel;
-    this.web3 = this.web3obj;
     this.missCupoResp= this.idiomaSelPreg.m27; 
         
   }
@@ -159,11 +163,12 @@ async consultaVariables() {
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
     this.analytics = getAnalytics(this.app);
+    this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
     //this.actualizaDatosListaPregSC();
   }
-  
+
 convertDate(firebaseObject: any) {
     if (!firebaseObject) return null;
     for (const [key, value] of Object.entries(firebaseObject)) {
@@ -180,16 +185,6 @@ async conPregsQuery() {
   this.listaPregs = usSnapshot.docs.map(doc => doc.data());
   this.totalPregs = usSnapshot.size;
   //console.log(this.listaPregs[0]);
-
-}
-async conPregsMaxID() {
-  const queryPregs = query(collection(this.db, '/Pregs'),orderBy("order","desc"));
-  const usSnapshot = await getDocs(queryPregs);
-  const docs = usSnapshot.docs.map(doc => doc.data());
-  const docs1 = usSnapshot.docs.map(doc => doc.id);
-  console.log(this.totalPregs);
-  console.log("Docs Id", docs1);
-  console.log("Docs", docs);
 
 }
 
@@ -284,18 +279,8 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       data: this.contract.methods.creaRespuesta(rsp.id_preg,rsp.enunciado, rsp.email, rsp.email, rsp.email).encodeABI()
     }
     //console.log(rawData);
-    //console.log(this.wallet.privateKey);
+    this.enviaTxFirmada(rawData,this.wallet.privateKey.toString('hex'));    
     
-    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-
-    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          this.lastTransaction = receipt;
-        },
-        (error: any) => {
-            console.log(error)
-        }
-    ); 
   }
   async noResps(id_preg: any) {
     const email = window.localStorage.getItem('esbrinaUserMail');
@@ -331,12 +316,12 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     const estado_txt = (estado == 0) ? "abierta" : (estado == 1) ? "votando" : (estado == 2) ? "consulta" : (estado == 3) ? "anulada": undefined;
     if (docSnap.exists()) {
       let prg = docSnap.data();
-      console.log("prg antes: ", prg);
+      //console.log("prg antes: ", prg);
       prg['estado'] = estado_txt;
       prg['anulada'] = (estado == 3) ? true : false;
       prg['recompensa'] = Number(rcp);
       if (f_vot != 0) { prg['fecha_votacion'] = this.fechaUnixToDDMMAAAA(f_vot); }
-      console.log("prg después: ", prg);
+      //console.log("prg después: ", prg);
       await setDoc(docRef, prg);
     } 
     
@@ -368,7 +353,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
     //this.actualizaDatosPregSC(idPreg);
     const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
-    console.log("estado_actual: ",estado_actual);
+    console.log("Estado_actual: ",estado_actual);
     if (usarDialog && noAutorPreg && estado_actual=='Abierta.') {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '70%';
@@ -423,19 +408,35 @@ creaPregunta() {
       data: this.contract.methods.creaPregunta(prg.enunciado, prg.email, prg.email, prg.email).encodeABI()
     }
     //console.log(rawData);
-    
-    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-
-    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          this.lastTransaction = receipt;
-        },
-        (error: any) => {
-            console.log(error)
-        }
-    );
+    this.enviaTxFirmada(rawData,this.wallet.privateKey.toString('hex'));
   }
-
+  
+  async enviaTxFirmada(rawData:any, privateK:any) {
+     var signed: any;
+    if (this.metamask) {
+      this.web3obj.eth.sendTransaction(rawData).then(
+        (receipt: any) => {
+            this.lastTransaction = receipt;
+          },
+          (error: any) => {
+              console.log(error)
+          }
+      );
+      console.log("LastTransaction: ",this.lastTransaction);
+     }
+    else {
+      signed = await this.web3obj.eth.accounts.signTransaction(rawData, privateK);
+      this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+          (receipt: any) => {
+            this.lastTransaction = receipt;
+          },
+          (error: any) => {
+              console.log(error)
+          }
+      ); 
+    }
+  }
+  
   async getLogPreguntaCreada(id_preg:any) {
    
     const ev = await this.contract.events.PreguntaCreada({
@@ -503,6 +504,21 @@ creaPregunta() {
     this.conPregsQuery();
 }
 
+async test(num:any,t:any,units:any) {
+  //console.log("Web: ", this.web3);
+  //console.log("Contract: ", this.contract);
+  var rawData = {
+      from: this.wallet.address, // admin (address generada con la semilla facilitada).
+      to: this.contract_address,  
+      value: 0,
+      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasLimit: this.web3obj.utils.toHex(1000000),
+      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.admCfgTiempoRespuesta(num,t,units).encodeABI()
+    }
+    //console.log(rawData);
+    this.enviaTxFirmada(rawData,this.wallet.privateKey.toString('hex'));
+}
 
 } // end class
 

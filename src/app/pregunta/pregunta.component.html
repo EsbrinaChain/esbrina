@@ -1,4 +1,4 @@
-        <!--<button mat-raised-button color="primary" (click)="conPregsQuery()">TEST</button><br>{{test}}<br>-->
+        <button mat-raised-button color="primary" (click)="test(1,604800,'m')">TEST</button>
         <table cols="2" width="95%">
             <tr>
                 <td align="right" border="1px">
@@ -54,7 +54,8 @@
                 </td>
                 <td colspan="5" width="80%">
                     <app-respuesta (refresh)="actualizaListaPregs()" [id_preg]="item.idp" 
-                    [web3obj]="web3obj" [wallet]="wallet" [estado_actual]="item.estado"></app-respuesta>
+                    [web3obj]="web3obj" [wallet]="wallet" [estado_actual]="item.estado"
+                    [metamask]="metamask"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="abierta" && !item.anulada){

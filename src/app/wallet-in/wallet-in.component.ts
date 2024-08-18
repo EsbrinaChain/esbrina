@@ -38,7 +38,7 @@ export class WalletInComponent {
       
     // Variables
   
-  accountIndex: string ="8";
+  accountIndex: string ="0";
   title = 'esbrina';
   imgLogoFile: string = "Logo-3.png";
   loginForm: any;
@@ -60,12 +60,22 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-    
-  providerETH = 'http://127.0.0.1:7545/'; 
-  contract: any;
-  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
+  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";  
   
+   
+  contract: any;
+  //providerETH = 'http://127.0.0.1:7545/';
+  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+    
+ /*
+ this.web3.setProvider(
+      new this.web3.providers.HttpProvider('https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903')
+    );
+ 
+ */ 
+    
+    
   // Variable de S.C.
   tiempo_votacion: any;
   tiempo_respuesta: any;

@@ -6,7 +6,8 @@
         </div>
 </div>
 }@else if(userDefined && wallet.address){
-    <app-pregunta [idiomaSel]="idiomaSel"></app-pregunta>
+    <!--<app-pregunta [idiomaSel]="idiomaSel"></app-pregunta>-->
+    <app-pregunta [idiomaSel]="idiomaSel" [web3obj]="web3" [wallet]="wallet" [metamask]="true"></app-pregunta>
 }
 @else{
     

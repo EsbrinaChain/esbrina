@@ -49,8 +49,16 @@ export class RegistrarComponent {
   web3: any;
   userDefined: any;
   contract: any;
-  contract_address:any = "0x195DC1E0844d87b76FbFC0162BC1e1050c19C38d";
+  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+  contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
 
+  // Variable de S.C.
+  tiempo_votacion: any;
+  tiempo_respuesta: any;
+  num_incr_recompensa: any;
+  total_preg: any;
+  total_resp: any;
+  cupo_respuestas: any;
 
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView;
@@ -106,6 +114,12 @@ export class RegistrarComponent {
     console.log("Balance (ETH): ", this.balanceWalletAddress);
   }
 
+  loginMetamaskOld() {
+    this.window.ethereum.enable().then(async (accounts:any) => {
+      this.wallet.address = accounts[0];
+      console.log("Q: ",this.wallet);
+    });
+  }
   async loginMetamask() {
     //console.log("METAMASK");
     this.provider = await detectEthereumProvider();
@@ -121,12 +135,36 @@ export class RegistrarComponent {
       this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
       console.log("All accounts: ", this.accounts);
       this.wallet.address = this.accounts[0];
-      console.log("Wallet:",this.wallet.address);
+      console.log("Wallet:", this.wallet.address);
+      
       this.getBlockN();
       this.getBalanceAddress(this.wallet.address);
       this.web3 = new Web3(this.window.ethereum);
+      this.web3.eth.defaultAccount = this.wallet.address;
+      console.log("Web3 Default account: ",this.web3.eth.defaultAccount);
       this.metamask = true;
       this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+      this.consultaVariables();
     }
   }
-}
+
+async consultaVariables() {
+  
+  this.tiempo_respuesta = await this.contract.methods.tiempo_respuesta().call();
+  this.tiempo_votacion= await this.contract.methods.tiempo_votacion().call();
+  this.total_preg= await this.contract.methods.total_preg().call();
+  this.total_resp= await this.contract.methods.total_resp().call();
+  this.cupo_respuestas = await this.contract.methods.cupo_respuestas().call();
+  //this.preguntasSC = await this.contract.methods.preguntas(1).call();
+  
+  
+  console.log("tiempo_respuesta:", this.tiempo_respuesta);
+  console.log("tiempo_votacion:", this.tiempo_votacion);
+  console.log("total_pregs:",this.total_preg);
+  console.log("total_resps:", this.total_resp);
+  
+  //console.log(this.preguntasSC);
+  
+    } 
+
+} //end class

@@ -115,9 +115,12 @@ export class AppComponent implements OnInit{
     console.log("userDefined: ", this.userDefined);
   }
 
-async insertaUsuarioID(email: any, pass: any, alias: any) {
+  async insertaUsuarioID(email: any, pass: any, alias: any) {
+    const queryUsuarios = query(collection(this.db, '/Usuarios'));
+    const usSnapshot = await getDocs(queryUsuarios);
+    
     if(!this.userDefined){
-        await setDoc(doc(this.db, "Usuarios", (this.totalUsuarios + 1).toString()),
+        await setDoc(doc(this.db, "Usuarios", (usSnapshot.size + 1).toString()),
           {
             aliase: alias,
             email: email,

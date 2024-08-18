@@ -22,6 +22,9 @@
                       </div>
                     </td>
                 }
+                @if(estado_actual=="consulta"){
+                  <td><button (click)="updRespGanadorasPreg(item.id_preg)">Won</button></td>
+                }
             </tr>
             
         }

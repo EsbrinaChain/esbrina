@@ -36,7 +36,8 @@ export class RespuestaComponent {
   web3obj: any;
   @Input()
   wallet: any;
-
+  @Input()
+  metamask: any;
   @Input()
   estado_actual:any;
 
@@ -51,11 +52,14 @@ export class RespuestaComponent {
   // Event variables
   eventFinalVotacion: any;
   
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-    
-  providerETH = 'http://127.0.0.1:7545/'; 
+  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
+  
+   
   contract: any;
-  contract_address: any = "0x9D3c32601382DF1b7cce72a6Cf35C7008D1Ec9CE";
+  //providerETH = 'http://127.0.0.1:7545/';
+  //contract_address: any = "0x44391de588851cC9649c9ca8FBba1e74a3AE0843";
+  
 
   constructor() {
     this.idiomaSelPreg = this.idiomaSel;
@@ -123,17 +127,33 @@ export class RespuestaComponent {
       data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
     }
     //console.log(rawData);
+    this.enviaTxFirmada(rawData,this.wallet.privateKey.toString('hex'));
+    
+  }
 
-    var signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-
-    this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          this.lastTransaction = receipt;
-        },
-        (error: any) => {
-            console.log(error)
-        }
-    );
+async enviaTxFirmada(rawData:any, privateK:any) {
+     var signed: any;
+    if (this.metamask) {
+      this.web3obj.eth.sendTransaction(rawData).then(
+          (receipt: any) => {
+            this.lastTransaction = receipt;
+          },
+          (error: any) => {
+              console.log(error)
+          }
+      );
+     }
+    else {
+      signed = await this.web3obj.eth.accounts.signTransaction(rawData, privateK);
+      this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+          (receipt: any) => {
+            this.lastTransaction = receipt;
+          },
+          (error: any) => {
+              console.log(error)
+          }
+      ); 
+    }
   }
 
 async noEsAutorDeRespuestas(id_preg: any) {
@@ -189,11 +209,10 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     } else if(estado_actual=="Consulta.") {
         console.log("La pregunta", id_preg, " no está en estado 'votando'");
         this.updEstadoPregBackend(id_preg, "consulta");
+        this.updRespGanadorasPreg(id_preg);
       
   }
-    
-    console.log("noEsAutorResp: ", noEsAutorResp);
-    console.log("noHaVotado: ", noHaVotado);
+    //console.log("noEsAutorResp: ", noEsAutorResp); //console.log("noHaVotado: ", noHaVotado);
   }
   async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     const queryPreg = query(collection(this.db, '/Pregs'), where("idp","==",Number(id_preg)));
@@ -210,7 +229,27 @@ async updVotoBackend(id_preg: any, id_resp: any) {
       console.log("La pregunta ", id_preg, " ha cambiado a estado", updData.estado);
       this.refresh.emit();
     }
-}
+  }
+
+  async updRespGanadorasPreg(id_preg: any) {
+    
+
+    const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", id_preg), orderBy("id_resp", "asc"));
+    const usSnapshot = await getDocs(queryResps);
+    const numRespPreg = usSnapshot.size;
+    let respActual: any;
+    let ganadoras = [];
+    for (let i = 1; i <= numRespPreg; i++){
+      respActual = await this.contract.methods.preg_resp(id_preg, i).call();
+      if (respActual.ganadora == true) {
+        ganadoras.push(respActual);
+      }
+    }
+    
+    console.log(ganadoras);
+    
+  }
+
   async getLogFinalVotacion(id_preg:any) {
 
     const ev = await this.contract.events.FinalVotacion({
