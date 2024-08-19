@@ -11,7 +11,6 @@
 export let ABI = {
 
 	default: [
-		
 	{
 		"inputs": [
 			{
@@ -411,6 +410,25 @@ export let ABI = {
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id_preg",
+				"type": "uint256"
+			}
+		],
+		"name": "calcRespAPreg",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
 		"stateMutability": "view",

@@ -1,4 +1,4 @@
-https://esbrinachain.github.io/esbrina/
+https://esbrinachain.github.io/esbrina/       sepolia contract: 0x2B918F8cADC5905C1A00e652a2983027561D2439
 
 Sepolia: get faucet: https://cloud.google.com/application/web3/faucet/ethereum/sepolia
 
@@ -29,5 +29,15 @@ seeds: U2FsdGVkX1/1nIdWIu1Bzud65hYmd/B87DciTqdBcbMxByrlFnpvlGLsntGgewosE4KSr+pvo
 address: 0x611828050e3e4F4C6b4292d653C718d4FC388600
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Perfil Q-verd-fosc
+Perfil Q-verd-fosc  (danger estate eternal once harsh satoshi among affair anger raw flash ceiling)
+pass: Esbrinachain3;_.
+address: 0xc44A10C2BDE578a6eFA6891650076956fa426eD4
+
+Perfi Q-morat (  neglect trap digital bean echo only strategy jungle jar easily trap brush )
+
+esbrinaUserMail: user19@gmail.com
+esbrinaUser: U2FsdGVkX19EKIH90PjZ26w7vzmepyjfxqT2CXA8OJtGRKLNc6gGYlHlQoW4wi57
+seeds: U2FsdGVkX19XSjmB3wchrgvJ3fCfqWN4rCnWhOUTJowDZBz4MtZ/aPtutjeTHjtlHmPJQfYX1ugnWra73rvVBx/TQBDaw04HaJtOMo+ke9mQ9NFeEl8v2yUzxmSqlfIR
+wallet address: 0xf562c02033df4b174885d8c7678dc1489340f6d9
+
  

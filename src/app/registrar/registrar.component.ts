@@ -50,10 +50,10 @@ export class RegistrarComponent {
   userDefined: any;
   contract: any;
   // Sepolia contract
-  contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
+  contract_address: any = "0x2B918F8cADC5905C1A00e652a2983027561D2439";
 
   // Ganache contract
-  //contract_address: any = "0xB7AeE796c6FA0D91053F967D095ebdAFAbC368Ee";
+  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
   
 
   // Variable de S.C.

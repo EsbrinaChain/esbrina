@@ -53,12 +53,12 @@ export class RespuestaComponent {
   eventFinalVotacion: any;
   
   providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  contract_address: any = "0x6C2446A9C9fBC15B1e7B590826E7E73Bf6c375b2";
+  contract_address: any = "0x2B918F8cADC5905C1A00e652a2983027561D2439";
   
    
   contract: any;
   //providerETH = 'http://127.0.0.1:7545/';
-  //contract_address: any = "0xB7AeE796c6FA0D91053F967D095ebdAFAbC368Ee";
+  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
   
 
   constructor() {
@@ -127,16 +127,14 @@ export class RespuestaComponent {
       data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
     }
     //console.log(rawData);
-    this.enviaTxFirmada(rawData,this.wallet.privateKey.toString('hex'));
     
-  }
-
-async enviaTxFirmada(rawData:any, privateK:any) {
-     var signed: any;
+    var signed: any;
     if (this.metamask) {
       this.web3obj.eth.sendTransaction(rawData).then(
-          (receipt: any) => {
-            this.lastTransaction = receipt;
+        (receipt: any) => {
+          console.log("Transacción de Voto: ", receipt);
+          this.updVotoBackend(id_preg, id_resp);
+          this.lastTransaction = receipt;
           },
           (error: any) => {
               console.log(error)
@@ -144,7 +142,7 @@ async enviaTxFirmada(rawData:any, privateK:any) {
       );
      }
     else {
-      signed = await this.web3obj.eth.accounts.signTransaction(rawData, privateK);
+      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
           (receipt: any) => {
             this.lastTransaction = receipt;
@@ -154,6 +152,7 @@ async enviaTxFirmada(rawData:any, privateK:any) {
           }
       ); 
     }
+    
   }
 
 async noEsAutorDeRespuestas(id_preg: any) {
@@ -191,7 +190,6 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     console.log("updData: ", updData);
     await setDoc(item, updData);
   }
-  
 }
   
   async selectVoto(id_preg:any, id_resp:any) {
@@ -202,7 +200,6 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     const noHaVotado = await this.sinVoto(id_preg);
     const estado_actual = await this.contract.methods.estadoPreg(id_preg).call();
     if(noEsAutorResp && noHaVotado && estado_actual=="Votando."){
-        await this.updVotoBackend(id_preg, id_resp);
         await this.votarRespuestaSC(id_preg, id_resp);
         this.refresh.emit();
         this.getLogFinalVotacion(id_preg);  
@@ -245,9 +242,7 @@ async updVotoBackend(id_preg: any, id_resp: any) {
         ganadoras.push(respActual);
       }
     }
-    
     console.log(ganadoras);
-    
   }
 
   async getLogFinalVotacion(id_preg:any) {
