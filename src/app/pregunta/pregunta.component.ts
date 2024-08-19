@@ -51,13 +51,13 @@ export class PreguntaComponent {
   db: any;
   analytics: any;
   listaPregs: any;
-  totalPregs: any;
+  totalPregs: any = 0;
   listaPregs1: any;
   totalPregs1: any;
   
   web3: any;
   balanceWalletAddress: any;
-  total_resp: any;
+  total_resp: any = 0;
   idPreg: any;
   lastTransaction: any;
   
@@ -165,8 +165,8 @@ async consultaVariables() {
     this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
-    setTimeout(() => { this.conPregsQuery(); }, 10000);
-    //this.actualizaDatosListaPregSC();
+    //setInterval(() => { this.conPregsQuery(); }, 1000);
+    
   }
 
 convertDate(firebaseObject: any) {
@@ -275,9 +275,10 @@ async insertaPregunta(enunciado: any, recompensa: any) {
   async numActualResps() {
     const queryResps = query(collection(this.db, '/Resps'));
     const usSnapshot = await getDocs(queryResps);
-    if (usSnapshot.empty) return 0;
-    else return usSnapshot.size;
-    //console.log("Nº actual de respuestas",this.total_resp);
+    if (usSnapshot.empty) this.total_resp = 0;
+    else this.total_resp = usSnapshot.size;
+    console.log("Nº actual de respuestas", usSnapshot.size);
+    console.log("Nº actual de respuestas",this.total_resp);
   }
 
   async conRespPregQuery(id_preg: any) {
@@ -290,18 +291,18 @@ async insertaPregunta(enunciado: any, recompensa: any) {
 async insertaRespuesta(idPreg:any, enunciado: any) {
   const respPregActual = await this.contract.methods.calcRespAPreg(Number(idPreg)).call();
   console.log("respPregActual: ", respPregActual);
-  const numRespPreg = respPregActual.length + 1;
+  const numRespPreg = respPregActual.length;
   const rsp = {
         email: window.localStorage.getItem('esbrinaUserMail'),
         id_resp: numRespPreg,
-        id_preg: idPreg,
+        id_preg: Number(idPreg),
         enunciado: enunciado,
         ganadora: false,
         votos: 0,
         anulada: false
         };
       console.log("Respuesta introducida: ",rsp);
-      await setDoc(doc(this.db, "Resps", (this.total_resp + 1).toString()), rsp);
+      await setDoc(doc(this.db, "Resps", (this.total_resp).toString()), rsp);
       this.conPregsQuery();
   }
 
@@ -334,17 +335,17 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
-          console.log("Receipt: ",receipt);
+          console.log("Receipt: ", receipt);
+          this.total_resp++;
+          this.insertaRespuesta(id_preg, enunciado);
           },
         (error: any) => {
-          console.log("Error 5000");
             console.log(error);
           }
       ); 
     }
     
   }
-
 
   async noResps(id_preg: any) {
     const email = window.localStorage.getItem('esbrinaUserMail');
@@ -568,9 +569,7 @@ async test(num:any,t:any,units:any) {
     }
 }
 
-refrescar() {
-    this.conPregsQuery();
-}
+
   
   
 } // end class
