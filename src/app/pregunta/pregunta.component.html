@@ -1,4 +1,5 @@
-        <!--<button mat-raised-button color="primary" (click)="">TEST</button>-->
+        <button mat-raised-button color="primary" 
+        (click)="this.pastEventsPreguntaCreada('PreguntaCreada','0xf562c02033df4b174885d8c7678dc1489340f6d9',6538371)">TEST</button>
         <table cols="2" width="95%">
             <tr>
                 <td align="right" border="1px">
@@ -60,12 +61,13 @@
                 <td colspan="5" width="80%">
                     <app-respuesta (refresh)="actualizaListaPregs()" [id_preg]="item.idp" 
                     [web3obj]="web3obj" [wallet]="wallet" [estado_actual]="item.estado"
-                    [metamask]="metamask"></app-respuesta>
+                    [metamask]="metamask"
+                    [blockNumber]="item.blockNumber" [transactionIndex]="item.transactionIndex"></app-respuesta>
                 </td>
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="abierta" && !item.anulada){
                         <label>{{idiomaSel.m26}}</label>
-                        <button class="btnSep" (click)="dialogRespuesta(item.idp,item.email)">+</button>
+                        <button class="btnSep" (click)="dialogRespuesta(item.blockNumber,item.transactionIndex,item.idp,item.email)">+</button>
                     }
                 </td>
             </tr>

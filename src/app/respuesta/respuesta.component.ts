@@ -39,7 +39,11 @@ export class RespuestaComponent {
   @Input()
   metamask: any;
   @Input()
-  estado_actual:any;
+  estado_actual: any;
+  @Input()
+  blockNumber: any;
+  @Input()
+  transactionIndex: any;
 
   lastTransaction: any;
   
@@ -52,8 +56,9 @@ export class RespuestaComponent {
   // Event variables
   eventFinalVotacion: any;
   
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  contract_address: any = "0x2B918F8cADC5905C1A00e652a2983027561D2439";
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  providerETH = 'https://rpc2.sepolia.org';
+  contract_address: any = "0x4E9F6baF5809d1bD1f84AdfC074B87Fb4D80a13e";
   
    
   contract: any;
@@ -87,32 +92,18 @@ export class RespuestaComponent {
   }
   
   ngAfterViewInit() {
-    this.conRespPregQuery(this.id_preg);
-    this.numActualResps();
+    this.conRespPregQuery(this.blockNumber, this.transactionIndex);
+    //console.log(this.blockNumber, this.transactionIndex);
+    
   }
 
-  async conRespPregQuery(id_preg: any) {
-    const queryPregs = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
+  async conRespPregQuery(blockNumber: any, transactionIndex:any) {
+    const queryPregs = query(collection(this.db, '/Resps'), where("blockNumber", "==", Number(blockNumber)),
+      where("transactionIndex", "==", Number(transactionIndex)), orderBy("id_resp", "asc"));
     const usSnapshot = await getDocs(queryPregs);
     this.listaResp = usSnapshot.docs.map(doc => doc.data());
+    //console.log(this.listaResp);
     
-  }
-
-  async numActualResps() {
-    const queryResps = query(collection(this.db, '/Resps'));
-    const usSnapshot = await getDocs(queryResps);
-    if (usSnapshot.empty) this.total_resp = 0;
-    else this.total_resp = usSnapshot.size;
-
-    //console.log("Nº actual de respuestas",this.total_resp);
-  }
-
-  async insResp() {
-    
-    for(let i = 1; i<=resps.length; i++) {
-      await setDoc(doc(this.db, "Resps", (i).toString()), resps[i-1]);
-      console.log(i, resps[i]);
-      }
   }
 
   async votarRespuestaSC(id_preg:any, id_resp:any) {
@@ -187,7 +178,7 @@ async updVotoBackend(id_preg: any, id_resp: any) {
   if (docSnap.exists()) {
     updData = docSnap.data();
     updData.votos += 1;
-    console.log("updData: ", updData);
+    //console.log("updData: ", updData);
     await setDoc(item, updData);
   }
 }

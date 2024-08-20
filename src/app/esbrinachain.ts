@@ -421,6 +421,30 @@ export let ABI = {
 				"internalType": "uint256",
 				"name": "id_preg",
 				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_adr",
+				"type": "address"
+			}
+		],
+		"name": "calcAdrRespuestasAPregunta",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "_existe",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "id_preg",
+				"type": "uint256"
 			}
 		],
 		"name": "calcRespAPreg",

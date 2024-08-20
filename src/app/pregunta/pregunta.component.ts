@@ -72,8 +72,10 @@ export class PreguntaComponent {
   
   provider: any;
   userDefined: any;
-  providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  contract_address: any = "0x2B918F8cADC5905C1A00e652a2983027561D2439";
+  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+
+  providerETH = 'https://rpc2.sepolia.org';
+  contract_address: any = "0x4E9F6baF5809d1bD1f84AdfC074B87Fb4D80a13e";
     
   contract: any;
   //providerETH = 'http://127.0.0.1:7545/'; 
@@ -165,7 +167,7 @@ async consultaVariables() {
     this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
-    //setInterval(() => { this.conPregsQuery(); }, 1000);
+    //setInterval(() => { this.conPregsQuery(); }, 30000);
     
   }
 
@@ -180,11 +182,14 @@ convertDate(firebaseObject: any) {
   }
 
 async conPregsQuery() {
-  const queryPregs = query(collection(this.db, '/Pregs'),orderBy('idp','asc'));
+  const queryPregs = query(collection(this.db, '/Pregs'),orderBy('blockNumber','asc'),orderBy('transactionIndex','asc'));
   const usSnapshot = await getDocs(queryPregs);
   this.listaPregs = usSnapshot.docs.map(doc => doc.data());
   this.totalPregs = usSnapshot.size;
-  //console.log(this.listaPregs[0]);
+  for (let i = 0; i < this.totalPregs; i++){
+    this.listaPregs[i].idp = i + 1;
+  }
+  //console.log(this.listaPregs);
 
 }
 
@@ -201,7 +206,7 @@ async getBalanceAddress(address:any) {
     return valorEther;
 }
 
-  async creaPreguntaSC(enunciado:any, recompensa:any) {
+async creaPreguntaSC(enunciado:any, recompensa:any) {
     const email = window.localStorage.getItem('esbrinaUserMail');
     var rawData = {
       from: this.wallet.address, // admin (address generada con la semilla facilitada).
@@ -213,12 +218,16 @@ async getBalanceAddress(address:any) {
       data: this.contract.methods.creaPregunta(enunciado, email, email, email).encodeABI()
     }
     //console.log(rawData);
-    var signed: any;
+  var signed: any;
     if (this.metamask) {
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           this.lastTransaction = receipt;
-          this.insertaPregunta(enunciado, recompensa);
+          const idp = this.pastEventsPreguntaCreada('PreguntaCreada', this.wallet.address, receipt.blockNumber);
+          idp.then((valor: any) => {
+            console.log(valor);
+            this.insertaPregunta(valor,enunciado, recompensa, receipt.blockNumber, receipt.transactionIndex);
+          });
           },
           (error: any) => {
               console.log(error)
@@ -230,7 +239,11 @@ async getBalanceAddress(address:any) {
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
           console.log("Receipt: ", receipt);
-          this.insertaPregunta(enunciado, recompensa);
+          const idp = this.pastEventsPreguntaCreada('PreguntaCreada', this.wallet.address, receipt.blockNumber);
+          idp.then((valor: any) => {
+            console.log(valor);
+            this.insertaPregunta(valor,enunciado, recompensa, receipt.blockNumber, receipt.transactionIndex);
+          });
           },
         (error: any) => {
             console.log(error);
@@ -239,7 +252,7 @@ async getBalanceAddress(address:any) {
     }
   }
   
-async insertaPregunta(enunciado: any, recompensa: any) {
+async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any, transactionIndex:any) {
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
   // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
   const recompensaETH = this.web3obj.utils.fromWei(recompensa,"ether");
@@ -248,8 +261,10 @@ async insertaPregunta(enunciado: any, recompensa: any) {
   //console.log("RecompensaETH: ", recompensaETH);
   if(recompensaETH < this.balanceWalletAddress){
     this.totalPregs++;
-      const prg = {
-        idp: this.totalPregs,
+    const prg = {
+        blockNumber: Number(blockNumber),
+        transactionIndex: Number(transactionIndex),
+        idp: Number(idp),
         anulada: false,
         autor: window.localStorage.getItem('esbrinaUserMail'),
         autor_address: this.wallet.address,
@@ -262,11 +277,9 @@ async insertaPregunta(enunciado: any, recompensa: any) {
         email: window.localStorage.getItem('esbrinaUserMail'),
         order: Date.now()
       };
-    //console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
-    await setDoc(doc(this.db, "Pregs", (this.totalPregs).toString()), prg);
+    console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
+    await addDoc(collection(this.db, "Pregs"), prg);
     this.conPregsQuery();
-    
-    this.getLogPreguntaCreada(this.totalPregs);
 
   }
     
@@ -277,33 +290,29 @@ async insertaPregunta(enunciado: any, recompensa: any) {
     const usSnapshot = await getDocs(queryResps);
     if (usSnapshot.empty) this.total_resp = 0;
     else this.total_resp = usSnapshot.size;
-    console.log("Nº actual de respuestas", usSnapshot.size);
-    console.log("Nº actual de respuestas",this.total_resp);
+    //console.log("Nº actual de respuestas", usSnapshot.size);
+    //console.log("Nº actual de respuestas",this.total_resp);
   }
 
-  async conRespPregQuery(id_preg: any) {
-    const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), orderBy("id_resp","asc"));
-    const usSnapshot = await getDocs(queryResps);
-    if (usSnapshot.empty) return 0;
-    else return usSnapshot.size;
-  } 
-
-async insertaRespuesta(idPreg:any, enunciado: any) {
+async insertaRespuesta(idPreg:any, enunciado: any, blockNumber:any, transactionIndex:any) {
   const respPregActual = await this.contract.methods.calcRespAPreg(Number(idPreg)).call();
-  console.log("respPregActual: ", respPregActual);
+  //console.log("respPregActual: ", respPregActual);
   const numRespPreg = respPregActual.length;
   const rsp = {
-        email: window.localStorage.getItem('esbrinaUserMail'),
-        id_resp: numRespPreg,
-        id_preg: Number(idPreg),
-        enunciado: enunciado,
-        ganadora: false,
-        votos: 0,
-        anulada: false
+                email: window.localStorage.getItem('esbrinaUserMail'),
+              id_resp: 2, //numRespPreg,
+          blockNumber: blockNumber,
+     transactionIndex: transactionIndex,    
+            enunciado: enunciado,
+             ganadora: false,
+                votos: 0,
+              anulada: false,
+              id_preg: Number(idPreg),
         };
-      console.log("Respuesta introducida: ",rsp);
-      await setDoc(doc(this.db, "Resps", (this.total_resp).toString()), rsp);
-      this.conPregsQuery();
+      //console.log("Respuesta introducida: ",rsp);
+  const r = await addDoc(collection(this.db, "Resps"), rsp);
+  
+  this.conPregsQuery();
   }
 
   async creaRespuestaSC(id_preg: any, enunciado: any) {
@@ -323,8 +332,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           this.lastTransaction = receipt;
-          this.total_resp++;
-          this.insertaRespuesta(id_preg, enunciado);
+          this.insertaRespuesta(id_preg, enunciado, receipt.blockNumber, receipt.transactionIndex);
           },
           (error: any) => {
               console.log(error)
@@ -336,8 +344,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
           console.log("Receipt: ", receipt);
-          this.total_resp++;
-          this.insertaRespuesta(id_preg, enunciado);
+          this.insertaRespuesta(id_preg, enunciado, receipt.blockNumber, receipt.transactionIndex);
           },
         (error: any) => {
             console.log(error);
@@ -348,15 +355,9 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
   }
 
   async noResps(id_preg: any) {
-    const email = window.localStorage.getItem('esbrinaUserMail');
-    const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",id_preg), where("email","==",email));
-    const usSnapshot = await getDocs(queryResps);
-    //const listaResps = usSnapshot.docs.map(doc => doc.data());
-    //console.log("Lista respuestas", listaResps);
-    if (usSnapshot.size==0)
-    { return true; }
-    else
-    { return false; }
+    const yaHaRespondidoAPreg = await this.contract.methods.calcAdrRespuestasAPregunta(id_preg,this.wallet.address).call();
+    //console.log("Preg",id_preg," - yaHaRespondidoAPreg: ", yaHaRespondidoAPreg);
+    return yaHaRespondidoAPreg;
   }
 
   fechaUnixToDDMMAAAA(f_vot: any) {
@@ -373,12 +374,17 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     return  fecha;
   
   }
-  async updPregBackend(id_preg: any, estado: any, rcp: any, f_vot: any) {
+  async updPregBackend(blockNumber:any,transactionIndex:any,id_preg: any, estado: any, rcp: any, f_vot: any) {
+    const queryPregs = query(collection(this.db, '/Pregs'),
+    where("blockNumber","==",blockNumber),where("transactionIndex","==",transactionIndex),
+      orderBy('blockNumber', 'asc'), orderBy('transactionIndex', 'asc'));
+    const usSnapshot = await getDocs(queryPregs);
+    const id = usSnapshot.docs.map(doc => doc.ref.id);
+    const item = doc(this.db, "Pregs", id[0]);
+    let docSnap = await getDoc(item);
     
-    const docRef = doc(this.db, "Pregs", id_preg.toString());
-    const docSnap = await getDoc(docRef);
-
-    const estado_txt = (estado == 0) ? "abierta" : (estado == 1) ? "votando" : (estado == 2) ? "consulta" : (estado == 3) ? "anulada": undefined;
+    const estado_txt = (estado == 0) ? "abierta" : (estado == 1) ? "votando" : (estado == 2) ? "consulta" : (estado == 3) ? "anulada" : undefined;
+    
     if (docSnap.exists()) {
       let prg = docSnap.data();
       //console.log("prg antes: ", prg);
@@ -387,12 +393,11 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       prg['recompensa'] = Number(rcp);
       if (f_vot != 0) { prg['fecha_votacion'] = this.fechaUnixToDDMMAAAA(f_vot); }
       //console.log("prg después: ", prg);
-      await setDoc(docRef, prg);
+      await setDoc(item, prg);
     } 
-    
   }
   
-  async actualizaDatosPregSC(id_preg:any) {
+  async actualizaDatosPregSC(blockNumber:any,transactionIndex:any,id_preg:any) {
     this.datosActualizadosPregunta = await this.contract.methods.preguntas(Number(id_preg)).call();
     //console.log("Datos leidos pregunta: ",id_preg, this.datosActualizadosPregunta);
     const estado_blk = this.datosActualizadosPregunta.estado;
@@ -402,7 +407,7 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     if (this.datosActualizadosPregunta.fecha_votacion != 0) {
       this.listaPregs[id_preg - 1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
     }
-    this.updPregBackend(id_preg,
+    this.updPregBackend(blockNumber,transactionIndex,id_preg,
                         this.datosActualizadosPregunta.estado,
                         this.datosActualizadosPregunta.recompensa,
                         this.datosActualizadosPregunta.fecha_votacion);
@@ -410,16 +415,16 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
     
   }
 
-  async dialogRespuesta(idPreg: any, email: any) {
-    this.actualizaDatosPregSC(idPreg);
+  async dialogRespuesta(blockNumber:any,transactionIndex:any,idPreg: any, email: any) {
+    this.actualizaDatosPregSC(blockNumber, transactionIndex, idPreg);
     const usarDialog = await this.noResps(idPreg);
     let noAutorPreg = false;
     if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
     //this.actualizaDatosPregSC(idPreg);
     const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
-    console.log("Estado_actual: ",estado_actual);
-    if (usarDialog && noAutorPreg && estado_actual=='Abierta.') {
+    //console.log("Estado_actual: ",estado_actual);
+    if (!usarDialog && noAutorPreg && estado_actual=='Abierta.') {
       const dialogConfig = new MatDialogConfig();
       dialogConfig.width = '70%';
       dialogConfig.autoFocus = true;
@@ -428,7 +433,6 @@ async insertaRespuesta(idPreg:any, enunciado: any) {
       this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => {
         if (result !== undefined) {
           this.creaRespuestaSC(idPreg, result.enunciado);
-          //console.log(idPreg, result.enunciado);
         }
       });
     } else {
@@ -451,7 +455,6 @@ showDialog(){
   this.datos = this.dialogRef.afterClosed().subscribe((result: any) => {
     if (result !== undefined){
       this.creaPreguntaSC(result.enunciado, result.recompensa);
-      //this.insertaPregunta(result.enunciado, result.recompensa);
   }
   });
   }
@@ -461,16 +464,40 @@ creaPregunta() {
   let novaPreg:any = { };
   this.service.creaPregunta(this.web3obj, this.wallet, novaPreg);
   } 
+  //this.pastEventsPreguntaCreada('PreguntaCreada','0xf562c02033df4b174885d8c7678dc1489340f6d9',6538371)
+  async pastEventsPreguntaCreada(event_name:any, autor:any, block:any) {
+  
+    const idp = await this.contract.getPastEvents(
+      event_name,
+      {
+        filter: {
+          
+          _autor: autor
+        },
+        fromBlock: block,
+        toBlock: block
+      },
+      function (error: any, events: any) { console.log(events); }).then(function (events: any) {
+        console.log(events);
+        //console.log("Param: ", events[0].returnValues._id_preg);
+        return events[0].returnValues._id_preg;
+      });
+    
+    return idp;
+  }
+
   
   
-  
-  async getLogPreguntaCreada(id_preg:any) {
+  async getLogPreguntaCreada(id_preg:any, block:any) {
    
     const ev = await this.contract.events.PreguntaCreada({
-      filter: { _id_preg: id_preg }, fromBlock: 0});
+      filter: { _id_preg: id_preg },
+      fromBlock: block,
+      toBlock: block+1
+    });
     
     this.eventPreguntaCreada = ev.on("data", (event: any) => {
-      //console.log("Data: ", event)
+      console.log("Data: ", event)
       this.getData(event);
     });
     this.eventPreguntaCreada = ev.on("error", (event: any) => {
