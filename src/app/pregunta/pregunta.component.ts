@@ -75,7 +75,7 @@ export class PreguntaComponent {
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
 
   providerETH = 'https://rpc2.sepolia.org';
-  contract_address: any = "0x4E9F6baF5809d1bD1f84AdfC074B87Fb4D80a13e";
+  contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
     
   contract: any;
   //providerETH = 'http://127.0.0.1:7545/'; 
@@ -285,25 +285,60 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
     
 }
 
-  async numActualResps() {
-    const queryResps = query(collection(this.db, '/Resps'));
-    const usSnapshot = await getDocs(queryResps);
-    if (usSnapshot.empty) this.total_resp = 0;
-    else this.total_resp = usSnapshot.size;
-    //console.log("Nº actual de respuestas", usSnapshot.size);
-    //console.log("Nº actual de respuestas",this.total_resp);
+  async creaRespuestaSC(id_preg: any, enunciado_resp: any,blockNumber:any,transactionIndex:any) {
+   const email =window.localStorage.getItem('esbrinaUserMail');
+   var rawData = {
+      from: this.wallet.address, // admin (address generada con la semilla facilitada).
+      to: this.contract_address,  
+      value: 0,
+      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasLimit: this.web3obj.utils.toHex(1000000),
+      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+      data: this.contract.methods.creaRespuesta(id_preg,enunciado_resp, email, email, email).encodeABI()
+    }
+    //console.log(rawData);
+    var signed: any;
+    if (this.metamask) {
+      this.web3obj.eth.sendTransaction(rawData).then(
+        (receipt: any) => {
+          console.log("Receipt-Respuesta: ",receipt);
+          const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
+          id_resp.then((valor: any) => {
+            console.log("id_resp: ", valor);
+            this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+           });
+          },
+          (error: any) => {
+              console.log(error)
+          }
+      );
+     }
+    else {
+      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+      this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+        (receipt: any) => {
+          console.log("Receipt-Respuesta: ",receipt);
+          const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
+          id_resp.then((valor: any) => {
+            console.log("id_resp: ", valor);
+            this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+           });
+          },
+        (error: any) => {
+            console.log(error);
+          }
+      ); 
+    }
   }
 
-async insertaRespuesta(idPreg:any, enunciado: any, blockNumber:any, transactionIndex:any) {
-  const respPregActual = await this.contract.methods.calcRespAPreg(Number(idPreg)).call();
-  //console.log("respPregActual: ", respPregActual);
-  const numRespPreg = respPregActual.length;
+async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber_preg:any, transactionIndex_preg:any) {
+
   const rsp = {
                 email: window.localStorage.getItem('esbrinaUserMail'),
-              id_resp: 2, //numRespPreg,
-          blockNumber: blockNumber,
-     transactionIndex: transactionIndex,    
-            enunciado: enunciado,
+              id_resp: Number(id_resp),
+          blockNumber: blockNumber_preg,
+     transactionIndex: transactionIndex_preg,    
+            enunciado: enunciado_resp,
              ganadora: false,
                 votos: 0,
               anulada: false,
@@ -315,46 +350,8 @@ async insertaRespuesta(idPreg:any, enunciado: any, blockNumber:any, transactionI
   this.conPregsQuery();
   }
 
-  async creaRespuestaSC(id_preg: any, enunciado: any) {
-   const email =window.localStorage.getItem('esbrinaUserMail');
-   var rawData = {
-      from: this.wallet.address, // admin (address generada con la semilla facilitada).
-      to: this.contract_address,  
-      value: 0,
-      gasPrice: this.web3obj.utils.toHex(10000000000),
-      gasLimit: this.web3obj.utils.toHex(1000000),
-      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
-      data: this.contract.methods.creaRespuesta(id_preg,enunciado, email, email, email).encodeABI()
-    }
-    //console.log(rawData);
-    var signed: any;
-    if (this.metamask) {
-      this.web3obj.eth.sendTransaction(rawData).then(
-        (receipt: any) => {
-          this.lastTransaction = receipt;
-          this.insertaRespuesta(id_preg, enunciado, receipt.blockNumber, receipt.transactionIndex);
-          },
-          (error: any) => {
-              console.log(error)
-          }
-      );
-     }
-    else {
-      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-      this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          console.log("Receipt: ", receipt);
-          this.insertaRespuesta(id_preg, enunciado, receipt.blockNumber, receipt.transactionIndex);
-          },
-        (error: any) => {
-            console.log(error);
-          }
-      ); 
-    }
-    
-  }
-
-  async noResps(id_preg: any) {
+  async haRespondido(id_preg: any) {
+    // calcAdrRespuestasAPregunta responde true si el usr ha respondido ya esta pregunta
     const yaHaRespondidoAPreg = await this.contract.methods.calcAdrRespuestasAPregunta(id_preg,this.wallet.address).call();
     //console.log("Preg",id_preg," - yaHaRespondidoAPreg: ", yaHaRespondidoAPreg);
     return yaHaRespondidoAPreg;
@@ -417,11 +414,10 @@ async insertaRespuesta(idPreg:any, enunciado: any, blockNumber:any, transactionI
 
   async dialogRespuesta(blockNumber:any,transactionIndex:any,idPreg: any, email: any) {
     this.actualizaDatosPregSC(blockNumber, transactionIndex, idPreg);
-    const usarDialog = await this.noResps(idPreg);
+    const usarDialog = await this.haRespondido(idPreg);
     let noAutorPreg = false;
     if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
-    //this.actualizaDatosPregSC(idPreg);
     const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
     //console.log("Estado_actual: ",estado_actual);
     if (!usarDialog && noAutorPreg && estado_actual=='Abierta.') {
@@ -432,7 +428,7 @@ async insertaRespuesta(idPreg:any, enunciado: any, blockNumber:any, transactionI
       this.dialogRefResp = this.matDialog.open(GetRespComponent, dialogConfig);
       this.datos = this.dialogRefResp.afterClosed().subscribe((result: any) => {
         if (result !== undefined) {
-          this.creaRespuestaSC(idPreg, result.enunciado);
+          this.creaRespuestaSC(idPreg, result.enunciado, blockNumber, transactionIndex);
         }
       });
     } else {
@@ -464,7 +460,7 @@ creaPregunta() {
   let novaPreg:any = { };
   this.service.creaPregunta(this.web3obj, this.wallet, novaPreg);
   } 
-  //this.pastEventsPreguntaCreada('PreguntaCreada','0xf562c02033df4b174885d8c7678dc1489340f6d9',6538371)
+  
   async pastEventsPreguntaCreada(event_name:any, autor:any, block:any) {
   
     const idp = await this.contract.getPastEvents(
@@ -485,8 +481,27 @@ creaPregunta() {
     
     return idp;
   }
-
   
+  async pastEventsRespuestaCreada(event_name:any, id_preg:any, autor:any, block:any) {
+  
+    const respId = await this.contract.getPastEvents(
+      event_name,
+      {
+        filter: {
+          id_preg: id_preg,
+          autor: autor
+        },
+        fromBlock: block,
+        toBlock: block
+      },
+      function (error: any, events: any) { console.log(events); }).then(function (events: any) {
+        console.log(events);
+        //console.log("Param: ", events[0].returnValues._id_preg);
+        return events[0].returnValues.id_resp;
+      });
+    
+    return respId;
+  } 
   
   async getLogPreguntaCreada(id_preg:any, block:any) {
    
@@ -554,7 +569,7 @@ creaPregunta() {
     });
   }
 
-  async actualizaListaPregs() {
+async actualizaListaPregs() {
     this.conPregsQuery();
 }
 

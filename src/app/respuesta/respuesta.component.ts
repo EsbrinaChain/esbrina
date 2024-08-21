@@ -58,7 +58,7 @@ export class RespuestaComponent {
   
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
   providerETH = 'https://rpc2.sepolia.org';
-  contract_address: any = "0x4E9F6baF5809d1bD1f84AdfC074B87Fb4D80a13e";
+  contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
   
    
   contract: any;
