@@ -23,6 +23,7 @@ import { GetRespComponent } from '../get-resp/get-resp.component';
 import { intToHex } from '@ethereumjs/util';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AnyARecord } from 'dns';
 
 
 @Component({
@@ -34,6 +35,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './pregunta.component.scss'
 })
 export class PreguntaComponent {
+
 
   @Input()
   idiomaSel: any = es;
@@ -167,7 +169,7 @@ async consultaVariables() {
     this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
-    //setInterval(() => { this.conPregsQuery(); }, 30000);
+    setInterval(() => { this.conPregsQuery(); }, 30000);
     
   }
 
@@ -205,19 +207,21 @@ async getBalanceAddress(address:any) {
     this.balanceWalletAddress = valorEther;
     return valorEther;
 }
+  
 
+  
 async creaPreguntaSC(enunciado:any, recompensa:any) {
-    const email = window.localStorage.getItem('esbrinaUserMail');
+  const email = window.localStorage.getItem('esbrinaUserMail'); 
     var rawData = {
       from: this.wallet.address, // admin (address generada con la semilla facilitada).
       to: this.contract_address,  
-      value: recompensa,
+      value: Number(recompensa),
       gasPrice: this.web3obj.utils.toHex(10000000000),
-      gasLimit: this.web3obj.utils.toHex(1000000),
+      gasLimit: this.web3obj.utils.toHex(10000000),
       nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.creaPregunta(enunciado, email, email, email).encodeABI()
     }
-    //console.log(rawData);
+  console.log(rawData);
   var signed: any;
     if (this.metamask) {
       this.web3obj.eth.sendTransaction(rawData).then(
@@ -251,7 +255,12 @@ async creaPreguntaSC(enunciado:any, recompensa:any) {
       ); 
     }
   }
-  
+async testGasDone() {
+
+  /*const gasEstimated = await this.contract.methods.admCfgTiempoRespuesta(1, 7, "d").estimateGas({ from: this.wallet.address });
+  console.log("Gas estimated: ", gasEstimated);*/ 
+
+} 
 async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any, transactionIndex:any) {
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
   // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
@@ -284,14 +293,19 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
   }
     
 }
-
   async creaRespuestaSC(id_preg: any, enunciado_resp: any,blockNumber:any,transactionIndex:any) {
-   const email =window.localStorage.getItem('esbrinaUserMail');
+    const email = window.localStorage.getItem('esbrinaUserMail');
+    const gasPrice = await this.web3obj.eth.getGasPrice();
+    console.log("Gas Price: ",gasPrice);
+    const gasEstimated = await this.contract.methods.creaRespuesta(id_preg,enunciado_resp, email, email, email).estimateGas({ from: this.wallet.address });
+    console.log("Gas Estimated",gasEstimated);
    var rawData = {
       from: this.wallet.address, // admin (address generada con la semilla facilitada).
       to: this.contract_address,  
       value: 0,
-      gasPrice: this.web3obj.utils.toHex(10000000000),
+      //gasPrice: this.web3obj.utils.toHex(gasPrice * BigInt(2)),
+      //gasLimit: this.web3obj.utils.toHex(gasEstimated),
+      gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
       gasLimit: this.web3obj.utils.toHex(1000000),
       nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.creaRespuesta(id_preg,enunciado_resp, email, email, email).encodeABI()
@@ -474,7 +488,7 @@ creaPregunta() {
         toBlock: block
       },
       function (error: any, events: any) { console.log(events); }).then(function (events: any) {
-        console.log(events);
+        console.log("Event PreguntaCreada: " ,events);
         //console.log("Param: ", events[0].returnValues._id_preg);
         return events[0].returnValues._id_preg;
       });
