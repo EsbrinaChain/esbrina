@@ -1,4 +1,4 @@
-        <button mat-raised-button color="primary" (click)="testGasDone()">TEST</button>
+        <!--<button mat-raised-button color="primary" (click)="testGasDone()">TEST</button>-->
         <table cols="2" width="95%">
             <tr>
                 <td align="right" border="1px">
@@ -67,6 +67,10 @@
                     @if(item.estado=="abierta" && !item.anulada){
                         <label>{{idiomaSel.m26}}</label>
                         <button class="btnSep" (click)="dialogRespuesta(item.blockNumber,item.transactionIndex,item.idp,item.email)">+</button>
+                    }@else if(item.estado=="consulta" && !item.anulada){
+                        <button class="btnSepConsulta" (click)="pagoPorSolucion(item.idp)">Solución</button>
+                        <label class="notaConsulta">{{idiomaSel.m30}}</label><br>
+                        <!--<label class="notaConsulta">{{idiomaSel.m32}}</label>-->
                     }
                 </td>
             </tr>

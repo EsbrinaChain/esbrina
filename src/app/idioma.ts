@@ -28,7 +28,11 @@ export const es = {
     m27: "Sólo 1 vez",
     m28: "Votar",
     m29: "Datos más recientes",
-    m30: ""
+    m30: "Coste 50%",
+    m31: "Solución",
+    m32: "(excepto autor)",
+    m33: "",
+    m34: ""
 };
 
 export const en = {
@@ -61,7 +65,11 @@ export const en = {
     m27: "Only one answer by question",
     m28: "To Vote",
     m29: "Most recent data",
-    m30: ""
+    m30: "Cost 50%",
+    m31: "(not owner)",
+    m32: "",
+    m33: "",
+    m34: ""
 };
 
 export const cat = {
@@ -94,7 +102,10 @@ export const cat = {
     m27: "Només 1 resposta per pregunta",
     m28: "Votar",
     m29: "Dades més recents",
-    m30: ""
-
+    m30: "Cost 50%",
+    m31: "Solució",
+    m32: "(no autor)",
+    m33: "",
+    m34: ""
 };
 

@@ -169,7 +169,7 @@ async consultaVariables() {
     this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
-    setInterval(() => { this.conPregsQuery(); }, 30000);
+    //setInterval(() => { this.conPregsQuery(); }, 30000);
     
   }
 
@@ -188,9 +188,7 @@ async conPregsQuery() {
   const usSnapshot = await getDocs(queryPregs);
   this.listaPregs = usSnapshot.docs.map(doc => doc.data());
   this.totalPregs = usSnapshot.size;
-  for (let i = 0; i < this.totalPregs; i++){
-    this.listaPregs[i].idp = i + 1;
-  }
+  
   //console.log(this.listaPregs);
 
 }
@@ -211,13 +209,23 @@ async getBalanceAddress(address:any) {
 
   
 async creaPreguntaSC(enunciado:any, recompensa:any) {
-  const email = window.localStorage.getItem('esbrinaUserMail'); 
-    var rawData = {
+  const email = window.localStorage.getItem('esbrinaUserMail');
+  const gasPrice = await this.web3obj.eth.getGasPrice();
+  console.log("Gas Price: ",gasPrice);
+  const gasEstimated = await this.contract.methods.creaPregunta(enunciado, email, email, email).estimateGas(
+    {
+      from: this.wallet.address,
+      value: recompensa
+      });
+  console.log("Gas Estimated", gasEstimated);
+  var rawData = {
       from: this.wallet.address, // admin (address generada con la semilla facilitada).
       to: this.contract_address,  
       value: Number(recompensa),
-      gasPrice: this.web3obj.utils.toHex(10000000000),
-      gasLimit: this.web3obj.utils.toHex(10000000),
+      //gasPrice: this.web3obj.utils.toHex(10000000000),
+      //gasLimit: this.web3obj.utils.toHex(10000000),
+      gasPrice: gasPrice,
+      gasLimit: gasEstimated,
       nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.creaPregunta(enunciado, email, email, email).encodeABI()
     }
@@ -226,6 +234,7 @@ async creaPreguntaSC(enunciado:any, recompensa:any) {
     if (this.metamask) {
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
+          console.log("receipt-CrearPregunta: ",receipt);
           this.lastTransaction = receipt;
           const idp = this.pastEventsPreguntaCreada('PreguntaCreada', this.wallet.address, receipt.blockNumber);
           idp.then((valor: any) => {
@@ -339,7 +348,11 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
            });
           },
         (error: any) => {
-            console.log(error);
+          console.log(error);
+          const resps = this.contract.methods.calcResAPreg(id_preg).call();
+          console.log("resps", resps);
+          //console.log(resps[resps.height-1]);
+          //this.insertaRespuesta(resps[resps.height-1], id_preg, enunciado_resp, blockNumber, transactionIndex);
           }
       ); 
     }
@@ -446,7 +459,10 @@ async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber
         }
       });
     } else {
-      // visualizar aviso no se puede hacer más de una respuesta. (opcional)
+      console.log("Ya se ha respondido la pregunta: ", usarDialog,
+        "\nEs autor de la pregunta: ", !noAutorPreg,
+        "\nSolo la combinación 'false', 'false' permite responder.",
+        "\nEstado pregunta:", estado_actual);
     }
 }  
 
@@ -625,7 +641,60 @@ async test(num:any,t:any,units:any) {
     }
 }
 
-
+  async pagoPorSolucion(id_preg: any) {
+    const email = window.localStorage.getItem('esbrinaUserMail');
+    const pregunta = await this.contract.methods.preguntas(id_preg).call();
+    const valorPago = Math.round(Number(BigInt(pregunta.recompensa) / BigInt(2)));
+    console.log("Valor Pago por consultar: ", valorPago);
+    
+    if (pregunta.autor.toLowerCase() != this.wallet.address.toLowerCase()){
+      const gasPrice = await this.web3obj.eth.getGasPrice();
+      console.log("Gas Price: ",gasPrice);
+      const gasEstimated = await this.contract.methods.consultaRespuestaVotada(id_preg).estimateGas(
+        {
+          from: this.wallet.address,
+          value: valorPago
+         });
+      console.log("Gas Estimated", gasEstimated);
+        var rawData = {
+          from: this.wallet.address, // admin (address generada con la semilla facilitada).
+          to: this.contract_address,  
+          value: valorPago,
+          //gasPrice: this.web3obj.utils.toHex(gasPrice * BigInt(2)),
+          //gasLimit: this.web3obj.utils.toHex(gasEstimated),
+          gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
+          gasLimit: this.web3obj.utils.toHex(1000000),
+          nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+          data: this.contract.methods.consultaRespuestaVotada(id_preg).encodeABI()
+        }
+        //console.log(rawData);
+        var signed: any;
+        if (this.metamask) {
+          this.web3obj.eth.sendTransaction(rawData).then(
+            (receipt: any) => {
+              console.log("Receipt-Consulta-Resposta + votada: ",receipt);
+              },
+              (error: any) => {
+                  console.log("Error pago por consulta",error)
+              }
+          );
+          }
+        else {
+          signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+          this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+            (receipt: any) => {
+              console.log("Receipt-Consulta-Resposta + votada: ",receipt);
+              },
+            (error: any) => {
+              console.log("Error pago por consulta",error);
+              }
+          ); 
+        }
+      
+    } else {
+      // mostrar ganador sin coste
+    }
+}
   
   
 } // end class

@@ -108,11 +108,15 @@ export class RespuestaComponent {
 
   async votarRespuestaSC(id_preg:any, id_resp:any) {
     //console.log("Parametros votacion: ", id_preg, id_resp);
+    const gasPriceResp = await this.web3obj.eth.getGasPrice();
+    console.log("Gas Price: ",gasPriceResp);
+    const gasEstimatedResp = await this.contract.methods.votarRespuesta(id_preg,id_resp).estimateGas({ from: this.wallet.address });
+    console.log("Gas Estimated",gasEstimatedResp);
     var rawData = {
       from: this.wallet.address, 
       to: this.contract_address,  
       value: 0,
-      gasPrice: this.web3obj.utils.toHex(10000000000),
+      gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),// tests 50070176532n  46790342006n
       gasLimit: this.web3obj.utils.toHex(1000000),
       nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
       data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
@@ -135,8 +139,10 @@ export class RespuestaComponent {
     else {
       signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-          (receipt: any) => {
-            this.lastTransaction = receipt;
+        (receipt: any) => {
+          console.log("Transacción de Voto: ", receipt);
+          this.updVotoBackend(id_preg, id_resp);
+          this.lastTransaction = receipt;
           },
           (error: any) => {
               console.log(error)
@@ -146,18 +152,13 @@ export class RespuestaComponent {
     
   }
 
-async noEsAutorDeRespuestas(id_preg: any) {
-  const autor_mail = window.localStorage.getItem("esbrinaUserMail");
-  //console.log(autor_mail);
-  const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", Number(id_preg)), where("email", "==", autor_mail));
-  const usSnapshot = await getDocs(queryResps);
-  const llista_resp = usSnapshot.docs.map(doc => doc.data());
-  if (llista_resp.length > 0) {
-    return false;
-  } else {
-    return true;
-  }
+async haRespondido(id_preg: any) {
+    // calcAdrRespuestasAPregunta responde true si el usr ha respondido ya esta pregunta
+    const yaHaRespondidoAPreg = await this.contract.methods.calcAdrRespuestasAPregunta(id_preg,this.wallet.address).call();
+    //console.log("Preg",id_preg," - yaHaRespondidoAPreg: ", yaHaRespondidoAPreg);
+    return yaHaRespondidoAPreg;
 }
+  
   async sinVoto(id_preg: any) {
     const autor_addr = this.wallet.address; 
     const votado = await this.contract.methods.votaciones(autor_addr, id_preg).call();
@@ -168,8 +169,10 @@ async noEsAutorDeRespuestas(id_preg: any) {
     } 
   } 
 async updVotoBackend(id_preg: any, id_resp: any) {
-    
-  const queryResps = query(collection(this.db, '/Resps'), where("id_preg","==",Number(id_preg)), where("id_resp","==",Number(id_resp)));
+  console.log("updVotoBackend: id_preg:",id_preg," id_res:", id_resp); 
+  const queryResps = query(collection(this.db, '/Resps'),
+    where("id_preg", "==", Number(id_preg)),
+    where("id_resp", "==", Number(id_resp)));
   const usSnapshot = await getDocs(queryResps);
   const id = usSnapshot.docs.map(doc => doc.ref.id);
   const item = doc(this.db, "Resps", id[0]);
@@ -178,26 +181,35 @@ async updVotoBackend(id_preg: any, id_resp: any) {
   if (docSnap.exists()) {
     updData = docSnap.data();
     updData.votos += 1;
-    //console.log("updData: ", updData);
+    console.log("updData: ", updData);
     await setDoc(item, updData);
   }
 }
   
   async selectVoto(id_preg:any, id_resp:any) {
-
+    const pregunta = await this.contract.methods.preguntas(id_preg).call();
+    console.log("Pregunta a Votar: ",pregunta);
     // No es autor de ninguna respuesta en la pregunta
-    const noEsAutorResp = await this.noEsAutorDeRespuestas(id_preg);
+    const EsAutorResp = await this.haRespondido(id_preg);
+    console.log("EsAutorResp: ",EsAutorResp);
     // No ha votado otras respuestas => solo puede votar 1 vez
     const noHaVotado = await this.sinVoto(id_preg);
-    const estado_actual = await this.contract.methods.estadoPreg(id_preg).call();
-    if(noEsAutorResp && noHaVotado && estado_actual=="Votando."){
+    console.log("noHaVotado: ",noHaVotado);
+    const estado_actual_preg = await this.contract.methods.estadoPreg(id_preg).call();
+    console.log("estado_actual: ",pregunta.estado,"=",estado_actual_preg);
+    if (!EsAutorResp && noHaVotado && pregunta.estado == 1) {
+      console.log("Votando por la resp ", id_resp, " de la pregunta ", id_preg);
         await this.votarRespuestaSC(id_preg, id_resp);
         this.refresh.emit();
-        this.getLogFinalVotacion(id_preg);  
-    } else if(estado_actual=="Consulta.") {
-        console.log("La pregunta", id_preg, " no está en estado 'votando'");
-        this.updEstadoPregBackend(id_preg, "consulta");
-        this.updRespGanadorasPreg(id_preg);
+      const respWin = this.pastEventsFinalVotacion('FinalVotacion', id_preg, pregunta.autor, this.blockNumber);
+    } else if (pregunta.estado == 1 && (EsAutorResp || !noHaVotado)) {
+       console.log("La pregunta", id_preg, " está en estado 'votando', pero este usuario no puede votarla.");
+    } else if(estado_actual_preg=="Consulta.") {
+        console.log("La pregunta", id_preg, " no está en estado 'votando' sino en estado de '", estado_actual_preg,"'");
+        this.estado_actual = "consulta"; 
+      this.updEstadoPregBackend(id_preg, "consulta");
+      
+        // this.updRespGanadorasPreg(id_preg);
       
   }
     //console.log("noEsAutorResp: ", noEsAutorResp); //console.log("noHaVotado: ", noHaVotado);
@@ -235,23 +247,29 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     }
     console.log(ganadoras);
   }
-
-  async getLogFinalVotacion(id_preg:any) {
-
-    const ev = await this.contract.events.FinalVotacion({
-      filter: { _id_preg: id_preg }, fromBlock: 0});
+async pastEventsFinalVotacion(event_name:any, id_preg:any, autor:any, block:any) {
+  
+    const respWin = await this.contract.getPastEvents(
+      event_name,
+      {
+        filter: {
+          id_preg: id_preg,
+          autor: autor
+        },
+        fromBlock: block,
+        toBlock: block
+      },
+      function (error: any, events: any) { console.log(events); }).then(function (events: any) {
+        console.log(events);
+        if (events.length > 0) {
+          return events[0].returnValues.respGanadora;
+        } else {
+          return events.length;
+        }
+      });
     
-    this.eventFinalVotacion = ev.on("data", (event: any) => {
-      console.log("Data: ", event)
-      this.getData(event);
-    });
-    this.eventFinalVotacion = ev.on("error", (event: any) => {
-      console.log("Data: ", event)
-      this.getData(event);
-    });
-  }
+    return respWin;
+  } 
 
-  async getData(datos:any) {
-    console.log(datos.returnValues);
-  }
+
 }
