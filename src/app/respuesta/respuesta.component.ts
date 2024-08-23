@@ -57,7 +57,8 @@ export class RespuestaComponent {
   eventFinalVotacion: any;
   
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  providerETH = 'https://rpc2.sepolia.org';
+  providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
+  //providerETH = 'https://rpc2.sepolia.org';
   contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
   
    
@@ -231,22 +232,7 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     }
   }
 
-  async updRespGanadorasPreg(id_preg: any) {
-    
 
-    const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", id_preg), orderBy("id_resp", "asc"));
-    const usSnapshot = await getDocs(queryResps);
-    const numRespPreg = usSnapshot.size;
-    let respActual: any;
-    let ganadoras = [];
-    for (let i = 1; i <= numRespPreg; i++){
-      respActual = await this.contract.methods.preg_resp(id_preg, i).call();
-      if (respActual.ganadora == true) {
-        ganadoras.push(respActual);
-      }
-    }
-    console.log(ganadoras);
-  }
 async pastEventsFinalVotacion(event_name:any, id_preg:any, autor:any, block:any) {
   
     const respWin = await this.contract.getPastEvents(

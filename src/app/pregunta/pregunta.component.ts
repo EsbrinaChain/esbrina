@@ -47,7 +47,9 @@ export class PreguntaComponent {
   metamask: any = false;
 
   idiomaSelPreg: any;
-
+  imgBote = "bote.gif";
+  bote: any = 0;
+  boteETH: any = 0;
   
   app: any;
   db: any;
@@ -75,8 +77,9 @@ export class PreguntaComponent {
   provider: any;
   userDefined: any;
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
 
-  providerETH = 'https://rpc2.sepolia.org';
+  //providerETH = 'https://rpc2.sepolia.org';
   contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
     
   contract: any;
@@ -169,7 +172,8 @@ async consultaVariables() {
     this.web3 = this.web3obj;
     this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
     this.consultaVariables();
-    //setInterval(() => { this.conPregsQuery(); }, 30000);
+    setInterval(() => { this.conPregsQuery(); }, 30000);
+    this.getBote()
     
   }
 
@@ -205,7 +209,13 @@ async getBalanceAddress(address:any) {
     this.balanceWalletAddress = valorEther;
     return valorEther;
 }
-  
+ 
+async getBote() {
+  var valor = await this.web3obj.eth.getBalance(this.contract_address); 
+  var valorEther = this.web3obj.utils.fromWei(valor, 'ether');
+  this.bote = valor;
+  this.boteETH = valorEther;
+}
 
   
 async creaPreguntaSC(enunciado:any, recompensa:any) {
@@ -264,12 +274,7 @@ async creaPreguntaSC(enunciado:any, recompensa:any) {
       ); 
     }
   }
-async testGasDone() {
 
-  /*const gasEstimated = await this.contract.methods.admCfgTiempoRespuesta(1, 7, "d").estimateGas({ from: this.wallet.address });
-  console.log("Gas estimated: ", gasEstimated);*/ 
-
-} 
 async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any, transactionIndex:any) {
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
   // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
@@ -443,7 +448,10 @@ async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber
     this.actualizaDatosPregSC(blockNumber, transactionIndex, idPreg);
     const usarDialog = await this.haRespondido(idPreg);
     let noAutorPreg = false;
-    if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
+    const pregunta = await this.contract.methods.preguntas(idPreg).call();
+    //if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
+    console.log(pregunta.autor.toLowerCase(), this.wallet.address.toLowerCase());
+    if (pregunta.autor.toLowerCase() != this.wallet.address.toLowerCase()) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
     const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
     //console.log("Estado_actual: ",estado_actual);
@@ -603,50 +611,51 @@ async actualizaListaPregs() {
     this.conPregsQuery();
 }
 
-async test(num:any,t:any,units:any) {
-  //console.log("Web: ", this.web3);
-  //console.log("Contract: ", this.contract);
-  var rawData = {
-      from: this.wallet.address, // admin (address generada con la semilla facilitada).
-      to: this.contract_address,  
-      value: 0,
-      gasPrice: this.web3obj.utils.toHex(10000000000),
-      gasLimit: this.web3obj.utils.toHex(1000000),
-      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
-      data: this.contract.methods.admCfgTiempoRespuesta(num,t,units).encodeABI()
+async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
+  console.log("updGanadoraBackend: id_preg:",id_preg," id_res:", id_resp); 
+  const queryResps = query(collection(this.db, '/Resps'),
+    where("id_preg", "==", Number(id_preg)),
+    where("id_resp", "==", Number(id_resp)));
+  const usSnapshot = await getDocs(queryResps);
+  const id = usSnapshot.docs.map(doc => doc.ref.id);
+  const item = doc(this.db, "Resps", id[0]);
+  let docSnap = await getDoc(item);
+  let updData: any; 
+  if (docSnap.exists()) {
+    updData = docSnap.data();
+    updData.ganadora = valor;
+    console.log("updData: ", updData);
+    await setDoc(item, updData);
+  }
+}  
+  async updRespGanadorasPreg(id_preg: any) {
+
+    const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", id_preg), orderBy("id_resp", "asc"));
+    const usSnapshot = await getDocs(queryResps);
+    const numRespPreg = usSnapshot.size;
+    let respActual: any;
+    let ganadoras = [];
+    for (let i = 1; i <= numRespPreg; i++){
+      respActual = await this.contract.methods.preg_resp(id_preg, i).call();
+      if (respActual.ganadora == true) {
+        ganadoras.push(respActual);
+        this.updGanadoraBackend(id_preg, respActual.id_resp, true);
+      }
     }
-  //console.log(rawData);
-  var signed: any;
-    if (this.metamask) {
-      this.web3obj.eth.sendTransaction(rawData).then(
-        (receipt: any) => {
-            this.lastTransaction = receipt;
-          },
-          (error: any) => {
-              console.log(error)
-          }
-      );
-     }
-    else {
-      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-      this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          console.log("Receipt: ",receipt);
-          },
-        (error: any) => {
-          console.log("Error 5000");
-            console.log(error);
-          }
-      ); 
-    }
-}
+    console.log(ganadoras);
+    this.conPregsQuery();
+    setTimeout(() => {
+      this.updGanadoraBackend(id_preg, respActual.id_resp, false);
+      this.conPregsQuery();
+     }, 15000);
+  }
+
 
   async pagoPorSolucion(id_preg: any) {
-    const email = window.localStorage.getItem('esbrinaUserMail');
     const pregunta = await this.contract.methods.preguntas(id_preg).call();
     const valorPago = Math.round(Number(BigInt(pregunta.recompensa) / BigInt(2)));
     console.log("Valor Pago por consultar: ", valorPago);
-    
+    console.log("autor pregunta: ",pregunta.autor.toLowerCase(),"Autor consulta: ",this.wallet.address.toLowerCase())
     if (pregunta.autor.toLowerCase() != this.wallet.address.toLowerCase()){
       const gasPrice = await this.web3obj.eth.getGasPrice();
       console.log("Gas Price: ",gasPrice);
@@ -656,14 +665,15 @@ async test(num:any,t:any,units:any) {
           value: valorPago
          });
       console.log("Gas Estimated", gasEstimated);
+      
         var rawData = {
           from: this.wallet.address, // admin (address generada con la semilla facilitada).
           to: this.contract_address,  
-          value: valorPago,
-          //gasPrice: this.web3obj.utils.toHex(gasPrice * BigInt(2)),
-          //gasLimit: this.web3obj.utils.toHex(gasEstimated),
-          gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
-          gasLimit: this.web3obj.utils.toHex(1000000),
+          value: valorPago+1,
+          gasPrice: this.web3obj.utils.toHex(gasPrice),
+          gasLimit: this.web3obj.utils.toHex(gasEstimated),
+          //gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
+          //gasLimit: this.web3obj.utils.toHex(1000000),
           nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
           data: this.contract.methods.consultaRespuestaVotada(id_preg).encodeABI()
         }
@@ -672,7 +682,8 @@ async test(num:any,t:any,units:any) {
         if (this.metamask) {
           this.web3obj.eth.sendTransaction(rawData).then(
             (receipt: any) => {
-              console.log("Receipt-Consulta-Resposta + votada: ",receipt);
+              console.log("Receipt-Consulta-Resposta + votada: ", receipt);
+              this.updRespGanadorasPreg(id_preg);
               },
               (error: any) => {
                   console.log("Error pago por consulta",error)
@@ -683,7 +694,8 @@ async test(num:any,t:any,units:any) {
           signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
           this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
             (receipt: any) => {
-              console.log("Receipt-Consulta-Resposta + votada: ",receipt);
+              console.log("Receipt-Consulta-Resposta + votada: ", receipt);
+              this.updRespGanadorasPreg(id_preg);
               },
             (error: any) => {
               console.log("Error pago por consulta",error);
@@ -695,7 +707,8 @@ async test(num:any,t:any,units:any) {
       // mostrar ganador sin coste
     }
 }
-  
+
+
   
 } // end class
 

@@ -60,8 +60,9 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  providerETH = 'https://rpc2.sepolia.org';
+    //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+    providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
+  //providerETH = 'https://rpc2.sepolia.org';
   contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";  
   
    

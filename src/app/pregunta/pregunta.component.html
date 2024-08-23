@@ -1,4 +1,19 @@
         <!--<button mat-raised-button color="primary" (click)="testGasDone()">TEST</button>-->
+        <table cols="1" width="95%" border="0px">
+            <tr>
+                <td align="center" colspan="2">
+                    <img class="bote" src="./assets/bote/{{imgBote}}"/>
+                    <span class="boteDatoUnits">Bote</span>
+                </td>
+            </tr>
+            <tr>
+                <td  align="right" class="boteDato" colspan="2">
+                    <span>{{bote}}</span> Wei
+                </td>
+                
+            </tr>
+            <tr><td height="20px"></td><td align="right"><span class="boteEth">{{boteETH}} ETH</span></td></tr>
+        </table>
         <table cols="2" width="95%">
             <tr>
                 <td align="right" border="1px">
@@ -8,7 +23,7 @@
                                 <span>Tiempo de respuesta:</span>
                             </td>
                             <td align="left" class="datos_gen_dato">
-                                <span>{{this.tiempo_respuesta_sc}}</span>
+                                <span>{{tiempo_respuesta_sc}}</span>
                             </td>
                             
                         </tr>
@@ -30,7 +45,7 @@
                         </tr>
                     </table>
                 </td>
-                <td>
+                <td align="center">
                     <button class="nuevaPregunta" mat-raised-button color="primary"
                         (click)="showDialog()">{{idiomaSelPreg.m25}}</button>
                 </td>
