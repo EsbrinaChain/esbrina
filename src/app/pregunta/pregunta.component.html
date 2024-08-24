@@ -1,14 +1,14 @@
-        <!--<button mat-raised-button color="primary" (click)="testGasDone()">TEST</button>-->
-        <table cols="1" width="95%" border="0px">
+        <!--<button mat-raised-button color="primary" (click)="lin('Linea de Estado')">TEST</button>-->
+        <table cols="1" width="95%" border="0px" align="center">
             <tr>
                 <td align="center" colspan="2">
                     <img class="bote" src="./assets/bote/{{imgBote}}"/>
-                    <span class="boteDatoUnits">Bote</span>
+                    <span class="boteDatoUnits">{{idiomaSel.m36}}</span>
                 </td>
             </tr>
             <tr>
                 <td  align="right" class="boteDato" colspan="2">
-                    <span>{{bote}}</span> Wei
+                    <span>{{bote}}</span> Wei 
                 </td>
                 
             </tr>
@@ -20,7 +20,7 @@
                     <table align="right" class="datos_gen">
                         <tr>
                             <td align="right">
-                                <span>Tiempo de respuesta:</span>
+                                <span>{{idiomaSel.m33}}:</span>
                             </td>
                             <td align="left" class="datos_gen_dato">
                                 <span>{{tiempo_respuesta_sc}}</span>
@@ -29,7 +29,7 @@
                         </tr>
                         <tr>
                             <td align="right">
-                                <span>Tiempo de Votación:</span>
+                                <span>{{idiomaSel.m34}}:</span>
                             </td>
                             <td align="left" class="datos_gen_dato">
                                 <span>{{tiempo_votacion_sc}}</span>
@@ -37,7 +37,7 @@
                         </tr>
                         <tr>
                             <td align="right">
-                                <span>Cupo de respuestas:</span>
+                                <span>{{idiomaSel.m35}}:</span>
                             </td>
                             <td align="left" class="datos_gen_dato">
                                 <span>{{cupo_respuestas_sc}}</span>
@@ -47,18 +47,19 @@
                 </td>
                 <td align="center">
                     <button class="nuevaPregunta" mat-raised-button color="primary"
-                        (click)="showDialog()">{{idiomaSelPreg.m25}}</button>
+                        (click)="showDialog()">{{idiomaSel.m25}}</button>
                 </td>
-                <td align="center"><button (click)="actualizaListaPregs()">{{idiomaSelPreg.m29}}</button></td>
+                <td align="center"><button (click)="actualizaListaPregs()">{{idiomaSel.m29}}</button></td>
             </tr>
         </table>
         
-        <table cols="7" width="95%">
-        @for (item of listaPregs; track item) {
+        <table cols="7" width="95%" align="center" border="0px">
+        @for (item of listaPregs; track item;) {
             <tr>
                 <td width="4%" class="tdIndex"><div class="id_preg">Nº {{item.idp}}</div></td>
                 <td class="tdPreg" colspan="6">
                     <textarea class="textEnunciado" name="preg_enunciado">{{item.enunciado}}</textarea>
+                    
                 </td>
             </tr>
             <tr>
@@ -72,29 +73,29 @@
                     <div class="textMetadataRecompensa">{{item.recompensa}}</div>
                     <div class="labelMetadata">Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
                 </td>
-                <td colspan="5" width="80%">
+                <td colspan="4" width="80%">
                     <app-respuesta (refresh)="actualizaListaPregs()" [id_preg]="item.idp" 
                     [web3obj]="web3obj" [wallet]="wallet" [estado_actual]="item.estado"
-                    [metamask]="metamask"
+                    [metamask]="metamask" [idiomaSel]="idiomaSel"
                     [blockNumber]="item.blockNumber" [transactionIndex]="item.transactionIndex"></app-respuesta>
+                    
                 </td>
                 <td class="tdHiddenBtnResp">
                     @if(item.estado=="abierta" && !item.anulada){
                         <label>{{idiomaSel.m26}}</label>
                         <button class="btnSep" (click)="dialogRespuesta(item.blockNumber,item.transactionIndex,item.idp,item.email)">+</button>
                     }@else if(item.estado=="consulta" && !item.anulada){
-                        <button class="btnSepConsulta" (click)="pagoPorSolucion(item.idp)">Solución</button>
+                        <button class="btnSepConsulta" (click)="pagoPorSolucion(item.idp)">{{idiomaSel.m31}}</button>
                         <label class="notaConsulta">{{idiomaSel.m30}}</label><br>
                         <!--<label class="notaConsulta">{{idiomaSel.m32}}</label>-->
                     }
                 </td>
             </tr>
+            <tr align="center">
+                <td colspan="7"><span id="LineaEstado_{{item.idp}}" class="lineaEstado">Linea de Estado</span></td>
+            </tr>
         } 
+        
         </table>
-
-
-
-<!--
-        <button mat-raised-button color="primary" (click)="insPregs()">INSERTAR Preguntas</button>
-        <button mat-raised-button color="primary" (click)="conPregs1Query()">PROBAR Procesa Fechas</button>-->
+        
 

@@ -47,7 +47,6 @@ export class RespuestaComponent {
 
   lastTransaction: any;
   
-  idiomaSelPreg: any;
   app: any;
   db: any;
   listaResp: any;
@@ -68,13 +67,13 @@ export class RespuestaComponent {
   
 
   constructor() {
-    this.idiomaSelPreg = this.idiomaSel;
+    
   }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.idiomaSelPreg = this.idiomaSel;
+    
 
     const firebaseConfig = {
           apiKey: "AIzaSyAHz9zSUk258f3CyoMA2cvE8Kf2BnF442c",
@@ -129,7 +128,7 @@ export class RespuestaComponent {
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           console.log("Transacción de Voto: ", receipt);
-          this.updVotoBackend(id_preg, id_resp);
+          //this.updVotoBackend(id_preg, id_resp);
           this.lastTransaction = receipt;
           },
           (error: any) => {
@@ -142,7 +141,7 @@ export class RespuestaComponent {
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
           console.log("Transacción de Voto: ", receipt);
-          this.updVotoBackend(id_preg, id_resp);
+          //this.updVotoBackend(id_preg, id_resp);
           this.lastTransaction = receipt;
           },
           (error: any) => {
@@ -202,7 +201,12 @@ async updVotoBackend(id_preg: any, id_resp: any) {
       console.log("Votando por la resp ", id_resp, " de la pregunta ", id_preg);
         await this.votarRespuestaSC(id_preg, id_resp);
         this.refresh.emit();
-      const respWin = this.pastEventsFinalVotacion('FinalVotacion', id_preg, pregunta.autor, this.blockNumber);
+      const respWin = await this.pastEventsFinalVotacion('FinalVotacion', id_preg, pregunta.autor, this.blockNumber);
+      if (respWin.length > 0) {
+        this.updVotoBackend(id_preg, id_resp);
+      } else {
+        this.updEstadoPregBackend(id_preg, "anulada");
+      }
     } else if (pregunta.estado == 1 && (EsAutorResp || !noHaVotado)) {
        console.log("La pregunta", id_preg, " está en estado 'votando', pero este usuario no puede votarla.");
     } else if(estado_actual_preg=="Consulta.") {

@@ -2,7 +2,7 @@
 
         <button mat-raised-button color="primary" (click)="insResp()">INSERTAR Respuestas</button><br>
         <button mat-raised-button color="primary" (click)="numActualResps()">TOTAL de Respuestas</button>-->
-        
+       
       <table width="100%">
         @for (item of listaResp; track item) {
             <tr>
@@ -11,7 +11,7 @@
                   <div [ngClass]="item.ganadora == true ? 'textEnunciado ganadora' : 'textEnunciado'">{{item.enunciado}}</div>
                 </td> 
                 <td width="10%" class="tdRespAutor">{{item.email}}</td>
-                <td width="8px"><div class="tdRespVotosValor">{{item.votos}} votos</div></td>
+                <td width="8px"><div class="tdRespVotosValor">{{item.votos}} {{idiomaSel.m37}}</div></td>
                 @if(estado_actual=="votando"){
                     <td class="tdVotarButton">
                       <div>
@@ -22,11 +22,6 @@
                       </div>
                     </td>
                 }
-                <!--
-                @if(estado_actual=="consulta"){
-                  <td><button (click)="updRespGanadorasPreg(item.id_preg)">Won</button></td>
-              }-->
             </tr>
-            
         }
     </table>

@@ -46,7 +46,7 @@ export class PreguntaComponent {
   @Input()
   metamask: any = false;
 
-  idiomaSelPreg: any;
+  
   imgBote = "bote.gif";
   bote: any = 0;
   boteETH: any = 0;
@@ -97,7 +97,7 @@ export class PreguntaComponent {
   dialogRefResp: any;
   datos: any;
   missCupoResp: Boolean;
-
+  
   // Event variables
 
   eventPreguntaCreada: any;
@@ -112,11 +112,44 @@ export class PreguntaComponent {
   
 
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
-    this.idiomaSelPreg = this.idiomaSel;
-    this.missCupoResp= this.idiomaSelPreg.m27; 
+    //this.idiomaSelPreg = this.idiomaSel;
+    this.missCupoResp= this.idiomaSel.m27; 
         
   }
 
+ 
+  async linEstadoResp(id_preg:any,text:any,t:any,v:any) {
+    const id = 'LineaEstado_' + id_preg.toString();
+    let d = document.getElementById(id);
+    if (d != undefined) {
+      //d.style.backgroundColor = "black";
+      //d.style.color ="red";
+      d.style.visibility = v;
+      d.innerText = text;
+      console.log(d);
+      this.espera(t);
+    }
+    console.log(id,text,d);
+  }
+  
+  linEstadoPreg(text: any, t: any, v: any) {
+    const id = 'LineaEstado_1';
+    let d = document.getElementById(id);
+    if (d != undefined) {
+      //d.style.backgroundColor = "black";
+      //d.style.color ="red";
+      d.style.visibility = v;
+      d.innerText = text;
+      console.log(id, text, d);
+      this.espera(t);
+    }
+
+   }
+
+  async espera(secs:any) {
+    const wait = (t: any) => new Promise((resolve, reject) => setTimeout(resolve, t));
+    const myFunc = async () => { const wait2sec = await wait(secs) }
+}
 
 secondsToDhms(seconds:any) {
 seconds = Number(seconds);
@@ -154,7 +187,7 @@ async consultaVariables() {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-    this.idiomaSelPreg = this.idiomaSel;
+    //this.idiomaSelPreg = this.idiomaSel;
 
     const firebaseConfig = {
           apiKey: "AIzaSyAHz9zSUk258f3CyoMA2cvE8Kf2BnF442c",
@@ -241,31 +274,36 @@ async creaPreguntaSC(enunciado:any, recompensa:any) {
     }
   console.log(rawData);
   var signed: any;
-    if (this.metamask) {
-      this.web3obj.eth.sendTransaction(rawData).then(
+  if (this.metamask) {
+    this.linEstadoPreg("Enviada Tx para crear la pregunta ...", 3000, 'visible');
+    this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           console.log("receipt-CrearPregunta: ",receipt);
-          this.lastTransaction = receipt;
           const idp = this.pastEventsPreguntaCreada('PreguntaCreada', this.wallet.address, receipt.blockNumber);
           idp.then((valor: any) => {
             console.log(valor);
-            this.insertaPregunta(valor,enunciado, recompensa, receipt.blockNumber, receipt.transactionIndex);
+            this.linEstadoPreg("Tx exitosa ...", 3000, 'visible');
+            this.insertaPregunta(valor, enunciado, recompensa, receipt.blockNumber, receipt.transactionIndex);
+            
           });
           },
           (error: any) => {
-              console.log(error)
+            console.log(error);
+            this.linEstadoPreg("Error en Tx", 3000, 'visible');
           }
       );
      }
     else {
-      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+    signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+    this.linEstadoPreg("Enviada Tx para crear la pregunta ...",3000,'visible');
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
           console.log("Receipt: ", receipt);
           const idp = this.pastEventsPreguntaCreada('PreguntaCreada', this.wallet.address, receipt.blockNumber);
           idp.then((valor: any) => {
             console.log(valor);
-            this.insertaPregunta(valor,enunciado, recompensa, receipt.blockNumber, receipt.transactionIndex);
+            this.insertaPregunta(valor, enunciado, recompensa, receipt.blockNumber, receipt.transactionIndex);
+            this.linEstadoPreg("Tx exitosa ...",2000,'visible');
           });
           },
         (error: any) => {
@@ -298,7 +336,6 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
         idioma: "es",
         recompensa: Number(recompensa),
         email: window.localStorage.getItem('esbrinaUserMail'),
-        order: Date.now()
       };
     console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
     await addDoc(collection(this.db, "Pregs"), prg);
@@ -327,33 +364,41 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
     //console.log(rawData);
     var signed: any;
     if (this.metamask) {
+      this.linEstadoResp(id_preg,"Enviando Tx para crear la respuesta ...",1000,'visible');
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
-          console.log("Receipt-Respuesta: ",receipt);
+          console.log("Receipt-Respuesta: ", receipt);
+          this.linEstadoResp(id_preg,"Enviada Tx para crear la respuesta ...",10000,'visible');
           const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
           id_resp.then((valor: any) => {
             console.log("id_resp: ", valor);
             this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+            this.linEstadoResp(id_preg,"Tx exitosa ...",10000,'visible');
            });
           },
           (error: any) => {
-              console.log(error)
+            console.log(error)
+            this.linEstadoResp(id_preg,"Error o cancelación de Tx ...",10000,'visible');
           }
       );
      }
     else {
       signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+      this.linEstadoResp(id_preg,"Enviando Tx para crear la respuesta ...",1000,'visible');
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
-          console.log("Receipt-Respuesta: ",receipt);
+          console.log("Receipt-Respuesta: ", receipt);
+          this.linEstadoResp(id_preg,"Enviada Tx para crear la respuesta ...",8000,'visible');
           const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
           id_resp.then((valor: any) => {
             console.log("id_resp: ", valor);
             this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+            this.linEstadoResp(id_preg,"Tx exitosa ...",10000,'visible');
            });
           },
         (error: any) => {
           console.log(error);
+          this.linEstadoResp(id_preg,"Error o cancelación de Tx ...",10000,'visible');
           const resps = this.contract.methods.calcResAPreg(id_preg).call();
           console.log("resps", resps);
           //console.log(resps[resps.height-1]);
@@ -467,6 +512,11 @@ async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber
         }
       });
     } else {
+      if (usarDialog) {
+        this.linEstadoResp(idPreg, "Este usuario ha respondido anteriormente a esta pregunta...", 3000,'visible');
+      }
+      if (!noAutorPreg) this.linEstadoResp(idPreg, "Este usuario es el autor de esta pregunta...", 3000,'visible');
+      if (estado_actual!='Abierta.') this.linEstadoResp(idPreg, "Esta pregunta no está abierta para responder...", 3000,'visible');
       console.log("Ya se ha respondido la pregunta: ", usarDialog,
         "\nEs autor de la pregunta: ", !noAutorPreg,
         "\nSolo la combinación 'false', 'false' permite responder.",
@@ -512,9 +562,13 @@ creaPregunta() {
         toBlock: block
       },
       function (error: any, events: any) { console.log(events); }).then(function (events: any) {
-        console.log("Event PreguntaCreada: " ,events);
-        //console.log("Param: ", events[0].returnValues._id_preg);
-        return events[0].returnValues._id_preg;
+        console.log("Event PreguntaCreada: ",events);
+        if (events.length > 0) {
+          //console.log("Param: ", events[0].returnValues._id_preg);
+          return events[0].returnValues._id_preg;
+        } else {
+          return events.length;
+        }
       });
     
     return idp;
@@ -533,11 +587,14 @@ creaPregunta() {
         toBlock: block
       },
       function (error: any, events: any) { console.log(events); }).then(function (events: any) {
-        console.log(events);
-        //console.log("Param: ", events[0].returnValues._id_preg);
-        return events[0].returnValues.id_resp;
+        console.log("Event RespuestaCreada: ",events);
+        if (events.length > 0) {
+          //console.log("Param: ", events[0].returnValues.id_resp);
+          return events[0].returnValues.id_resp;
+        } else {
+          return events.length;
+        }
       });
-    
     return respId;
   } 
   
@@ -669,7 +726,7 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
         var rawData = {
           from: this.wallet.address, // admin (address generada con la semilla facilitada).
           to: this.contract_address,  
-          value: valorPago+1,
+          value: valorPago,
           gasPrice: this.web3obj.utils.toHex(gasPrice),
           gasLimit: this.web3obj.utils.toHex(gasEstimated),
           //gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
@@ -683,10 +740,12 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
           this.web3obj.eth.sendTransaction(rawData).then(
             (receipt: any) => {
               console.log("Receipt-Consulta-Resposta + votada: ", receipt);
+              this.linEstadoResp(id_preg,"Efectuando pago por consulta ...",2000,'visible');
               this.updRespGanadorasPreg(id_preg);
               },
               (error: any) => {
-                  console.log("Error pago por consulta",error)
+                console.log("Error pago por consulta", error);
+                this.linEstadoResp(id_preg,"Error o cancelación de Tx ...",2000,'visible');
               }
           );
           }
@@ -695,10 +754,12 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
           this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
             (receipt: any) => {
               console.log("Receipt-Consulta-Resposta + votada: ", receipt);
+              this.linEstadoResp(id_preg,"Efectuando pago por consulta ...",2000,'visible');
               this.updRespGanadorasPreg(id_preg);
               },
             (error: any) => {
-              console.log("Error pago por consulta",error);
+              console.log("Error pago por consulta", error);
+              this.linEstadoResp(id_preg,"Error o cancelación de Tx ...",2000,'visible');
               }
           ); 
         }

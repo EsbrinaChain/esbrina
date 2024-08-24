@@ -31,8 +31,14 @@ export const es = {
     m30: "Coste 50%",
     m31: "Solución",
     m32: "(excepto autor)",
-    m33: "",
-    m34: ""
+    m33: "Tiempo de Respuesta",
+    m34: "Período de Votación ",
+    m35: "Cupo de Respuestas",
+    m36: "Bote acumulado",
+    m37: "votos",
+    m38: "",
+    m39: "",
+    m40: "",
 };
 
 export const en = {
@@ -66,10 +72,16 @@ export const en = {
     m28: "To Vote",
     m29: "Most recent data",
     m30: "Cost 50%",
-    m31: "(not owner)",
-    m32: "",
-    m33: "",
-    m34: ""
+    m31: "Solution",
+    m32: "(except owner",
+    m33: "Response Time",
+    m34: "Voting Period",
+    m35: "Response Quota",
+    m36: "Progressive Jackpot",
+    m37: "votes",
+    m38: "",
+    m39: "",
+    m40: ""
 };
 
 export const cat = {
@@ -105,7 +117,13 @@ export const cat = {
     m30: "Cost 50%",
     m31: "Solució",
     m32: "(no autor)",
-    m33: "",
-    m34: ""
+    m33: "Temps de Resposta",
+    m34: "Període de Votació",
+    m35: "Quota de Respostes",
+    m36: "Pot acumulat",
+    m37: "vots",
+    m38: "",
+    m39: "",
+    m40: ""
 };
 
