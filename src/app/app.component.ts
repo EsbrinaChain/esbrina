@@ -1,6 +1,6 @@
 import { Component, Inject, ViewChild, OnInit } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
 import { FormBuilder,FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { es, en, cat} from "./idioma";
 import {MatSelectModule} from '@angular/material/select';
@@ -24,7 +24,7 @@ import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth"
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, FormsModule,ReactiveFormsModule, 
+  imports: [CommonModule, RouterOutlet, RouterLink, RouterModule,FormsModule,ReactiveFormsModule, 
     MatSelectModule, MatFormFieldModule, MatToolbarModule,
     MatSidenavModule, MatIconModule, MatMenuModule, MatListModule,
     WalletInComponent, RegistrarComponent, PreguntaComponent],
@@ -48,6 +48,7 @@ export class AppComponent implements OnInit{
   loginShow = true;
   registrarShow = false;
   regUser = true;
+  std: any = false;
   imgLogoFile: string = "Logo-3.png";
   window: any;
   esbrinaUser: string="";
@@ -67,9 +68,6 @@ export class AppComponent implements OnInit{
   db: any;
   regForm: any;
  
- 
-
-  
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView;
     this.regForm = formBuilder.group({
@@ -86,7 +84,9 @@ export class AppComponent implements OnInit{
     //console.log("altaUser: ",this.UsuariosEsb?.altaUser);
     
   }
-  
+  spss() {
+    this.std = !this.std;
+  }
   ngOnInit() {
     const firebaseConfig = {
           apiKey: "AIzaSyAHz9zSUk258f3CyoMA2cvE8Kf2BnF442c",

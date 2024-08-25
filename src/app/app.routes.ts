@@ -5,6 +5,7 @@ import { es } from './idioma';
 import { PreguntaComponent } from './pregunta/pregunta.component';
 import { AppComponent } from './app.component';
 
+
 export const routes: Routes = [
     {
     path: "registro",

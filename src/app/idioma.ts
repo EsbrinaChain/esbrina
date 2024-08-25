@@ -36,7 +36,7 @@ export const es = {
     m35: "Cupo de Respuestas",
     m36: "Bote acumulado",
     m37: "votos",
-    m38: "",
+    m38: "Reputación en el Sistema",
     m39: "",
     m40: "",
 };
@@ -79,7 +79,7 @@ export const en = {
     m35: "Response Quota",
     m36: "Progressive Jackpot",
     m37: "votes",
-    m38: "",
+    m38: "Reputation on the System",
     m39: "",
     m40: ""
 };
@@ -122,7 +122,7 @@ export const cat = {
     m35: "Quota de Respostes",
     m36: "Pot acumulat",
     m37: "vots",
-    m38: "",
+    m38: "Reputació al Sistema",
     m39: "",
     m40: ""
 };

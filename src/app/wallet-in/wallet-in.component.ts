@@ -34,10 +34,10 @@ import { PreguntaComponent } from "../pregunta/pregunta.component";
 
 export class WalletInComponent {
   @Input()
-  idiomaSel: any=es;
+    idiomaSel: any = es;
       
     // Variables
-  
+ 
   accountIndex: string ="0";
   title = 'esbrina';
   imgLogoFile: string = "Logo-3.png";

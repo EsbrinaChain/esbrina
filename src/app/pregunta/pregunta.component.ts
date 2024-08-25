@@ -20,10 +20,9 @@ import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
 import { ABI } from '../esbrinachain';
 import { GetPregComponent } from '../get-preg/get-preg.component';
 import { GetRespComponent } from '../get-resp/get-resp.component';
-import { intToHex } from '@ethereumjs/util';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AnyARecord } from 'dns';
+import { PrestigioComponent } from '../prestigio/prestigio.component';
 
 
 @Component({
@@ -46,7 +45,6 @@ export class PreguntaComponent {
   @Input()
   metamask: any = false;
 
-  
   imgBote = "bote.gif";
   bote: any = 0;
   boteETH: any = 0;
@@ -113,8 +111,8 @@ export class PreguntaComponent {
 
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
     //this.idiomaSelPreg = this.idiomaSel;
-    this.missCupoResp= this.idiomaSel.m27; 
-        
+    this.missCupoResp = this.idiomaSel.m27; 
+            
   }
 
  
@@ -344,6 +342,22 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
   }
     
 }
+async updEstadoPregBackend(id_preg: any, estado_actual: any) {
+    const queryPreg = query(collection(this.db, '/Pregs'), where("idp","==",Number(id_preg)));
+    const usSnapshot = await getDocs(queryPreg);
+    
+    const id = usSnapshot.docs.map(doc => doc.ref.id);
+    const item = doc(this.db, "Pregs", id[0]);
+    let docSnap = await getDoc(item);
+    let updData: any; 
+    if (docSnap.exists()) {
+      updData = docSnap.data();
+      updData.estado = estado_actual;
+      await setDoc(item, updData);
+      console.log("La pregunta ", id_preg, " ha cambiado a estado", updData.estado);
+      this.conPregsQuery();
+    }
+  }
   async creaRespuestaSC(id_preg: any, enunciado_resp: any,blockNumber:any,transactionIndex:any) {
     const email = window.localStorage.getItem('esbrinaUserMail');
     const gasPrice = await this.web3obj.eth.getGasPrice();
@@ -368,17 +382,36 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           console.log("Receipt-Respuesta: ", receipt);
-          this.linEstadoResp(id_preg,"Enviada Tx para crear la respuesta ...",10000,'visible');
+          this.linEstadoResp(id_preg, "Enviada Tx para crear la respuesta ...", 10000, 'visible');
           const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
           id_resp.then((valor: any) => {
-            console.log("id_resp: ", valor);
-            this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
-            this.linEstadoResp(id_preg,"Tx exitosa ...",10000,'visible');
-           });
+              if (valor > 0) {
+                console.log("id_resp: ", valor);
+                this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+                this.linEstadoResp(id_preg, "Tx exitosa ...", 10000, 'visible');
+              }
+              else {
+                const preg_estado = this.contract.methods.estadoPreg(id_preg).call()
+                  .then((estado: any) => {
+                  console.log("La respuesta ha devuelto valor", valor," y el estado de la pregunta es ", estado);
+                  if (estado == "Anulada.") {
+                    this.updEstadoPregBackend(id_preg, "anulada");
+                    //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+                    console.log("Datos de pregunta actualizados en el backend.");
+                  } else if (estado == "Votando.") {
+                    this.updEstadoPregBackend(id_preg, "votando");
+                    //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+                    console.log("Datos de pregunta actualizados en el backend.");
+                  }
+                  
+                });
+              }
+            });    
           },
           (error: any) => {
             console.log(error)
-            this.linEstadoResp(id_preg,"Error o cancelación de Tx ...",10000,'visible');
+            this.linEstadoResp(id_preg, "Error o cancelación de Tx ...", 10000, 'visible');
+            this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
           }
       );
      }
@@ -391,18 +424,32 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
           this.linEstadoResp(id_preg,"Enviada Tx para crear la respuesta ...",8000,'visible');
           const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
           id_resp.then((valor: any) => {
-            console.log("id_resp: ", valor);
-            this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
-            this.linEstadoResp(id_preg,"Tx exitosa ...",10000,'visible');
-           });
+              if (valor > 0) {
+                console.log("id_resp: ", valor);
+                this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+                this.linEstadoResp(id_preg, "Tx exitosa ...", 10000, 'visible');
+              }
+              else {
+                const preg_estado = this.contract.methods.estadoPreg(id_preg).call().then((estado: any) => {
+                  console.log("La respuesta ha devuelto valor", valor," y el estado de la pregunta es ", estado);
+                  if (estado == "Anulada.") {
+                    this.updEstadoPregBackend(id_preg, "anulada");
+                    //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+                    console.log("Datos de pregunta actualizados en el backend.");
+                  } else if (estado == "Votando.") {
+                    this.updEstadoPregBackend(id_preg, "votando");
+                    //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+                    console.log("Datos de pregunta actualizados en el backend.");
+                  }
+                });
+              }
+            });
           },
         (error: any) => {
           console.log(error);
           this.linEstadoResp(id_preg,"Error o cancelación de Tx ...",10000,'visible');
-          const resps = this.contract.methods.calcResAPreg(id_preg).call();
-          console.log("resps", resps);
-          //console.log(resps[resps.height-1]);
-          //this.insertaRespuesta(resps[resps.height-1], id_preg, enunciado_resp, blockNumber, transactionIndex);
+          this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+          
           }
       ); 
     }
@@ -543,6 +590,19 @@ showDialog(){
   });
   }
 
+showDialogEstadisticas(){
+  const stdWindow = new MatDialogConfig();
+  stdWindow.width = '70%';
+  stdWindow.autoFocus = true;
+  stdWindow.data = { usr_addr: ''};
+  this.dialogRef = this.matDialog.open(PrestigioComponent, stdWindow);
+  this.datos = this.dialogRef.afterClosed().subscribe((result: any) => {
+    if (result !== undefined){
+      //
+  }
+  });
+  }
+
 ////////////// revisar si usar ///
 creaPregunta() {
   let novaPreg:any = { };
@@ -592,6 +652,7 @@ creaPregunta() {
           //console.log("Param: ", events[0].returnValues.id_resp);
           return events[0].returnValues.id_resp;
         } else {
+          console.log("La respuesta es: ", events.length);
           return events.length;
         }
       });
@@ -665,7 +726,9 @@ creaPregunta() {
   }
 
 async actualizaListaPregs() {
-    this.conPregsQuery();
+  this.conPregsQuery();
+  this.consultaVariables();
+  this.getBote();
 }
 
 async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
