@@ -29,7 +29,7 @@ export const es = {
     m28: "Votar",
     m29: "Datos más recientes",
     m30: "Coste 50%",
-    m31: "Solución",
+    m31: "Ver\nSolución",
     m32: "(excepto autor)",
     m33: "Tiempo de Respuesta",
     m34: "Período de Votación ",
@@ -37,8 +37,8 @@ export const es = {
     m36: "Bote acumulado",
     m37: "votos",
     m38: "Reputación en el Sistema",
-    m39: "",
-    m40: "",
+    m39: "Usuario",
+    m40: "Reputación",
 };
 
 export const en = {
@@ -72,7 +72,7 @@ export const en = {
     m28: "To Vote",
     m29: "Most recent data",
     m30: "Cost 50%",
-    m31: "Solution",
+    m31: "Show\nSolution",
     m32: "(except owner",
     m33: "Response Time",
     m34: "Voting Period",
@@ -80,8 +80,8 @@ export const en = {
     m36: "Progressive Jackpot",
     m37: "votes",
     m38: "Reputation on the System",
-    m39: "",
-    m40: ""
+    m39: "User",
+    m40: "Reputation"
 };
 
 export const cat = {
@@ -115,7 +115,7 @@ export const cat = {
     m28: "Votar",
     m29: "Dades més recents",
     m30: "Cost 50%",
-    m31: "Solució",
+    m31: "Veure\nSolució",
     m32: "(no autor)",
     m33: "Temps de Resposta",
     m34: "Període de Votació",
@@ -123,7 +123,7 @@ export const cat = {
     m36: "Pot acumulat",
     m37: "vots",
     m38: "Reputació al Sistema",
-    m39: "",
-    m40: ""
+    m39: "Usuari",
+    m40: "Reputació"
 };
 

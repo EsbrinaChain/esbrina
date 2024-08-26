@@ -40,4 +40,9 @@ esbrinaUser: U2FsdGVkX19EKIH90PjZ26w7vzmepyjfxqT2CXA8OJtGRKLNc6gGYlHlQoW4wi57
 seeds: U2FsdGVkX19XSjmB3wchrgvJ3fCfqWN4rCnWhOUTJowDZBz4MtZ/aPtutjeTHjtlHmPJQfYX1ugnWra73rvVBx/TQBDaw04HaJtOMo+ke9mQ9NFeEl8v2yUzxmSqlfIR
 wallet address: 0xf562c02033df4b174885d8c7678dc1489340f6d9
 
+Perfil UOC - user5@gmail.com
+seed: voyage broom chicken assault cruel tower rice network mountain cram wage load
+pass: Esbrinachain1;_.
+address: 0xF985206F62eEE19DC6EB26b669600a4D6A2E1e78
+
  

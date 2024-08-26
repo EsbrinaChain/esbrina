@@ -11,6 +11,8 @@ import detectEthereumProvider from '@metamask/detect-provider';
 
 import { PreguntaComponent } from "../pregunta/pregunta.component";
 import { ABI } from '../esbrinachain';
+//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+import {firebaseConfig,providerETH, contract_address } from '../firestore2';
 
 import Web3  from 'web3';
 
@@ -49,12 +51,7 @@ export class RegistrarComponent {
   web3: any;
   userDefined: any;
   contract: any;
-  // Sepolia contract
-  contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
-
-  // Ganache contract
-  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
-  
+ 
 
   // Variable de S.C.
   tiempo_votacion: any;
@@ -147,7 +144,7 @@ export class RegistrarComponent {
       this.web3.eth.defaultAccount = this.wallet.address;
       console.log("Web3 Default account: ",this.web3.eth.defaultAccount);
       this.metamask = true;
-      this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+      this.contract = new this.web3.eth.Contract(ABI.default, contract_address);
       this.consultaVariables();
     }
   }

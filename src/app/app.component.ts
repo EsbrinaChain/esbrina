@@ -18,6 +18,8 @@ import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp,query, where, deleteDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+//import {firebaseConfig } from './firestore1';
+import {firebaseConfig } from './firestore2';
 
 
 
@@ -84,19 +86,8 @@ export class AppComponent implements OnInit{
     //console.log("altaUser: ",this.UsuariosEsb?.altaUser);
     
   }
-  spss() {
-    this.std = !this.std;
-  }
+  
   ngOnInit() {
-    const firebaseConfig = {
-          apiKey: "AIzaSyAHz9zSUk258f3CyoMA2cvE8Kf2BnF442c",
-          authDomain: "esbrinachain-777.firebaseapp.com",
-          projectId: "esbrinachain-777",
-          storageBucket: "esbrinachain-777.appspot.com",
-          messagingSenderId: "825098637790",
-          appId: "1:825098637790:web:1c3930b7e4033004c70d4f",
-          measurementId: "G-Y0VFSVPTBC"
-        };
         
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);

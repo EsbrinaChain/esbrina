@@ -11,6 +11,8 @@ import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { ABI } from '../esbrinachain';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+import {firebaseConfig,providerETH, contract_address } from '../firestore2';
 
 
 
@@ -51,19 +53,10 @@ export class RespuestaComponent {
   db: any;
   listaResp: any;
   total_resp: any;
+  contract: any;
 
   // Event variables
   eventFinalVotacion: any;
-  
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
-  //providerETH = 'https://rpc2.sepolia.org';
-  contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
-  
-   
-  contract: any;
-  //providerETH = 'http://127.0.0.1:7545/';
-  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
   
 
   constructor() {
@@ -71,23 +64,10 @@ export class RespuestaComponent {
   }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    
-
-    const firebaseConfig = {
-          apiKey: "AIzaSyAHz9zSUk258f3CyoMA2cvE8Kf2BnF442c",
-          authDomain: "esbrinachain-777.firebaseapp.com",
-          projectId: "esbrinachain-777",
-          storageBucket: "esbrinachain-777.appspot.com",
-          messagingSenderId: "825098637790",
-          appId: "1:825098637790:web:1c3930b7e4033004c70d4f",
-          measurementId: "G-Y0VFSVPTBC"
-        };
         
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
-    this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
+    this.contract = new this.web3obj.eth.Contract(ABI.default, contract_address);
     
   }
   
@@ -114,7 +94,7 @@ export class RespuestaComponent {
     console.log("Gas Estimated",gasEstimatedResp);
     var rawData = {
       from: this.wallet.address, 
-      to: this.contract_address,  
+      to: contract_address,  
       value: 0,
       gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),// tests 50070176532n  46790342006n
       gasLimit: this.web3obj.utils.toHex(1000000),
@@ -125,10 +105,25 @@ export class RespuestaComponent {
     
     var signed: any;
     if (this.metamask) {
+      const respActual1 = await this.contract.methods.preg_resp(id_preg, id_resp).call();
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           console.log("Transacción de Voto: ", receipt);
-          //this.updVotoBackend(id_preg, id_resp);
+          const respActual2 = this.contract.methods.preg_resp(id_preg, id_resp).call();
+          if (respActual1.votos == respActual2.votos) {
+            const pregunta = this.contract.methods.preguntas(id_preg).call();
+            
+            if (pregunta.estado == 2) {
+              console.log("Se ha intentado votar y la pregunta ha cambiado ha estado 'consulta'");
+              this.updEstadoPregBackend(id_preg, "consulta");
+            }
+            if (pregunta.estado == 3) {
+              this.updEstadoPregBackend(id_preg, "anulada");
+            }
+          }
+          else {
+            this.updVotoBackend(id_preg, id_resp);
+          }
           this.lastTransaction = receipt;
           },
           (error: any) => {
@@ -137,11 +132,25 @@ export class RespuestaComponent {
       );
      }
     else {
+      const respActual1 = await this.contract.methods.preg_resp(id_preg, id_resp).call();
       signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
       this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
         (receipt: any) => {
           console.log("Transacción de Voto: ", receipt);
-          //this.updVotoBackend(id_preg, id_resp);
+          const respActual2 = this.contract.methods.preg_resp(id_preg, id_resp).call();
+          if (respActual1.votos == respActual2.votos) {
+            const pregunta = this.contract.methods.preguntas(id_preg).call();
+            if (pregunta.estado == 2) {
+              console.log("Se ha intentado votar y la pregunta ha cambiado ha estado 'consulta'");
+              this.updEstadoPregBackend(id_preg, "consulta");
+            }
+            if (pregunta.estado == 3) {
+              this.updEstadoPregBackend(id_preg, "anulada");
+            }
+          }
+          else {
+            this.updVotoBackend(id_preg, id_resp);
+          }
           this.lastTransaction = receipt;
           },
           (error: any) => {
@@ -183,6 +192,7 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     updData.votos += 1;
     console.log("updData: ", updData);
     await setDoc(item, updData);
+    this.refresh.emit();
   }
 }
   
@@ -201,12 +211,6 @@ async updVotoBackend(id_preg: any, id_resp: any) {
       console.log("Votando por la resp ", id_resp, " de la pregunta ", id_preg);
         await this.votarRespuestaSC(id_preg, id_resp);
         this.refresh.emit();
-      const respWin = await this.pastEventsFinalVotacion('FinalVotacion', id_preg, pregunta.autor, this.blockNumber);
-      if (respWin.length > 0) {
-        this.updVotoBackend(id_preg, id_resp);
-      } else {
-        this.updEstadoPregBackend(id_preg, "anulada");
-      }
     } else if (pregunta.estado == 1 && (EsAutorResp || !noHaVotado)) {
        console.log("La pregunta", id_preg, " está en estado 'votando', pero este usuario no puede votarla.");
     } else if(estado_actual_preg=="Consulta.") {
@@ -230,6 +234,7 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     if (docSnap.exists()) {
       updData = docSnap.data();
       updData.estado = estado_actual;
+      if(estado_actual == 'anulada') updData.anulada = true;
       await setDoc(item, updData);
       console.log("La pregunta ", id_preg, " ha cambiado a estado", updData.estado);
       this.refresh.emit();

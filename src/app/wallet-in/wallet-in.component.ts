@@ -7,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ABI } from '../esbrinachain';
+//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+import {firebaseConfig,providerETH, contract_address } from '../firestore2';
+
 
 
 // Librerias de Ethereum y DApp
@@ -60,16 +63,8 @@ export class WalletInComponent {
   web3: any;
   provider: any;
   userDefined: any;
-    //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-    providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
-  //providerETH = 'https://rpc2.sepolia.org';
-  contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";  
-  
    
   contract: any;
-  //providerETH = 'http://127.0.0.1:7545/';
-  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
-    
       
   // Variable de S.C.
   tiempo_votacion: any;
@@ -139,16 +134,16 @@ export class WalletInComponent {
     console.log("Wallet Address: ",this.wallet.address);
     this.metamask = false;
     
-    this.web3 = new Web3(this.providerETH);      
+    this.web3 = new Web3(providerETH);      
     this.web3.eth.defaultAccount = this.wallet.address;
     var n = await this.web3.eth.getBalance(this.wallet.address);
     //console.log("BALANCE (wei): ", n);
     //console.log("BlockNumber: ", await this.getBlockN());
     //console.log("Balance: ", await this.getBalanceAddress(this.wallet.address));
     //console.log("Contrato:");
-    //this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
-    //console.log("contract_address:", this.contract_address);
-    this.contract = new this.web3.eth.Contract(ABI.default, this.contract_address);
+    //this.contract = new this.web3.eth.Contract(ABI.default, contract_address);
+    //console.log("contract_address:", contract_address);
+    this.contract = new this.web3.eth.Contract(ABI.default, contract_address);
     this.consultaVariables();
     
   }

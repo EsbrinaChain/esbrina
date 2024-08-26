@@ -23,6 +23,8 @@ import { GetRespComponent } from '../get-resp/get-resp.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrestigioComponent } from '../prestigio/prestigio.component';
+//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+import {firebaseConfig, providerETH, contract_address } from '../firestore2';
 
 
 @Component({
@@ -74,15 +76,9 @@ export class PreguntaComponent {
   
   provider: any;
   userDefined: any;
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
-
-  //providerETH = 'https://rpc2.sepolia.org';
-  contract_address: any = "0x91B2c03cc89626526c6f984EC7CADF45b404B31b";
-    
   contract: any;
-  //providerETH = 'http://127.0.0.1:7545/'; 
-  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
+
+
   
   
 
@@ -183,25 +179,12 @@ async consultaVariables() {
 }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    //this.idiomaSelPreg = this.idiomaSel;
-
-    const firebaseConfig = {
-          apiKey: "AIzaSyAHz9zSUk258f3CyoMA2cvE8Kf2BnF442c",
-          authDomain: "esbrinachain-777.firebaseapp.com",
-          projectId: "esbrinachain-777",
-          storageBucket: "esbrinachain-777.appspot.com",
-          messagingSenderId: "825098637790",
-          appId: "1:825098637790:web:1c3930b7e4033004c70d4f",
-          measurementId: "G-Y0VFSVPTBC"
-        };
-        
+       
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
     this.analytics = getAnalytics(this.app);
     this.web3 = this.web3obj;
-    this.contract = new this.web3obj.eth.Contract(ABI.default, this.contract_address);
+    this.contract = new this.web3obj.eth.Contract(ABI.default, contract_address);
     this.consultaVariables();
     setInterval(() => { this.conPregsQuery(); }, 30000);
     this.getBote()
@@ -242,7 +225,7 @@ async getBalanceAddress(address:any) {
 }
  
 async getBote() {
-  var valor = await this.web3obj.eth.getBalance(this.contract_address); 
+  var valor = await this.web3obj.eth.getBalance(contract_address); 
   var valorEther = this.web3obj.utils.fromWei(valor, 'ether');
   this.bote = valor;
   this.boteETH = valorEther;
@@ -261,7 +244,7 @@ async creaPreguntaSC(enunciado:any, recompensa:any) {
   console.log("Gas Estimated", gasEstimated);
   var rawData = {
       from: this.wallet.address, // admin (address generada con la semilla facilitada).
-      to: this.contract_address,  
+      to: contract_address,  
       value: Number(recompensa),
       //gasPrice: this.web3obj.utils.toHex(10000000000),
       //gasLimit: this.web3obj.utils.toHex(10000000),
@@ -366,7 +349,7 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     console.log("Gas Estimated",gasEstimated);
    var rawData = {
       from: this.wallet.address, // admin (address generada con la semilla facilitada).
-      to: this.contract_address,  
+      to: contract_address,  
       value: 0,
       //gasPrice: this.web3obj.utils.toHex(gasPrice * BigInt(2)),
       //gasLimit: this.web3obj.utils.toHex(gasEstimated),
@@ -515,6 +498,7 @@ async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber
       if (f_vot != 0) { prg['fecha_votacion'] = this.fechaUnixToDDMMAAAA(f_vot); }
       //console.log("prg después: ", prg);
       await setDoc(item, prg);
+      this.conPregsQuery();
     } 
   }
   
@@ -541,8 +525,7 @@ async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber
     const usarDialog = await this.haRespondido(idPreg);
     let noAutorPreg = false;
     const pregunta = await this.contract.methods.preguntas(idPreg).call();
-    //if (window.localStorage.getItem('esbrinaUserMail') != email) noAutorPreg = true;
-    console.log(pregunta.autor.toLowerCase(), this.wallet.address.toLowerCase());
+    console.log("Autor pregunta en contrato (address): ",pregunta.autor.toLowerCase(), "\nUsuario (address)",this.wallet.address.toLowerCase());
     if (pregunta.autor.toLowerCase() != this.wallet.address.toLowerCase()) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
     const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
@@ -594,7 +577,11 @@ showDialogEstadisticas(){
   const stdWindow = new MatDialogConfig();
   stdWindow.width = '70%';
   stdWindow.autoFocus = true;
-  stdWindow.data = { usr_addr: ''};
+  stdWindow.data = {
+    wallet: this.wallet,
+    web3: this.web3obj,
+    contract_address: contract_address,
+  };
   this.dialogRef = this.matDialog.open(PrestigioComponent, stdWindow);
   this.datos = this.dialogRef.afterClosed().subscribe((result: any) => {
     if (result !== undefined){
@@ -746,6 +733,7 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
     updData.ganadora = valor;
     console.log("updData: ", updData);
     await setDoc(item, updData);
+    
   }
 }  
   async updRespGanadorasPreg(id_preg: any) {
@@ -758,16 +746,17 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
     for (let i = 1; i <= numRespPreg; i++){
       respActual = await this.contract.methods.preg_resp(id_preg, i).call();
       if (respActual.ganadora == true) {
-        ganadoras.push(respActual);
+        ganadoras.push(respActual.id_resp);
         this.updGanadoraBackend(id_preg, respActual.id_resp, true);
       }
     }
-    console.log(ganadoras);
+    console.log("Respuesta/s ganadora/s",ganadoras);
     this.conPregsQuery();
-    setTimeout(() => {
-      this.updGanadoraBackend(id_preg, respActual.id_resp, false);
-      this.conPregsQuery();
-     }, 15000);
+    setTimeout(() => { }, 15000);
+    for (let i = 0; i < ganadoras.length; i++){
+        this.updGanadoraBackend(id_preg, ganadoras[i], false);
+      }
+
   }
 
 
@@ -788,7 +777,7 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
       
         var rawData = {
           from: this.wallet.address, // admin (address generada con la semilla facilitada).
-          to: this.contract_address,  
+          to: contract_address,  
           value: valorPago,
           gasPrice: this.web3obj.utils.toHex(gasPrice),
           gasLimit: this.web3obj.utils.toHex(gasEstimated),
@@ -828,7 +817,7 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
         }
       
     } else {
-      // mostrar ganador sin coste
+      this.updRespGanadorasPreg(id_preg);
     }
 }
 
