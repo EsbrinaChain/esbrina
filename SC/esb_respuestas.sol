@@ -28,14 +28,14 @@ contract responder is preguntar{
     event PreguntaAnulada(uint indexed id_preg, string motivo);
 
     // Mira si un usuario a respondido ya a una pregunta
-    function calcAdrRespuestasAPregunta(uint id_preg, address _adr) internal view returns(bool _existe) {
+    function calcAdrRespuestasAPregunta(uint id_preg, address _adr) public view returns(bool _existe) {
         _existe = false;
         for(uint i=1; i <= pregNumResp[id_preg]; i++){
             if (preg_resp[id_preg][i].autor == _adr) _existe = true;
         }
     }
     // devuelve el conjunto de respuestas a una pregunta
-    function calcRespAPreg(uint id_preg) internal view returns(uint[] memory) {
+    function calcRespAPreg(uint id_preg) public view returns(uint[] memory) {
         uint[] memory _resp = new uint[](pregNumResp[id_preg]);
         for(uint i=1; i <= pregNumResp[id_preg]; i++){
             _resp[i-1] = preg_resp[id_preg][i].id_resp;

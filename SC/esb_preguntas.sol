@@ -62,6 +62,7 @@ contract preguntar is esbAdmin {
         preguntas[total_preg] = Pregunta(estado_preg.abierta, msg.value, 
                                          block.timestamp, 0, msg.sender, texto, false); 
         emit PreguntaCreada(total_preg, msg.sender);
+        
     }
     
     // Esta función permite a cualquier usuario incrementar el valor de la recompensa.
