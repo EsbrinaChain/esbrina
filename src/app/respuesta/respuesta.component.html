@@ -11,7 +11,9 @@
                   <div [ngClass]="item.ganadora == true ? 'textEnunciado ganadora' : 'textEnunciado'">{{item.enunciado}}</div>
                 </td> 
                 <td width="10%" class="tdRespAutor">{{item.email}}</td>
+                @if(estado_actual!="consulta"){
                 <td width="8px"><div class="tdRespVotosValor">{{item.votos}} {{idiomaSel.m37}}</div></td>
+                }
                 @if(estado_actual=="votando"){
                     <td class="tdVotarButton">
                       <div>

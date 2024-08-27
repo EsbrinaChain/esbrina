@@ -14,6 +14,7 @@ import { ABI } from '../esbrinachain';
 //import {firebaseConfig, providerETH, contract_address } from '../firestore1';
 import {firebaseConfig, providerETH, contract_address } from '../firestore2';
 import { createBrotliDecompress } from 'zlib';
+import * as util from '@ethereumjs/util';
 
 @Component({
   selector: 'app-prestigio',
@@ -54,7 +55,26 @@ export class PrestigioComponent {
     const usSnapshot = await getDocs(queryUsuarios);
     const lista_usuarios = usSnapshot.docs.map(doc => doc.data());
     const num_usuarios = usSnapshot.size;
-    this.lista_prestigio = lista_usuarios;
+    //console.log(lista_usuarios);
+    
+    
+    const adr:string = lista_usuarios[0]['wallet'];
+    console.log("Antes:\n",adr);
+    const rpSC = await this.contract.methods.votaciones(adr,1).call();
+    console.log("rpSC: ",rpSC)
+    
+/*
+    for (let k = 0; k < 1; k++){
+      console.log("K=", k, "    Wallet: ", lista_usuarios[k]['wallet']);
+      const adr = this.web3.utils.numberToHex()
+      const rpSC = await this.contract.methods.usuarios().call();
+      
+      console.log(rpSC);
+      //console.log("Wallet: ",lista_usuarios[k]['wallet'],"\nReputacion: ",lista_usuarios[k]['reputacion']);
+    }
+    
+    this.lista_prestigio = lista_usuarios;*/
+
   }
 
 

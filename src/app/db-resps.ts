@@ -21,7 +21,7 @@ export const resps: any = [
         email: "user3@gmail.com",
         id_resp: 3,
         id_preg: 1,
-        enunciado: "El color de los ojos de los delfines, va cambiando segun su edad. En la edad joven es azul claro, cuando llega a ser adulto tiene los ojos negros y cuando son viejos se les ponen los ojos de un gris oscuro.",
+        enunciado: "El color de los ojos de los delfines, va cambiando según su edad. En la edad joven es azul claro, cuando llega a ser adulto tiene los ojos negros y cuando son viejos se les ponen los ojos de un gris oscuro.",
         ganadora: false,
         votos: 0,
         anulada: false

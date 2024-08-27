@@ -377,35 +377,43 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     //console.log(rawData);
     var signed: any;
     if (this.metamask) {
-      this.linEstadoResp(id_preg,"Enviando Tx para crear la respuesta ...",1000,'visible');
+      this.linEstadoResp(id_preg,"Enviando Tx para crear la respuesta ...",1,'visible');
       this.web3obj.eth.sendTransaction(rawData).then(
         (receipt: any) => {
           console.log("Receipt-Respuesta: ", receipt);
-          this.linEstadoResp(id_preg, "Enviada Tx para crear la respuesta ...", 10000, 'visible');
-          const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
-          id_resp.then((valor: any) => {
-              if (valor > 0) {
-                console.log("id_resp: ", valor);
-                this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
-                this.linEstadoResp(id_preg, "Tx exitosa ...", 10000, 'visible');
-              }
-              else {
-                const preg_estado = this.contract.methods.estadoPreg(id_preg).call()
-                  .then((estado: any) => {
-                  console.log("La respuesta ha devuelto valor", valor," y el estado de la pregunta es ", estado);
-                  if (estado == "Anulada.") {
-                    this.updEstadoPregBackend(id_preg, "anulada");
-                    //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
-                    console.log("Datos de pregunta actualizados en el backend.");
-                  } else if (estado == "Votando.") {
-                    this.updEstadoPregBackend(id_preg, "votando");
-                    //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
-                    console.log("Datos de pregunta actualizados en el backend.");
+          try {
+                  const id_resp = this.pastEventsRespuestaCreada("RespuestaCreada", id_preg, this.wallet.address, receipt.blockNumber);
+                  console.log("id_resp: ", id_resp);
+                  id_resp.then((valor: any) => {
+                  if (valor > 0) {
+                    
+                    this.insertaRespuesta(valor, id_preg, enunciado_resp, blockNumber, transactionIndex);
+                    this.linEstadoResp(id_preg, "Tx exitosa ...", 10000, 'visible');
                   }
-                  
-                });
-              }
-            });    
+                  else {
+                    const preg_estado = this.contract.methods.estadoPreg(id_preg).call()
+                      .then((estado: any) => {
+                      console.log("La respuesta ha devuelto valor", valor," y el estado de la pregunta es ", estado);
+                      if (estado == "Anulada.") {
+                        this.updEstadoPregBackend(id_preg, "anulada");
+                        //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+                        console.log("Datos de pregunta actualizados en el backend.");
+                      } else if (estado == "Votando.") {
+                        this.updEstadoPregBackend(id_preg, "votando");
+                        //this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+                        console.log("Datos de pregunta actualizados en el backend.");
+                      }
+                      
+                    });
+                  }
+                }); 
+          }
+          catch(err) {
+            console.log(err);
+            this.linEstadoResp(id_preg, "Error o cancelación de Tx ...", 10000, 'visible');
+            this.actualizaDatosPregSC(blockNumber, transactionIndex, id_preg);
+          }
+             
           },
           (error: any) => {
             console.log(error)
@@ -518,23 +526,29 @@ async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber
     } 
   }
   
-  async actualizaDatosPregSC(blockNumber:any,transactionIndex:any,id_preg:any) {
-    this.datosActualizadosPregunta = await this.contract.methods.preguntas(Number(id_preg)).call();
-    //console.log("Datos leidos pregunta: ",id_preg, this.datosActualizadosPregunta);
-    const estado_blk = this.datosActualizadosPregunta.estado;
-    const estado_txt = (estado_blk == 0) ? "abierta" : (estado_blk == 1) ? "votando" : (estado_blk == 2) ? "consulta" : (estado_blk == 3) ? "anulada": undefined;
-    this.listaPregs[id_preg - 1].estado = estado_txt;
-    this.listaPregs[id_preg - 1].recompensa = this.datosActualizadosPregunta.recompensa;
-    if (this.datosActualizadosPregunta.fecha_votacion != 0) {
-      this.listaPregs[id_preg - 1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
-    }
-    this.updPregBackend(blockNumber,transactionIndex,id_preg,
-                        this.datosActualizadosPregunta.estado,
-                        this.datosActualizadosPregunta.recompensa,
-                        this.datosActualizadosPregunta.fecha_votacion);
-
-    
+async actualizaDatosPregSC(blockNumber: any, transactionIndex: any, id_preg: any) {
+  try {
+      this.datosActualizadosPregunta = await this.contract.methods.preguntas(Number(id_preg)).call();
+      //console.log("Datos leidos pregunta: ",id_preg, this.datosActualizadosPregunta);
+      const estado_blk = this.datosActualizadosPregunta.estado;
+      const estado_txt = (estado_blk == 0) ? "abierta" : (estado_blk == 1)
+                                           ? "votando" : (estado_blk == 2)
+                                           ? "consulta" : (estado_blk == 3)
+                                           ? "anulada" : undefined;
+      this.listaPregs[id_preg - 1].estado = estado_txt;
+      this.listaPregs[id_preg - 1].recompensa = this.datosActualizadosPregunta.recompensa;
+      if (this.datosActualizadosPregunta.fecha_votacion != 0) {
+        this.listaPregs[id_preg - 1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
+      }
+      this.updPregBackend(blockNumber,transactionIndex,id_preg,
+                          this.datosActualizadosPregunta.estado,
+                          this.datosActualizadosPregunta.recompensa,
+                          this.datosActualizadosPregunta.fecha_votacion);
+  
+  } catch (err) {
+    console.log(err);
   }
+}
 
   async dialogRespuesta(blockNumber:any,transactionIndex:any,idPreg: any, email: any) {
     this.actualizaDatosPregSC(blockNumber, transactionIndex, idPreg);
@@ -752,7 +766,8 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
     await setDoc(item, updData);
     
   }
-}  
+  }  
+  
   async updRespGanadorasPreg(id_preg: any) {
 
     const queryResps = query(collection(this.db, '/Resps'), where("id_preg", "==", id_preg), orderBy("id_resp", "asc"));
