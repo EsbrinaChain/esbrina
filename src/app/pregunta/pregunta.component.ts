@@ -591,12 +591,13 @@ showDialog(){
 
 showDialogEstadisticas(){
   const stdWindow = new MatDialogConfig();
-  stdWindow.width = '70%';
+  stdWindow.width = '40%';
   stdWindow.autoFocus = true;
   stdWindow.data = {
     wallet: this.wallet,
     web3: this.web3obj,
     contract_address: contract_address,
+    mail:window.localStorage.getItem('esbrinaUserMail'),
   };
   this.dialogRef = this.matDialog.open(PrestigioComponent, stdWindow);
   this.datos = this.dialogRef.afterClosed().subscribe((result: any) => {

@@ -7,13 +7,16 @@
             <table align="center">
                 <thead>
                         <tr>
-                            <th>Usuario</th>
+                            <th>Usuario:</th>
                             <th>Reputación</th>
                         </tr>
                 </thead>
                 <tbody>
                     @for (item of lista_prestigio; track item;){
-                        <tr><td>item.email</td><td>item.adr</td><td>item.prestigio</td></tr>
+                        <tr>
+                            <td [ngClass]="item.wallet == wallet.address ? 'textUser' : 'textMail'">{{item.email}}</td>
+                            <td class="textRep">{{item.reputacion}}</td>
+                        </tr>
                         }
                 </tbody>
             </table>

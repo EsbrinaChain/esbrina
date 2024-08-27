@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef, MatDialogModule, MatDialogContent, MatDialogActions, MatDialogClose, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +19,7 @@ import { createBrotliDecompress } from 'zlib';
   selector: 'app-prestigio',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, MatDialogContent, MatDialogActions, MatFormFieldModule,
-    MatButtonModule, MatDialogModule, MatInputModule,MatDialogClose],
+    MatButtonModule, MatDialogModule, MatInputModule,MatDialogClose, CommonModule],
   templateUrl: './prestigio.component.html',
   styleUrl: './prestigio.component.scss'
 })
@@ -32,6 +33,7 @@ export class PrestigioComponent {
   web3: any;
   contract: any;
   wallet: any;
+  
 
 
     constructor(private dialog: MatDialogRef<PrestigioComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -48,14 +50,11 @@ export class PrestigioComponent {
     }
   
   async muestra_reputacion() {
-    const queryUsuarios = query(collection(this.db, '/Pregs'),orderBy('blockNumber','asc'),orderBy('transactionIndex','asc'));
+    const queryUsuarios = query(collection(this.db, '/Usuarios'),orderBy('reputacion','asc'));
     const usSnapshot = await getDocs(queryUsuarios);
     const lista_usuarios = usSnapshot.docs.map(doc => doc.data());
     const num_usuarios = usSnapshot.size;
-    const total_usuarios = await this.contract.methods.total_usuarios().call();
-    for (let i = 0; i < total_usuarios; i++){
-      
-    }
+    this.lista_prestigio = lista_usuarios;
   }
 
 
