@@ -56,8 +56,8 @@ export class PreguntaComponent {
   analytics: any;
   listaPregs: any;
   totalPregs: any = 0;
-  listaPregs1: any;
-  totalPregs1: any;
+  listaUsuarios: any;
+  totalUsuarios: any;
   
   web3: any;
   balanceWalletAddress: any;
@@ -90,8 +90,7 @@ export class PreguntaComponent {
   dialogRef: any;
   dialogRefResp: any;
   datos: any;
-  missCupoResp: Boolean;
-  
+   
   // Event variables
 
   eventPreguntaCreada: any;
@@ -105,9 +104,10 @@ export class PreguntaComponent {
   eventFinalVotacion: any;
   
 
+  
+
   constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
-    //this.idiomaSelPreg = this.idiomaSel;
-    this.missCupoResp = this.idiomaSel.m27; 
+    
             
   }
 
@@ -178,18 +178,34 @@ async consultaVariables() {
   return  (ddChars[1]?dd:"0"+ddChars[0]) + '/' + (mmChars[1]?mm:"0"+mmChars[0]) + '/'  + yyyy;
 }
 
-  ngOnInit(): void {
-       
-    this.app = initializeApp(firebaseConfig);
-    this.db = getFirestore(this.app);
-    this.analytics = getAnalytics(this.app);
-    this.web3 = this.web3obj;
-    this.contract = new this.web3obj.eth.Contract(ABI.default, contract_address);
-    this.consultaVariables();
-    setInterval(() => { this.conPregsQuery(); }, 30000);
-    this.getBote()
-    
-  }
+async validaWalletBackend(adr: any) {
+  const email = window.localStorage.getItem('esbrinaUserMail');
+  const queryUsuarios = query(collection(this.db, '/Usuarios'),where('email','==',email));
+  const usSnapshot = await getDocs(queryUsuarios);
+  const id = usSnapshot.docs.map(doc => doc.ref.id);
+    const item = doc(this.db, "Usuarios", id[0]);
+    let docSnap = await getDoc(item);
+    let updData: any; 
+    if (docSnap.exists()) {
+      updData = docSnap.data();
+      if (updData.wallet.length == 0) updData.wallet = adr;
+      await setDoc(item, updData);
+      console.log("User ", email, " ha actualizado su address a ", updData.wallet);
+    }  
+}
+
+ngOnInit(): void {
+      
+  this.app = initializeApp(firebaseConfig);
+  this.db = getFirestore(this.app);
+  this.analytics = getAnalytics(this.app);
+  this.web3 = this.web3obj;
+  this.contract = new this.web3obj.eth.Contract(ABI.default, contract_address);
+  this.consultaVariables();
+  setInterval(() => { this.conPregsQuery(); }, 30000);
+  this.getBote();
+  this.validaWalletBackend(this.wallet.address);
+}
 
 convertDate(firebaseObject: any) {
     if (!firebaseObject) return null;

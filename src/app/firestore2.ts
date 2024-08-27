@@ -23,7 +23,7 @@ export const firebaseConfig = {
 //export const providerETH = 'https://rpc2.sepolia.org';
   
 export const providerETH ="https://sepolia.drpc.org";
-export const contract_address: any = "0xF480DA9830DCee7Ac72626047B923Fdfb0331f7d";
+export const contract_address: any = "0x5DFF20223e9F79eD7290Af9FCB24aC2Efb304d5E";
     
 
   //providerETH = 'http://127.0.0.1:7545/';

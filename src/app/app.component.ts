@@ -50,11 +50,11 @@ export class AppComponent implements OnInit{
   loginShow = true;
   registrarShow = false;
   regUser = true;
-  std: any = false;
   imgLogoFile: string = "Logo-3.png";
   window: any;
   esbrinaUser: string="";
   esbrinaUserMail: any;
+  resultado_insert: any;
 
   @ViewChild(WalletInComponent)
   WalletIn: WalletInComponent | undefined;
@@ -104,28 +104,37 @@ export class AppComponent implements OnInit{
     this.totalUsuarios = this.conTotalUsuarios();
     this.miraSiEsbrinaUser();
     console.log("userDefined: ", this.userDefined);
+    this.resultado_insert = "";
   }
 
   async insertaUsuarioID(email: any, pass: any, alias: any) {
-    const queryUsuarios = query(collection(this.db, '/Usuarios'));
+    const queryUsuarios = query(collection(this.db, '/Usuarios'),where("email","==",email));
     const usSnapshot = await getDocs(queryUsuarios);
-    
-    if(!this.userDefined){
-        await setDoc(doc(this.db, "Usuarios", (usSnapshot.size + 1).toString()),
-          {
-            aliase: alias,
-            email: email,
-            existe: true,
-            psw: pass,
-            reputacion: 0,
-            vetado: false,
-            creado: Timestamp.fromDate(new Date())
-          });
+    const existe = usSnapshot.docs.length;
+    this.resultado_insert = "";
+    if (!this.userDefined && existe == 0) {
+      this.totalUsuarios++;
+        
+      const usuario = {
+        id: this.totalUsuarios,
+        wallet: "",
+        aliase: alias,
+        email: email,
+        existe: true,
+        psw: pass,
+        reputacion: 0,
+        vetado: false,
+        creado: Timestamp.fromDate(new Date())
+      }
+      await addDoc(collection(this.db, "Usuarios"), usuario);
       this.window.localStorage.setItem('esbrinaUser', CryptoJS.AES.encrypt(email, pass));
       this.window.localStorage.setItem('esbrinaUserMail', email);
       this.userDefined = true;
       this.regUser = false;
-      
+    }
+    else {
+      console.log("El usuario ", email, " ya existe.");
+      this.resultado_insert = "El usuario '" + email +"' ya existe en el sistema. Por favor, utilice otra dirección de correo electrónico.";
     }
   }
 
@@ -168,7 +177,12 @@ export class AppComponent implements OnInit{
     });
   }
 
+  neteja() {
+    this.resultado_insert = "";
+  }
+
   testEmail() {
+    
     if (this.regForm.status == "INVALID") {
       this.emailIncorrecte = true;
     }

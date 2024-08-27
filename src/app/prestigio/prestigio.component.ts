@@ -12,6 +12,7 @@ import { addDoc, Timestamp, query, orderBy, where, and } from 'firebase/firestor
 import { ABI } from '../esbrinachain';
 //import {firebaseConfig, providerETH, contract_address } from '../firestore1';
 import {firebaseConfig, providerETH, contract_address } from '../firestore2';
+import { createBrotliDecompress } from 'zlib';
 
 @Component({
   selector: 'app-prestigio',
@@ -35,21 +36,33 @@ export class PrestigioComponent {
 
     constructor(private dialog: MatDialogRef<PrestigioComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
       
-    this.data_user = data;
+        this.data_user = data;
+        this.app = initializeApp(firebaseConfig);
+        this.db = getFirestore(this.app);
+        this.wallet = data.wallet;
+        this.web3 = data.web3;
+        this.contract = new data.web3.eth.Contract(ABI.default, data.contract_address);
     
-    this.app = initializeApp(firebaseConfig);
-    this.db = getFirestore(this.app);
-      this.wallet = data.wallet;
-    this.web3 = data.web3;
-    this.contract = new data.web3.eth.Contract(ABI.default, data.contract_address);
-    
-      console.log(this.wallet.address);
+        console.log(this.wallet.address);
 
     }
   
-  
+  async muestra_reputacion() {
+    const queryUsuarios = query(collection(this.db, '/Pregs'),orderBy('blockNumber','asc'),orderBy('transactionIndex','asc'));
+    const usSnapshot = await getDocs(queryUsuarios);
+    const lista_usuarios = usSnapshot.docs.map(doc => doc.data());
+    const num_usuarios = usSnapshot.size;
+    const total_usuarios = await this.contract.methods.total_usuarios().call();
+    for (let i = 0; i < total_usuarios; i++){
+      
+    }
+  }
+
+
   ngOnInit(): void {
-    
+    this.app = initializeApp(firebaseConfig);
+    this.db = getFirestore(this.app);
+    this.muestra_reputacion();
 
     
   }

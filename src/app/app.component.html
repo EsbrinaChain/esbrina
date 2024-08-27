@@ -23,7 +23,7 @@
         <h2 class="globalText">{{subtitle}}</h2>
     </div>
     <br>
-    @if(regUser && userDefined && !std){
+    @if(regUser && userDefined){
     <div class="centrado">
         <img class="imgLogo" src="./assets/logo/{{imgLogoFile}}" />
         <h4 class="usuarios_op">{{idioma_seleccionat.m22}}</h4>
@@ -31,13 +31,13 @@
         <button mat-raised-button color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>
     </div>
     }
-    @if(regUser && !userDefined && !std){
+    @if(regUser && !userDefined){
         <img class="imgLogo" src="./assets/logo/{{imgLogoFile}}" />      
         <div class="centrado">
             <span class="usuarios_num">Nº de usuarios actuales: {{totalUsuarios}}</span>
             <h4 class="usuarios_op">{{idioma_seleccionat.m18}}</h4>
             <form [formGroup]="regForm" (ngSubmit)="sendRegistro(regForm.value)">
-                <div><input id="n1" formControlName="email" size=30 type="email" (focusout)="testEmail()"
+                <div><input id="n1" formControlName="email" size=30 type="email" (focus)="neteja()" (focusout)="testEmail()"
                         (input)="emailIncorrecte=false" placeholder="{{idioma_seleccionat.m16}}" /></div>
                 @if(emailIncorrecte){
                 <br>
@@ -51,9 +51,10 @@
                     <button type="submit" mat-raised-button color="primary">{{idioma_seleccionat.m12}}</button>
                 </div>
             </form>
+            <table align="center"><tr><td align="center" class="resultado">{{resultado_insert}}</td></tr></table>
         
         </div>
-    }@else if (!regUser && userDefined && !std) {
+    }@else if (!regUser && userDefined) {
         <!--<img class="imgLogo" src="./assets/logo/Logo-4.jpg" />-->
         <app-wallet-in *ngIf="loginShow" [idiomaSel]="idioma_seleccionat"></app-wallet-in>
         <app-registrar *ngIf="registrarShow" [idiomaSel]="idioma_seleccionat"></app-registrar>
