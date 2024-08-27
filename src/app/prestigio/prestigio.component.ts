@@ -39,51 +39,18 @@ export class PrestigioComponent {
 
     constructor(private dialog: MatDialogRef<PrestigioComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
       
-        this.data_user = data;
-        this.app = initializeApp(firebaseConfig);
-        this.db = getFirestore(this.app);
-        this.wallet = data.wallet;
-        this.web3 = data.web3;
-        this.contract = new data.web3.eth.Contract(ABI.default, data.contract_address);
-    
-        console.log(this.wallet.address);
+      this.lista_prestigio = data.listaPrestigio; 
+      this.wallet = data.wallet;
+      console.log(this.lista_prestigio);
 
     }
   
-  async muestra_reputacion() {
-    const queryUsuarios = query(collection(this.db, '/Usuarios'),orderBy('reputacion','asc'));
-    const usSnapshot = await getDocs(queryUsuarios);
-    const lista_usuarios = usSnapshot.docs.map(doc => doc.data());
-    const num_usuarios = usSnapshot.size;
-    //console.log(lista_usuarios);
-    
-    
-    const adr:string = lista_usuarios[0]['wallet'];
-    console.log("Antes:\n",adr);
-    const rpSC = await this.contract.methods.votaciones(adr,1).call();
-    console.log("rpSC: ",rpSC)
-    
-/*
-    for (let k = 0; k < 1; k++){
-      console.log("K=", k, "    Wallet: ", lista_usuarios[k]['wallet']);
-      const adr = this.web3.utils.numberToHex()
-      const rpSC = await this.contract.methods.usuarios().call();
-      
-      console.log(rpSC);
-      //console.log("Wallet: ",lista_usuarios[k]['wallet'],"\nReputacion: ",lista_usuarios[k]['reputacion']);
-    }
-    
-    this.lista_prestigio = lista_usuarios;*/
 
-  }
 
 
   ngOnInit(): void {
     this.app = initializeApp(firebaseConfig);
     this.db = getFirestore(this.app);
-    this.muestra_reputacion();
-
-    
   }
 
 confirmado() {

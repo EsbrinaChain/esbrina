@@ -64,6 +64,7 @@ export class PreguntaComponent {
   total_resp: any = 0;
   idPreg: any;
   lastTransaction: any;
+  lista_usuarios: any;
   
   // Variable de S.C.
   tiempo_votacion_sc: any;
@@ -608,10 +609,8 @@ showDialogEstadisticas(){
   stdWindow.width = '40%';
   stdWindow.autoFocus = true;
   stdWindow.data = {
-    wallet: this.wallet,
-    web3: this.web3obj,
-    contract_address: contract_address,
-    mail:window.localStorage.getItem('esbrinaUserMail'),
+    listaPrestigio: this.lista_usuarios,
+    wallet:this.wallet.address,
   };
   this.dialogRef = this.matDialog.open(PrestigioComponent, stdWindow);
   this.datos = this.dialogRef.afterClosed().subscribe((result: any) => {
@@ -766,7 +765,7 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
     await setDoc(item, updData);
     
   }
-  }  
+}  
   
   async updRespGanadorasPreg(id_preg: any) {
 
@@ -853,6 +852,34 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
     }
 }
 
+
+async muestra_reputacion() {
+    const queryUsuarios = query(collection(this.db, '/Usuarios'),orderBy('reputacion','asc'));
+    const usSnapshot = await getDocs(queryUsuarios);
+    let lista_usuarios = usSnapshot.docs.map(doc => doc.data());
+    const num_usuarios = usSnapshot.size;
+    
+    for (let k = 0; k < num_usuarios; k++){
+      console.log("K=", k, "    Wallet: ", lista_usuarios[k]['wallet']);
+      const adr = lista_usuarios[k]['wallet'];
+      const rpSC = await this.contract.methods.usuarios(adr).call();
+      const id = usSnapshot.docs.map(doc => doc.ref.id);
+      const item = doc(this.db, "Usuarios", id[k]);
+      let docSnap = await getDoc(item);
+      let updData: any; 
+      if (docSnap.exists()) {
+        updData = docSnap.data();
+        updData.reputacion = Number(rpSC.prestigio);
+        console.log("updData: ", updData);
+        await setDoc(item, updData);
+      }
+    }
+    const queryUsuarios1 = query(collection(this.db, '/Usuarios'),orderBy('reputacion','desc'));
+    const usSnapshot1 = await getDocs(queryUsuarios1);
+    this.lista_usuarios = usSnapshot1.docs.map(doc => doc.data());
+    this.showDialogEstadisticas();
+
+  }
 
   
 } // end class
