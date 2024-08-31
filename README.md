@@ -1,5 +1,5 @@
 #  
-<p align='center'>  <h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain }}$   ${\LARGE\textrm{\color{red}(!EN CONSTRUCCIÓN!) }}$ </h1> </p>
+<p align='center'>  <h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain }}$ </h1> </p>
 <br>
 <p align='center'> 
   <h2 align='center'>
@@ -12,7 +12,7 @@
 </p>
 
 <p align='center'><img src="/img/Logo-3.png" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
-<p align='center'><img src="/img/Logo-4b.gif" style="width:22cm;height:20cm" alt="EsbrinaChain-Application" /></p>
+<p align='center'><img src="/img/001.png" style="width:22cm;height:20cm" alt="EsbrinaChain-Application" /></p>
 
 # Criterios del sistema Blockchain
 El sistema es público y de libre acceso sobre la testnet de Ethereum (Sepolia). 
