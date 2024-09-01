@@ -12,7 +12,6 @@ import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, docu
 import { addDoc, Timestamp, query, orderBy, where, and } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { RespuestaComponent } from '../respuesta/respuesta.component';
-import { AskEsbrinaService } from '../ask-esbrina.service';
 import Web3 from 'web3';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogRef, MatDialogContent, MatDialogActions, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
@@ -30,8 +29,10 @@ import {firebaseConfig, providerETH, contract_address } from '../firestore2';
 @Component({
   selector: 'app-pregunta',
   standalone: true,
-  imports: [MatButtonModule, RespuestaComponent, MatIconModule, TextFieldModule, CommonModule,
-    GetPregComponent, MatSelectModule, MatFormFieldModule, MatListModule,FormsModule, ReactiveFormsModule],
+  imports: [MatButtonModule, RespuestaComponent,
+    MatIconModule, TextFieldModule, CommonModule,
+    GetPregComponent, MatSelectModule, MatFormFieldModule,
+    MatListModule, FormsModule, ReactiveFormsModule],
   templateUrl: './pregunta.component.html',
   styleUrl: './pregunta.component.scss'
 })
@@ -107,7 +108,7 @@ export class PreguntaComponent {
 
   
 
-  constructor(private service: AskEsbrinaService, private matDialog: MatDialog) {
+  constructor(private matDialog: MatDialog) {
     
             
   }
@@ -620,11 +621,6 @@ showDialogEstadisticas(){
   });
   }
 
-////////////// revisar si usar ///
-creaPregunta() {
-  let novaPreg:any = { };
-  this.service.creaPregunta(this.web3obj, this.wallet, novaPreg);
-  } 
   
   async pastEventsPreguntaCreada(event_name:any, autor:any, block:any) {
   
@@ -676,71 +672,10 @@ creaPregunta() {
     return respId;
   } 
   
-  async getLogPreguntaCreada(id_preg:any, block:any) {
-   
-    const ev = await this.contract.events.PreguntaCreada({
-      filter: { _id_preg: id_preg },
-      fromBlock: block,
-      toBlock: block+1
-    });
-    
-    this.eventPreguntaCreada = ev.on("data", (event: any) => {
-      console.log("Data: ", event)
-      this.getData(event);
-    });
-    this.eventPreguntaCreada = ev.on("error", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-  }
   async getData(datos:any) {
     console.log(datos.returnValues);
   }
 
-  async getLogPreguntaAnulada(id_preg:any) {
-
-    const ev = await this.contract.events.PreguntaAnulada({
-      filter: { _id_preg: id_preg }, fromBlock: 0});
-    
-    this.eventPreguntaAnulada = ev.on("data", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-    this.eventPreguntaAnulada = ev.on("error", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-  }
-  
-  async getLogInicioVotacion(id_preg:any) {
-
-    const ev = await this.contract.events.InicioVotacion({
-      filter: { _id_preg: id_preg }, fromBlock: 0});
-    
-    this.eventInicioVotacion = ev.on("data", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-    this.eventInicioVotacion = ev.on("error", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-  }
-
-  async getLogFinalVotacion(id_preg:any) {
-
-    const ev = await this.contract.events.FinalVotacion({
-      filter: { _id_preg: id_preg }, fromBlock: 0});
-    
-    this.eventFinalVotacion = ev.on("data", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-    this.eventFinalVotacion = ev.on("error", (event: any) => {
-      //console.log("Data: ", event)
-      this.getData(event);
-    });
-  }
 
 async actualizaListaPregs() {
   this.conPregsQuery();
