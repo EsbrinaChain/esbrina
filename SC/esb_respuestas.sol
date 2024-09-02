@@ -56,6 +56,27 @@ contract responder is preguntar {
         }
         return _resp;
     }
+    
+    function adrRespondeVence(uint idx_preg, address _adr) internal view returns (bool, bool) {
+        if (preguntas[idx_preg].estado == estado_preg.consulta) {
+            uint[] memory rsp = calcRespAPreg(idx_preg);
+            for (uint i = 1; i < rsp.length + 1; i++) {
+                if (
+                    preg_resp[idx_preg][i].ganadora &&
+                    preg_resp[idx_preg][i].autor == _adr
+                ) {
+                    return (true, true);
+                }
+                if (
+                    !preg_resp[idx_preg][i].ganadora &&
+                    preg_resp[idx_preg][i].autor == _adr
+                ) {
+                    return (true, false);
+                }
+            }
+        }
+        return (false, false);
+    }
     function creaRespuesta(
         uint id_preg,
         string memory texto,
@@ -147,25 +168,8 @@ contract responder is preguntar {
             emit RespuestaCreada(id_preg, pregNumResp[id_preg], msg.sender);
         }
     }
-
-    function adrRespondeVence(uint idx_preg, address _adr) internal view returns (bool, bool) {
-        if (preguntas[idx_preg].estado == estado_preg.consulta) {
-            uint[] memory rsp = calcRespAPreg(idx_preg);
-            for (uint i = 1; i < rsp.length + 1; i++) {
-                if (
-                    preg_resp[idx_preg][i].ganadora &&
-                    preg_resp[idx_preg][i].autor == _adr
-                ) {
-                    return (true, true);
-                }
-                if (
-                    !preg_resp[idx_preg][i].ganadora &&
-                    preg_resp[idx_preg][i].autor == _adr
-                ) {
-                    return (true, false);
-                }
-            }
-        }
-        return (false, false);
-    }
 }
+
+
+
+

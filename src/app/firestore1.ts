@@ -21,7 +21,7 @@ export const firebaseConfig = {
   export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
 
   //providerETH = 'https://rpc2.sepolia.org';
-  export const contract_address: any = "0xd4E85749ec6899a5a21CEeD94617A3dEE4dE70DE";
+  export const contract_address: any = "0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB";
     
 
   //providerETH = 'http://127.0.0.1:7545/';

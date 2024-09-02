@@ -142,7 +142,7 @@ contract esbrinachain is responder {
             "No se han dado respuestas a esta pregunta."
         );
         preguntas[idx_preg].estado = estado_preg.votando;
-        preguntas[idx_preg].fecha_votacion = block.timestamp - 5 days;
+        preguntas[idx_preg].fecha_votacion = block.timestamp - 1 minutes;
     }
 
     // Función utilizada por el administrador para forzar la finalización de la votación
