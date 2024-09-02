@@ -148,10 +148,7 @@ contract responder is preguntar {
         }
     }
 
-    function adrRespondeVence(
-        uint idx_preg,
-        address _adr
-    ) public view returns (bool, bool) {
+    function adrRespondeVence(uint idx_preg, address _adr) internal view returns (bool, bool) {
         if (preguntas[idx_preg].estado == estado_preg.consulta) {
             uint[] memory rsp = calcRespAPreg(idx_preg);
             for (uint i = 1; i < rsp.length + 1; i++) {

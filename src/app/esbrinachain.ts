@@ -37,25 +37,6 @@ export let ABI = {
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "idx_preg",
-				"type": "uint256"
-			}
-		],
-		"name": "consultaRespuestaVotada",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "address",
 				"name": "_usr",
 				"type": "address"
@@ -160,12 +141,6 @@ export let ABI = {
 				"internalType": "address",
 				"name": "autor",
 				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "respGanadora",
-				"type": "uint256"
 			}
 		],
 		"name": "FinalVotacion",
@@ -390,35 +365,6 @@ export let ABI = {
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "idx_preg",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "_adr",
-				"type": "address"
-			}
-		],
-		"name": "adrRespondeVence",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			},
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
 				"name": "id_preg",
 				"type": "uint256"
 			},
@@ -453,25 +399,6 @@ export let ABI = {
 				"internalType": "uint256[]",
 				"name": "",
 				"type": "uint256[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "idx_preg",
-				"type": "uint256"
-			}
-		],
-		"name": "consultaPrecioRespuestaVotada",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -768,25 +695,6 @@ export let ABI = {
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "idx_preg",
-				"type": "uint256"
-			}
-		],
-		"name": "vencePregunta",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
 			}
 		],
 		"stateMutability": "view",
