@@ -46,6 +46,18 @@ export const es = {
     m45: "Estado: ",
     m46: "Recompensa:",
     m47: "Fecha Votación",
+    m48: "Enviando Tx para crear la respuesta ...",
+    m49: "Tx exitosa ...",
+    m50: "Error o cancelación de Tx ...",
+    m51: "Este usuario ha respondido anteriormente a esta pregunta...",
+    m52: "Este usuario es el autor de esta pregunta...",
+    m53: "Esta pregunta no está abierta para responder...",
+    m54: "Efectuando el pago para saber el ganador de la pregunta ...",
+    m55: "Efectuando subida de recompensa ...",
+    m56: "Las preguntas en estado 'consulta' o 'anulada' no pueden incrementar la recompensa",
+    m57: "Enviando Tx para crear la pregunta...",
+    m58: "",
+    m59: "",
 };
 
 export const en = {
@@ -96,6 +108,18 @@ export const en = {
     m45: "State: ",
     m46: "Reward:",
     m47: "Ballot Date",
+    m48: "Sending Tx to create an answer ...",
+    m49: "Tx successful ...",
+    m50: "Error or Tx reverted ...",
+    m51: "This user already has answered this question...",
+    m52: "This user is the author of this question...",
+    m53: "This question not is opened to answer...",
+    m54: "Doing the payment to know the winner answer...",
+    m55: "Making a raise of the reward...",
+    m56: "Questions in 'consulta' or 'anulada' state cannot up the reward.",
+    m57: "Sending Tx to make the question...",
+    m58: "",
+    m59: "",
 };
 
 export const cat = {
@@ -146,5 +170,18 @@ export const cat = {
     m45: "Estat: ",
     m46: "Recompensa:",
     m47: "Data Votació",
+    m48: "Enviant Tx per crear la resposta ...",
+    m49: "Tx exitosa ...",
+    m50: "Error o cancel·lació de Tx ...",
+    m51: "Aquest usuari ja ha respost anteriorment a aquesta pregunta...",
+    m52: "This user is the author of this question",
+    m53: "Aquesta pregunta no està oberta per respondre...",
+    m54: "Efectuant el pagament per saber el guanyador de la pregunta ...",
+    m55: "Fent una pujada de recompensa...",
+    m56: "Preguntes en estat de 'consulta' o 'anul·lada', no poden incrementar la recompensa.",
+    m57: "Enviant Tx per crear la pregunta",
+    m58: "",
+    m59: "",
+
 };
 
