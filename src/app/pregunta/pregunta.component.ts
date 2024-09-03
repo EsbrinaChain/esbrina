@@ -26,6 +26,7 @@ import { PrestigioComponent } from '../prestigio/prestigio.component';
 import {firebaseConfig, providerETH, contract_address } from '../firestore2';
 
 
+
 @Component({
   selector: 'app-pregunta',
   standalone: true,
@@ -334,6 +335,7 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
         fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
         idioma: "es",
         recompensa: Number(recompensa),
+        incRecompensa:3,
         email: window.localStorage.getItem('esbrinaUserMail'),
       };
     console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
@@ -815,7 +817,91 @@ async muestra_reputacion() {
     this.showDialogEstadisticas();
 
   }
-
+  
+async updRecompensaPreg(id_preg:any, recompensa:any) {
+    const queryPreg = query(collection(this.db, '/Pregs'), where("idp","==",Number(id_preg)));
+    const usSnapshot = await getDocs(queryPreg);
+    
+    const id = usSnapshot.docs.map(doc => doc.ref.id);
+    const item = doc(this.db, "Pregs", id[0]);
+    let docSnap = await getDoc(item);
+    let updData: any; 
+    if (docSnap.exists()) {
+      updData = docSnap.data();
+      updData.recompensa += recompensa;
+      updData.incRecompensa -= 1;
+      await setDoc(item, updData);
+      console.log("La pregunta ", id_preg, " ha cambiado la recompensa a ", updData.recompensa);
+      this.conPregsQuery();
+    }
+}
+  
+  
+test_valor(txt:any) {
+    const valor = Number(txt);
+    if (isNaN(valor)) return 0;
+    else return parseInt(txt);
+    
+  }
+  async incrementaRecompensa(id_preg: any, incremento: any) {
+  
+    const valor = this.test_valor(incremento);
+    console.log("pregunta:", id_preg, "Incrementar la recompensa en: ", valor);
+    const pregunta = await this.contract.methods.preguntas(id_preg).call();
+    if (pregunta.estado < 2) {
+      const gasPrice = await this.web3obj.eth.getGasPrice();
+      console.log("Gas Price: ", gasPrice); 
+      const gasEstimated = await this.contract.methods.subirRecompensaPreg(id_preg).estimateGas(
+        {
+          from: this.wallet.address,
+          value: valor
+        });
+      console.log("Gas Estimated", gasEstimated);
+    
+      var rawData = {
+        from: this.wallet.address, // admin (address generada con la semilla facilitada).
+        to: contract_address,
+        value: valor,
+        gasPrice: this.web3obj.utils.toHex(gasPrice),
+        gasLimit: this.web3obj.utils.toHex(gasEstimated),
+        nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+        data: this.contract.methods.subirRecompensaPreg(id_preg).encodeABI()
+      }
+      //console.log(rawData);
+      var signed: any;
+      if (this.metamask) {
+        this.web3obj.eth.sendTransaction(rawData).then(
+          (receipt: any) => {
+            console.log("Receipt-Subir recompensa: ", receipt);
+            this.linEstadoResp(id_preg, "Efectuando subida de recompensa ...", 2000, 'visible');
+            this.updRecompensaPreg(id_preg, valor);
+          },
+          (error: any) => {
+            console.log("Error subida recompensa", error);
+            this.linEstadoResp(id_preg, "Error o cancelación de Tx ...", 2000, 'visible');
+          }
+        );
+      }
+      else {
+        signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+        this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
+          (receipt: any) => {
+            console.log("Receipt-Subir recompensa: ", receipt);
+            this.linEstadoResp(id_preg, "Efectuando subida de recompensa ...", 2000, 'visible');
+            this.updRecompensaPreg(id_preg, valor);
+          },
+          (error: any) => {
+            console.log("Error subida recompensa", error);
+            this.linEstadoResp(id_preg, "Error o cancelación de Tx ...", 2000, 'visible');
+          }
+        );
+      }
+    
+    } else {
+      console.log("Las preguntas en consulta o anuladas no pueden incrementar la recompensa");
+      this.linEstadoResp(id_preg, "Las preguntas en consulta o anuladas no pueden incrementar la recompensa", 2000, 'visible');
+    }
+  }  
   
 } // end class
 

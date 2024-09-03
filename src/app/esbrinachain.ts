@@ -37,6 +37,25 @@ export let ABI = {
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "idx_preg",
+				"type": "uint256"
+			}
+		],
+		"name": "consultaRespuestaVotada",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "_usr",
 				"type": "address"

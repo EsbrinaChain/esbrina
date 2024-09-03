@@ -34,7 +34,31 @@
     font-weight: bold;
     color: blueviolet;
 }
+.btnSubirRecompensa{
+    
+    //width: 20px;
+    //height: 20px;
+    //font-size: 14px;
+    font-weight: bold;
+    color: rgb(255, 0, 0);
+     
+    
+}
 
+.inputSubirRecompensa{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    //font-size: 14px;
+    color: rgb(16, 93, 236);
+    background-color: rgb(255, 255, 255);
+    width:140px;
+    border:none;
+}
+.wei{
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-weight: bold;
+        font-size: 10px;
+        color: rgba(175, 54, 121, 0.846);
+}
 .btnSepConsulta {
     padding: 2px;
     width: 80px;
@@ -91,6 +115,15 @@
     height: 16px;
     padding-top:4px;
     
+}
+.labelMetadata1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    width: 120px;
+    height: 25px;
+    padding-top: 4px;
+
 }
 
 .tdPreg {

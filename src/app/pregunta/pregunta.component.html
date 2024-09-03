@@ -68,14 +68,19 @@
             </tr>
             <tr>
                 <td class="tdHidden"></td>
-                <td class="tdMetadata">
+                <td class="tdMetadata" >
                     @if(item.anulada){ <div class="textMetadataPregAnulada">ANULADA</div> }
-                    <div class="labelMetadata">Autor:</div><div>{{item.email}}</div>
-                    <div class="labelMetadata">Fecha:</div><div>{{item.creada}}</div>
-                    <div class="labelMetadata">Estado:<span class="textMetadataEstado">{{item.estado}}</span></div>
-                    <div class="labelMetadata">Recompensa:</div>
+                    <div class="labelMetadata">{{idiomaSel.m43}}</div><div>{{item.email}}</div>
+                    <div class="labelMetadata">{{idiomaSel.m44}}</div><div>{{item.creada}}</div>
+                    <div class="labelMetadata">{{idiomaSel.m45}}<span class="textMetadataEstado">{{item.estado}}</span></div>
+                    <div class="labelMetadata">{{idiomaSel.m46}}</div>
                     <div class="textMetadataRecompensa">{{item.recompensa}}</div>
-                    <div class="labelMetadata">Fecha Votacion:</div><div>{{item.fecha_votacion}}</div>
+                    <div>
+                        <button class="btnSubirRecompensa" (click)="incrementaRecompensa(item.idp,incr.value)" title="{{idiomaSel.m41}}">+
+                            <label class="wei">(wei)({{idiomaSel.m42}}:{{item.incRecompensa}})</label></button>
+                        <input #incr class="inputSubirRecompensa" type="text" pattern="[0-9]" name="incremento" />
+                    </div>
+                    <div class="labelMetadata">{{idiomaSel.m47}}</div><div>{{item.fecha_votacion}}</div>
                 </td>
                 <td colspan="4" width="80%">
                     <app-respuesta (refresh)="actualizaListaPregs()" [id_preg]="item.idp" 

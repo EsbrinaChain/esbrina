@@ -39,6 +39,13 @@ export const es = {
     m38: "Reputación en el Sistema",
     m39: "Usuario",
     m40: "Reputación",
+    m41: "Subir recompensa!",
+    m42: "intentos",
+    m43: "Autor:",
+    m44: "Fecha:",
+    m45: "Estado: ",
+    m46: "Recompensa:",
+    m47: "Fecha Votación",
 };
 
 export const en = {
@@ -81,7 +88,14 @@ export const en = {
     m37: "votes",
     m38: "Reputation on the System",
     m39: "User",
-    m40: "Reputation"
+    m40: "Reputation",
+    m41: "Go up, reward!",
+    m42: "attemps",
+    m43: "Author:",
+    m44: "Date:",
+    m45: "State: ",
+    m46: "Reward:",
+    m47: "Ballot Date",
 };
 
 export const cat = {
@@ -124,6 +138,13 @@ export const cat = {
     m37: "vots",
     m38: "Reputació al Sistema",
     m39: "Usuari",
-    m40: "Reputació"
+    m40: "Reputació",
+    m41: "Pujar la recompensa!",
+    m42: "intents",
+    m43: "Autor:",
+    m44: "Data:",
+    m45: "Estat: ",
+    m46: "Recompensa:",
+    m47: "Data Votació",
 };
 
