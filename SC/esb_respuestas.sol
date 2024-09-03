@@ -77,6 +77,32 @@ contract responder is preguntar {
         }
         return (false, false);
     }
+    // Para consultar la respuesta mas votada de una pregunta se debe enviar el 50% de su recompensa
+    // excepto que sea el autor de la pregunta que podrá consultarla sin coste.
+    function consultaRespuestaVotada(uint idx_preg) public payable returns(uint){
+        string memory estado = estadoPreg(idx_preg);
+        require(preguntas[idx_preg].estado == estado_preg.consulta,
+        string(abi.encodePacked("La pregunta debe ser consultable, pero su estado es ",estado)));
+        uint precio = preguntas[idx_preg].recompensa / 2;
+        if (msg.sender != preguntas[idx_preg].autor){
+            require(msg.value >= precio,"Se debe enviar el coste de la consulta para ver la respuesta votada");
+        }
+        return RespMasVotada(idx_preg);     
+    }
+
+    // Devuelve un array con la opción más votada o opciones en caso de empate.
+    function RespMasVotada(uint idx_preg) internal view returns(uint _votada){
+        if(preguntas[idx_preg].estado == estado_preg.consulta){
+            uint[] memory rsp = calcRespAPreg(idx_preg);
+            for (uint i=1; i < rsp.length+1; i++){
+                if(preg_resp[idx_preg][i].ganadora){
+                    _votada = i;
+                }
+            }
+        }
+        return _votada;
+    }
+
     function creaRespuesta(
         uint id_preg,
         string memory texto,

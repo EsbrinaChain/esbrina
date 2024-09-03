@@ -6,7 +6,7 @@ import "./esb_respuestas.sol";
 contract esbrinachain is responder {
     uint public tiempo_votacion = 1 weeks;
 
-    event FinalVotacion(uint indexed id_preg, address indexed autor);
+    event FinalVotacion(uint indexed id_preg, address indexed autor, uint indexed respGanadora);
 
     // address usuario, mapeo id_preg_votada, id_resp_votada
     mapping(address => mapping(uint => uint)) public votaciones;
@@ -41,7 +41,7 @@ contract esbrinachain is responder {
             if (preguntas[idx_preg].votada) {
                 // Resolucion votación
                 resolucionVotacion(idx_preg);
-                emit FinalVotacion(idx_preg, preguntas[idx_preg].autor);
+                emit FinalVotacion(idx_preg, preguntas[idx_preg].autor, RespMasVotada(idx_preg));
             } else {
                 preguntas[idx_preg].estado = estado_preg.anulada;
                 emit PreguntaAnulada(
