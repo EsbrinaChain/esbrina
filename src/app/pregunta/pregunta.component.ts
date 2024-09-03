@@ -71,7 +71,7 @@ export class PreguntaComponent {
   // Variable de S.C.
   tiempo_votacion_sc: any;
   tiempo_respuesta_sc: any;
-  num_incr_recompensa_sc: any;
+  num_incr_recompensa_sc=3;
   cupo_respuestas_sc: any;
   tiempo_respuesta_convertido: any;
   datosActualizadosPregunta: any;
@@ -335,7 +335,7 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
         fecha_votacion: this.creaDate(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)),
         idioma: "es",
         recompensa: Number(recompensa),
-        incRecompensa:3,
+        incRecompensa:this.num_incr_recompensa_sc,
         email: window.localStorage.getItem('esbrinaUserMail'),
       };
     console.log("Pregunta: ",prg,"Total Preguntas: ",this.totalPregs);
@@ -849,6 +849,7 @@ test_valor(txt:any) {
     console.log("pregunta:", id_preg, "Incrementar la recompensa en: ", valor);
     const pregunta = await this.contract.methods.preguntas(id_preg).call();
     if (pregunta.estado < 2) {
+      this.linEstadoResp(id_preg, "Efectuando subida de recompensa ...", 2000, 'visible');
       const gasPrice = await this.web3obj.eth.getGasPrice();
       console.log("Gas Price: ", gasPrice); 
       const gasEstimated = await this.contract.methods.subirRecompensaPreg(id_preg).estimateGas(
