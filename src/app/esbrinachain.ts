@@ -160,6 +160,12 @@ export let ABI = {
 				"internalType": "address",
 				"name": "autor",
 				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "respGanadora",
+				"type": "uint256"
 			}
 		],
 		"name": "FinalVotacion",

@@ -85,7 +85,8 @@
                     <div class="labelMetadata">{{idiomaSel.m47}}</div><div>{{item.fecha_votacion}}</div>
                 </td>
                 <td colspan="4" width="80%">
-                    <app-respuesta (refresh)="actualizaListaPregs()" [id_preg]="item.idp" 
+                    <app-respuesta (refresh)="actualizaListaPregs()" 
+                    (notifica)="notificacio(item.idp,$event)" [id_preg]="item.idp" 
                     [web3obj]="web3obj" [wallet]="wallet" [estado_actual]="item.estado"
                     [metamask]="metamask" [idiomaSel]="idiomaSel"
                     [blockNumber]="item.blockNumber" [transactionIndex]="item.transactionIndex"></app-respuesta>

@@ -27,7 +27,10 @@ export class RespuestaComponent {
 
   @Output()
   refresh = new EventEmitter<void>();  
-    
+  
+  @Output()
+  notifica = new EventEmitter<string>();
+
   @Input()
   idiomaSel: any = es;
   
@@ -89,76 +92,52 @@ export class RespuestaComponent {
   async votarRespuestaSC(id_preg:any, id_resp:any) {
     //console.log("Parametros votacion: ", id_preg, id_resp);
     const gasPriceResp = await this.web3obj.eth.getGasPrice();
+    this.notifica.emit(this.idiomaSel.m58 + gasPriceResp.toString());
     console.log("Gas Price: ",gasPriceResp);
     const gasEstimatedResp = await this.contract.methods.votarRespuesta(id_preg,id_resp).estimateGas({ from: this.wallet.address });
-    console.log("Gas Estimated",gasEstimatedResp);
-    var rawData = {
-      from: this.wallet.address, 
-      to: contract_address,  
-      value: 0,
-      gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),// tests 50070176532n  46790342006n
-      gasLimit: this.web3obj.utils.toHex(1000000),
-      nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
-      data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
-    }
+    console.log("Gas Estimated", gasEstimatedResp);
+    this.notifica.emit(this.idiomaSel.m58 + gasEstimatedResp.toString());
+      var rawData = {
+        from: this.wallet.address, 
+        to: contract_address,  
+        value: 0,
+        gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),// tests 50070176532n  46790342006n
+        gasLimit: this.web3obj.utils.toHex(1000000),
+        nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+        data: this.contract.methods.votarRespuesta(id_preg,id_resp).encodeABI()
+      }
     //console.log(rawData);
-    
+    let receipt;
     var signed: any;
-    if (this.metamask) {
-      const respActual1 = await this.contract.methods.preg_resp(id_preg, id_resp).call();
-      this.web3obj.eth.sendTransaction(rawData).then(
-        (receipt: any) => {
-          console.log("Transacción de Voto: ", receipt);
-          const respActual2 = this.contract.methods.preg_resp(id_preg, id_resp).call();
-          if (respActual1.votos == respActual2.votos) {
-            const pregunta = this.contract.methods.preguntas(id_preg).call();
-            
-            if (pregunta.estado == 2) {
-              console.log("Se ha intentado votar y la pregunta ha cambiado ha estado 'consulta'");
-              this.updEstadoPregBackend(id_preg, "consulta");
-            }
-            if (pregunta.estado == 3) {
-              this.updEstadoPregBackend(id_preg, "anulada");
-            }
-          }
-          else {
-            this.updVotoBackend(id_preg, id_resp);
-          }
-          this.lastTransaction = receipt;
-          },
-          (error: any) => {
-              console.log(error)
-          }
-      );
-     }
-    else {
-      const respActual1 = await this.contract.methods.preg_resp(id_preg, id_resp).call();
-      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-      this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          console.log("Transacción de Voto: ", receipt);
-          const respActual2 = this.contract.methods.preg_resp(id_preg, id_resp).call();
-          if (respActual1.votos == respActual2.votos) {
-            const pregunta = this.contract.methods.preguntas(id_preg).call();
-            if (pregunta.estado == 2) {
-              console.log("Se ha intentado votar y la pregunta ha cambiado ha estado 'consulta'");
-              this.updEstadoPregBackend(id_preg, "consulta");
-            }
-            if (pregunta.estado == 3) {
-              this.updEstadoPregBackend(id_preg, "anulada");
-            }
-          }
-          else {
-            this.updVotoBackend(id_preg, id_resp);
-          }
-          this.lastTransaction = receipt;
-          },
-          (error: any) => {
-              console.log(error)
-          }
-      ); 
+    try{
+        this.notifica.emit(this.idiomaSel.m60);
+        if (this.metamask) {
+          receipt = await this.web3obj.eth.sendTransaction(rawData);
+         }
+        else {
+          signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+          receipt = await this.web3obj.eth.sendSignedTransaction(signed.rawTransaction);
+        }
+        console.log("Receipt: ", receipt);
+        if (receipt.logs.length == 0) {
+          await this.updVotoBackend(id_preg, id_resp);
+          this.notifica.emit(this.idiomaSel.m63);
+        }
+        else if (receipt.logs.length == 3) {
+          console.log("Se ha intentado votar y la pregunta ha cambiado ha estado 'consulta'");
+          await this.updEstadoPregBackend(id_preg, "consulta");
+          this.notifica.emit(this.idiomaSel.m61);
+        }
+        else if (receipt.logs.length == 2) {
+          await this.updEstadoPregBackend(id_preg, "anulada");
+          this.notifica.emit(this.idiomaSel.m62);
+        }
+      
+    }catch (error) {
+      console.log(error);
+      this.notifica.emit(this.idiomaSel.m50);
     }
-    
+    this.refresh.emit();
   }
 
 async haRespondido(id_preg: any) {
@@ -178,7 +157,7 @@ async haRespondido(id_preg: any) {
     } 
   } 
 async updVotoBackend(id_preg: any, id_resp: any) {
-  console.log("updVotoBackend: id_preg:",id_preg," id_res:", id_resp); 
+  console.log("updVotoBackend: id_preg:",id_preg," id_resp:", id_resp); 
   const queryResps = query(collection(this.db, '/Resps'),
     where("id_preg", "==", Number(id_preg)),
     where("id_resp", "==", Number(id_resp)));
@@ -196,8 +175,10 @@ async updVotoBackend(id_preg: any, id_resp: any) {
   }
 }
   
-  async selectVoto(id_preg:any, id_resp:any) {
+  async selectVoto(id_preg: any, id_resp: any) {
+    let noAutorPreg = false;
     const pregunta = await this.contract.methods.preguntas(id_preg).call();
+    if (pregunta.autor.toLowerCase() != this.wallet.address.toLowerCase()) noAutorPreg = true;
     console.log("Pregunta a Votar: ",pregunta);
     // No es autor de ninguna respuesta en la pregunta
     const EsAutorResp = await this.haRespondido(id_preg);
@@ -207,12 +188,15 @@ async updVotoBackend(id_preg: any, id_resp: any) {
     console.log("noHaVotado: ",noHaVotado);
     const estado_actual_preg = await this.contract.methods.estadoPreg(id_preg).call();
     console.log("estado_actual: ",pregunta.estado,"=",estado_actual_preg);
-    if (!EsAutorResp && noHaVotado && pregunta.estado == 1) {
-      console.log("Votando por la resp ", id_resp, " de la pregunta ", id_preg);
+    if (!EsAutorResp && noHaVotado && noAutorPreg && pregunta.estado == 1) {
+        console.log("Votando por la resp ", id_resp, " de la pregunta ", id_preg);
         await this.votarRespuestaSC(id_preg, id_resp);
         this.refresh.emit();
-    } else if (pregunta.estado == 1 && (EsAutorResp || !noHaVotado)) {
-       console.log("La pregunta", id_preg, " está en estado 'votando', pero este usuario no puede votarla.");
+    } else if (pregunta.estado == 1 && (EsAutorResp || !noHaVotado || !noAutorPreg)) {
+      console.log("La pregunta", id_preg, " está en estado 'votando', pero este usuario no puede votarla.");
+      if (!noAutorPreg) this.notifica.emit(this.idiomaSel.m66);
+      if (EsAutorResp) this.notifica.emit(this.idiomaSel.m67);
+      if (!noHaVotado) this.notifica.emit(this.idiomaSel.m68);
     } else if(estado_actual_preg=="Consulta.") {
         console.log("La pregunta", id_preg, " no está en estado 'votando' sino en estado de '", estado_actual_preg,"'");
         this.estado_actual = "consulta"; 

@@ -337,6 +337,7 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     let updData: any; 
     if (docSnap.exists()) {
       updData = docSnap.data();
+      if (estado_actual == 'anulada') updData.anulada = true;
       updData.estado = estado_actual;
       await setDoc(item, updData);
       console.log("La pregunta ", id_preg, " ha cambiado a estado", updData.estado);
@@ -363,7 +364,7 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     //console.log(rawData);
     var signed: any;
     let receipt;
-    this.linEstadoResp(id_preg, this.idiomaSel.m48, 1, 'visible');
+    this.linEstadoResp(id_preg, this.idiomaSel.m48, 2000, 'visible');
     if (this.metamask) {
       receipt = await this.web3obj.eth.sendTransaction(rawData);
      }
@@ -372,21 +373,24 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
       receipt = await this.web3obj.eth.sendSignedTransaction(signed.rawTransaction); 
     }
     console.log("Receipt: ", receipt);
-    const idResp = this.web3obj.utils.hexToNumber(receipt.logs[0].topics[2]);
-    console.log("receipt.logs[0].topics[2]: ", receipt.logs[0].topics[2]);
-    console.log("idResp: ", idResp);
+    
     const preg_estado = await this.contract.methods.estadoPreg(id_preg).call();
     console.log("preg_estado: ",preg_estado);
     if (preg_estado == "Abierta.") {
+      const idResp = this.web3obj.utils.hexToNumber(receipt.logs[0].topics[2]);
+      console.log("receipt.logs[0].topics[2]: ", receipt.logs[0].topics[2]);
+      console.log("idResp: ", idResp);
       this.insertaRespuesta(idResp, id_preg, enunciado_resp, blockNumber, transactionIndex);
-      this.linEstadoResp(id_preg, this.idiomaSel.m49, 3000, 'visible');
+      this.linEstadoResp(id_preg, this.idiomaSel.m49, 5000, 'visible');
     }
     else if (preg_estado=="Votando.") {
-      this.updEstadoPregBackend(id_preg, "votando");
+      await this.updEstadoPregBackend(id_preg, "votando");
+      this.linEstadoResp(id_preg, this.idiomaSel.m64, 5000, 'visible');
       console.log("Datos de pregunta actualizados en el backend: votando");
     }
     else if (preg_estado == "Anulada.") {
-      this.updEstadoPregBackend(id_preg, "anulada");
+      await this.updEstadoPregBackend(id_preg, "anulada");
+      this.linEstadoResp(id_preg, this.idiomaSel.m65, 5000, 'visible');
       console.log("Datos de pregunta actualizados en el backend: anulada");
     }
   }
@@ -469,7 +473,7 @@ async actualizaDatosPregSC(blockNumber: any, transactionIndex: any, id_preg: any
       if (this.datosActualizadosPregunta.fecha_votacion != 0) {
         this.listaPregs[id_preg - 1].fecha_votacion = this.fechaUnixToDDMMAAAA(this.datosActualizadosPregunta.fecha_votacion);
       }
-      this.updPregBackend(blockNumber,transactionIndex,id_preg,
+      await this.updPregBackend(blockNumber,transactionIndex,id_preg,
                           this.datosActualizadosPregunta.estado,
                           this.datosActualizadosPregunta.recompensa,
                           this.datosActualizadosPregunta.fecha_votacion);
@@ -640,14 +644,14 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
       respActual = await this.contract.methods.preg_resp(id_preg, i).call();
       if (respActual.ganadora == true) {
         ganadoras.push(respActual.id_resp);
-        this.updGanadoraBackend(id_preg, respActual.id_resp, true);
+        await this.updGanadoraBackend(id_preg, respActual.id_resp, true);
       }
     }
     console.log("Respuesta/s ganadora/s",ganadoras);
     this.conPregsQuery();
     setTimeout(() => { }, 15000);
     for (let i = 0; i < ganadoras.length; i++){
-        this.updGanadoraBackend(id_preg, ganadoras[i], false);
+        await this.updGanadoraBackend(id_preg, ganadoras[i], false);
       }
 
   }
@@ -710,7 +714,7 @@ async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {
         }
       
     } else {
-      this.updRespGanadorasPreg(id_preg);
+      await this.updRespGanadorasPreg(id_preg);
     }
 }
 
@@ -828,7 +832,9 @@ test_valor(txt:any) {
       this.linEstadoResp(id_preg, this.idiomaSel.m56, 2000, 'visible');
     }
   }  
-  
+  async notificacio(id_preg: any, miss: any) {
+    await this.linEstadoResp(id_preg, miss, 5000, 'visible');
+  }
 } // end class
 
 // 0xF562C02033DF4b174885D8c7678dC1489340F6d9
