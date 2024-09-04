@@ -87,34 +87,24 @@ contract esbrinachain is responder {
         if (rsp.length == 0) {
             preguntas[idx_preg].estado = estado_preg.anulada;
         } else {
-            uint[] memory resp_mas_votada = new uint[](rsp.length);
-            uint j = 0;
-            resp_mas_votada[j] = 1;
-            for (uint i = 2; i <= rsp[rsp.length - 1]; i++) {
-                if (
-                    preg_resp[idx_preg][i].votos >
-                    preg_resp[idx_preg][resp_mas_votada[j]].votos
-                ) {
-                    resp_mas_votada[j] = i;
-                } else {
-                    if (
-                        preg_resp[idx_preg][i].votos ==
-                        preg_resp[idx_preg][resp_mas_votada[j]].votos
-                    ) {
-                        j++;
-                        resp_mas_votada[j] = i;
-                    }
+            uint max=0; 
+            for (uint i = 1; i < rsp.length; i++) {
+                if (preg_resp[idx_preg][i].votos <=  preg_resp[idx_preg][i+1].votos) {
+                    max=preg_resp[idx_preg][i+1].votos;
+                }
+                else{
+                    max=preg_resp[idx_preg][i].votos;
                 }
             }
-            j = 0;
-            for (uint i = 0; i < resp_mas_votada.length; i++) {
-                if (resp_mas_votada[i] != 0) {
-                    preg_resp[idx_preg][resp_mas_votada[i]].ganadora = true;
+            uint j=0;
+            for (uint i = 1; i <= rsp.length; i++) {
+                if(preg_resp[idx_preg][i].votos == max){
+                    preg_resp[idx_preg][i].ganadora=true;
                     j++;
                 }
             }
-            resolucionPagosBeneficios(idx_preg, rsp.length, j);
-        }
+        resolucionPagosBeneficios(idx_preg, rsp.length, j);
+      }
     }
     // Pago de la recompensa al ganador/ganadores con la respuesta más votada.
     // En caso de varios ganadores el premio se divide entre todos a partes iguales.
