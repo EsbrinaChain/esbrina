@@ -88,12 +88,9 @@ contract esbrinachain is responder {
             preguntas[idx_preg].estado = estado_preg.anulada;
         } else {
             uint max=0; 
-            for (uint i = 1; i < rsp.length; i++) {
-                if (preg_resp[idx_preg][i].votos <=  preg_resp[idx_preg][i+1].votos) {
-                    max=preg_resp[idx_preg][i+1].votos;
-                }
-                else{
-                    max=preg_resp[idx_preg][i].votos;
+            for (uint i = 1; i <= rsp.length; i++) {
+                if (preg_resp[idx_preg][i].votos > max) {
+                    max = preg_resp[idx_preg][i].votos;
                 }
             }
             uint j=0;

@@ -7,8 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ABI } from '../esbrinachain';
-//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
-import {firebaseConfig,providerETH, contract_address } from '../firestore2';
+import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+//import {firebaseConfig,providerETH, contract_address } from '../firestore2';
 
 
 
@@ -21,8 +21,6 @@ import Web3  from 'web3';
 import * as CryptoJS from 'crypto-js';
 import { es } from '../idioma';
 import { PreguntaComponent } from "../pregunta/pregunta.component";
-
-
 
 
   @Component({

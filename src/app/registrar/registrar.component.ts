@@ -11,8 +11,8 @@ import detectEthereumProvider from '@metamask/detect-provider';
 
 import { PreguntaComponent } from "../pregunta/pregunta.component";
 import { ABI } from '../esbrinachain';
-//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
-import {firebaseConfig,providerETH, contract_address } from '../firestore2';
+import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+//import {firebaseConfig,providerETH, contract_address } from '../firestore2';
 
 import Web3  from 'web3';
 

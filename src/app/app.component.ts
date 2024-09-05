@@ -18,8 +18,8 @@ import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp,query, where, deleteDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
-//import {firebaseConfig } from './firestore1';
-import {firebaseConfig } from './firestore2';
+import {firebaseConfig } from './firestore1';
+//import {firebaseConfig } from './firestore2';
 
 
 
@@ -93,18 +93,33 @@ export class AppComponent implements OnInit{
     this.db = getFirestore(this.app);
     
     this.esbrinaUser = this.window.localStorage.getItem('esbrinaUser');
-    /*
-    if (this.esbrinaUser == null)
-    { this.userDefined = false; this.regUser = true; }
-    else {
-      this.userDefined = true; this.regUser = false;
-    }*/
     this.esbrinaUserMail=this.window.localStorage.getItem('esbrinaUserMail');
+    this.compruebaBackendUserActivo(this.esbrinaUserMail);
+    
     //console.log("UserDefined: ",this.userDefined);
     this.totalUsuarios = this.conTotalUsuarios();
     this.miraSiEsbrinaUser();
     console.log("userDefined: ", this.userDefined);
     this.resultado_insert = "";
+  }
+
+  async compruebaBackendUserActivo(email: any) {
+    const queryUsuarios = query(collection(this.db, '/Usuarios'),where("email","==",email));
+    const usSnapshot = await getDocs(queryUsuarios);
+    const existe = usSnapshot.docs.length;
+
+    if (existe == 0)
+    {
+      this.userDefined = false;
+      this.regUser = true;
+      window.localStorage.removeItem('esbrinaUser');
+      window.localStorage.removeItem('esbrinaUserMail');
+      window.localStorage.removeItem('seeds');
+    }
+    else {
+      this.userDefined = true; this.regUser = false;
+    }
+    
   }
 
   async insertaUsuarioID(email: any, pass: any, alias: any) {

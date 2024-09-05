@@ -11,8 +11,8 @@ import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, documentId} from 'firebase/firestore';
 import { addDoc, Timestamp, query, orderBy, where, and } from 'firebase/firestore';
 import { ABI } from '../esbrinachain';
-//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
-import {firebaseConfig, providerETH, contract_address } from '../firestore2';
+import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+//import {firebaseConfig, providerETH, contract_address } from '../firestore2';
 import { createBrotliDecompress } from 'zlib';
 import * as util from '@ethereumjs/util';
 

@@ -67,7 +67,7 @@ export const es = {
     m66: "El autor de una pregunta no puede votarla.",
     m67: "Si ha respondido a la pregunta, no puede votarla",
     m68: "Solo se puede votar 1 respuesta.",
-    m69: "",
+    m69: "12 Palabras reservadas...",
     m70: "",
 };
 
@@ -140,7 +140,7 @@ export const en = {
     m66: "If you are author's question, you can't vote.",
     m67: "If you answered a question, you can't vote.",
     m68: "One vote per question is permitted.",
-    m69: "",
+    m69: "12 reserved words...",
     m70: "",
 };
 
@@ -213,7 +213,7 @@ export const cat = {
     m66: "L'autor de la pregunta, no pot votarla",
     m67: "Si ha contestat a la pregunta, no pot votar-la.",
     m68: "Només es pot votar per una resposta.",
-    m69: "",
+    m69: "12 paraules reservades...",
     m70: "",
 };
 

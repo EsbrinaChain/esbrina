@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+
 @Component({
   selector: 'app-get-resp',
   standalone: true,
@@ -33,6 +34,6 @@ canceladoResp() {
   confirmadoResp() {
     this.dialog.close(this.nuevaResp);
   }
-
-
 }
+
+

@@ -22,8 +22,8 @@ import { GetRespComponent } from '../get-resp/get-resp.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrestigioComponent } from '../prestigio/prestigio.component';
-//import {firebaseConfig, providerETH, contract_address } from '../firestore1';
-import {firebaseConfig, providerETH, contract_address } from '../firestore2';
+import {firebaseConfig, providerETH, contract_address } from '../firestore1';
+//import {firebaseConfig, providerETH, contract_address } from '../firestore2';
 
 
 
@@ -129,7 +129,7 @@ export class PreguntaComponent {
     console.log(id,text,d);
   }
   
-  linEstadoPreg(text: any, t: any, v: any) {
+  async linEstadoPreg(text: any, t: any, v: any) {
     const id = 'LineaEstado_1';
     let d = document.getElementById(id);
     if (d != undefined) {
@@ -138,7 +138,7 @@ export class PreguntaComponent {
       d.style.visibility = v;
       d.innerText = text;
       console.log(id, text, d);
-      this.espera(t);
+      await this.espera(t);
     }
 
    }
@@ -205,7 +205,7 @@ ngOnInit(): void {
   this.web3 = this.web3obj;
   this.contract = new this.web3obj.eth.Contract(ABI.default, contract_address);
   this.consultaVariables();
-  setInterval(() => { this.conPregsQuery(); }, 30000);
+  setInterval(() => { this.actualizaListaPregs(); }, 30000);
   this.getBote();
   this.validaWalletBackend(this.wallet.address);
 }
@@ -346,18 +346,29 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
   }
   async creaRespuestaSC(id_preg: any, enunciado_resp: any,blockNumber:any,transactionIndex:any) {
     const email = window.localStorage.getItem('esbrinaUserMail');
-    const gasPrice = await this.web3obj.eth.getGasPrice();
-    console.log("Gas Price: ",gasPrice);
-    const gasEstimated = await this.contract.methods.creaRespuesta(id_preg,enunciado_resp, email, email, email).estimateGas({ from: this.wallet.address });
+    let gasPrice;
+    let gasEstimated;
+    try {
+      gasPrice = await this.web3obj.eth.getGasPrice();
+    } catch (error) {
+      this.linEstadoResp(id_preg, error, 2000, 'visible');
+    }
+    console.log("Gas Price: ", gasPrice);
+    try {
+      gasEstimated = await this.contract.methods.creaRespuesta(id_preg, enunciado_resp, email, email, email).
+        estimateGas({ from: this.wallet.address });
+    } catch (error) {
+      this.linEstadoResp(id_preg, error, 2000, 'visible');
+    }
     console.log("Gas Estimated",gasEstimated);
     var rawData = {
         from: this.wallet.address, // admin (address generada con la semilla facilitada).
         to: contract_address,  
         value: 0,
-        //gasPrice: this.web3obj.utils.toHex(gasPrice * BigInt(2)),
-        //gasLimit: this.web3obj.utils.toHex(gasEstimated),
-        gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
-        gasLimit: this.web3obj.utils.toHex(1000000),
+        gasPrice: this.web3obj.utils.toHex(gasPrice),
+        gasLimit: this.web3obj.utils.toHex(gasEstimated),
+        //gasPrice: this.web3obj.utils.toHex(BigInt(80000000000)),//50070176532n  46790342006n
+        //gasLimit: this.web3obj.utils.toHex(1000000),
         nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
         data: this.contract.methods.creaRespuesta(id_preg,enunciado_resp, email, email, email).encodeABI()
       }
@@ -365,15 +376,18 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     var signed: any;
     let receipt;
     this.linEstadoResp(id_preg, this.idiomaSel.m48, 2000, 'visible');
-    if (this.metamask) {
-      receipt = await this.web3obj.eth.sendTransaction(rawData);
-     }
-    else {
-      signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-      receipt = await this.web3obj.eth.sendSignedTransaction(signed.rawTransaction); 
+    try {
+      if (this.metamask) {
+        receipt = await this.web3obj.eth.sendTransaction(rawData);
+      }
+      else {
+        signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+        receipt = await this.web3obj.eth.sendSignedTransaction(signed.rawTransaction);
+      }
+      console.log("Receipt: ", receipt);
+    } catch (error) {
+      this.linEstadoResp(id_preg, error, 5000, 'visible');
     }
-    console.log("Receipt: ", receipt);
-    
     const preg_estado = await this.contract.methods.estadoPreg(id_preg).call();
     console.log("preg_estado: ",preg_estado);
     if (preg_estado == "Abierta.") {
@@ -395,7 +409,8 @@ async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     }
   }
 
-async insertaRespuesta(id_resp:any, idPreg:any, enunciado_resp: any, blockNumber_preg:any, transactionIndex_preg:any) {
+  async insertaRespuesta(id_resp: any, idPreg: any, enunciado_resp: any,
+                         blockNumber_preg: any, transactionIndex_preg: any) {
 
   const rsp = {
                 email: window.localStorage.getItem('esbrinaUserMail'),
@@ -488,7 +503,8 @@ async actualizaDatosPregSC(blockNumber: any, transactionIndex: any, id_preg: any
     const usarDialog = await this.haRespondido(idPreg);
     let noAutorPreg = false;
     const pregunta = await this.contract.methods.preguntas(idPreg).call();
-    console.log("Autor pregunta en contrato (address): ",pregunta.autor.toLowerCase(), "\nUsuario (address)",this.wallet.address.toLowerCase());
+    console.log("Autor pregunta en contrato (address): ", pregunta.autor.toLowerCase(),
+      "\nUsuario (address)", this.wallet.address.toLowerCase());
     if (pregunta.autor.toLowerCase() != this.wallet.address.toLowerCase()) noAutorPreg = true;
     // console.log("usarDialog: ", usarDialog, "noAutor: ", noAutorPreg);
     const estado_actual = await this.contract.methods.estadoPreg(idPreg).call();
@@ -610,7 +626,7 @@ showDialogEstadisticas(){
 
 async actualizaListaPregs() {
   this.conPregsQuery();
-  this.consultaVariables();
+  //this.consultaVariables();
   this.getBote();
 }
 
