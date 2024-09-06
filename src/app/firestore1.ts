@@ -16,16 +16,17 @@ export const firebaseConfig = {
           measurementId: "G-Y0VFSVPTBC"
         };
 
+export const providerETH = 'https://sepolia.drpc.org';
+
+//export const providerETH = 'https://sepolia-eth.w3node.com/4e8fbb3cbececa76950fbb8dcd185bc3b6db8cc5eec8a98593713a6a3d2ffdcb/api';
+export const contract_address: any = "0x48179EEf1bA796a538eF0f145FF0A55A41a0F174";
+
 
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
-
+  //export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
   //providerETH = 'https://rpc2.sepolia.org';
-  export const contract_address: any = "0x48179EEf1bA796a538eF0f145FF0A55A41a0F174";
-    
-
   //providerETH = 'http://127.0.0.1:7545/';
-//contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
+  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
   
 
 // Initialize Firebase

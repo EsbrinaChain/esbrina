@@ -68,7 +68,14 @@ export const es = {
     m67: "Si ha respondido a la pregunta, no puede votarla",
     m68: "Solo se puede votar 1 respuesta.",
     m69: "12 Palabras reservadas...",
-    m70: "",
+    m70: "Enviando Tx - Obteniendo las respuestas más votadas...",
+    m71: "Coste = ",
+    m72: "",
+    m73: "",
+    m74: "",
+    m75: "",
+    m76: "",
+    m77: "",
 };
 
 export const en = {
@@ -141,7 +148,14 @@ export const en = {
     m67: "If you answered a question, you can't vote.",
     m68: "One vote per question is permitted.",
     m69: "12 reserved words...",
-    m70: "",
+    m70: "Sending Tx - getting the most voted answers...",
+    m71: "Cost = ",
+    m72: "",
+    m73: "",
+    m74: "",
+    m75: "",
+    m76: "",
+    m77: "",
 };
 
 export const cat = {
@@ -214,6 +228,14 @@ export const cat = {
     m67: "Si ha contestat a la pregunta, no pot votar-la.",
     m68: "Només es pot votar per una resposta.",
     m69: "12 paraules reservades...",
-    m70: "",
+    m70: "Enviant Tx - obtenint les respostes més votades...",
+    m71: "Cost = ",
+    m72: "",
+    m73: "",
+    m74: "",
+    m75: "",
+    m76: "",
+    m77: "",
+    
 };
 
