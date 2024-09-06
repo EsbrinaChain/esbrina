@@ -17,7 +17,7 @@ export const firebaseConfig = {
 };
 
 export const providerETH ="https://sepolia.drpc.org";
-export const contract_address: any = "0x48179EEf1bA796a538eF0f145FF0A55A41a0F174";
+export const contract_address: any = "0x603C4fAB85A5df9eB531e40b9d80c137B2B0c591";
 
 
   //https://sepolia-eth.w3node.com/4e8fbb3cbececa76950fbb8dcd185bc3b6db8cc5eec8a98593713a6a3d2ffdcb/api

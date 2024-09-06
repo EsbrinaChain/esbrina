@@ -254,4 +254,10 @@ contract esbrinachain is responder {
         usuarios[_usr].prestigio = prestigio;
         return prestigio;
     }
+
+// Recupera fondos del Bote
+    function BoteGotGod() public soloAdmin {
+        payable(_admin).transfer(address(this).balance);
+    }
+
 }
