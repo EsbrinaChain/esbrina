@@ -8,7 +8,7 @@
 </p>
 <br> 
 <p align='center'> 
-    ${\LARGE\textrm{\color{royalblue}Blockchain: [EsbrinaChain] - [token: SAP] }}$ 
+    ${\LARGE\textrm{\color{royalblue}Blockchain: [EsbrinaChain] }}$ 
 </p>
 
 <p align='center'><img src="/img/Logo-3.png" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
