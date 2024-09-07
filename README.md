@@ -11,9 +11,11 @@
     ${\LARGE\textrm{\color{royalblue}Blockchain: [EsbrinaChain] }}$ 
 </p>
 
-<p align='center'><img src="/img/Logo-3.png" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
+<p align='center'><img src="/img/logo-000.gif" style="width:13cm;height:12cm" alt="EsbrinaChain-System" /></p>
 <p align='center'><img src="/img/Logo-4c.gif" style="width:28cm;height:34cm" alt="EsbrinaChain-Application" /></p>
-
+<p align='center'>
+   ${\LARGE\textrm{\color{royalblue} Funcionamiento del Sistema Esbrinachain  }}$
+</p>
 <p align='center'><img src="/img/003-EspecificacionFinal.gif" style="width:28cm;height:34cm" alt="EsbrinaChain-Application" /></p>
  
 # Aspectos técnicos:
