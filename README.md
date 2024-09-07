@@ -21,10 +21,12 @@
 </p>
 <p align='center'><img src="/img/003-EspecificacionFinal.gif" style="width:28cm;height:34cm" alt="EsbrinaChain-Application" /></p>
  
-<p align='center'> </p>
+ </p>
 # Proyecto Esbrinachain 
 ## Aspectos técnicos
+<p align='center'>
 Este proyecto se generó con [Angular CLI](https://github.com/angular/angular-cli) versión 17.0.5.
+</p>
 ## Desarrollo
 Ejecute `ng serve` para un servidor de desarrollo. Navegue hasta `http://localhost:4200/`. La aplicación se recargará automáticamente si cambia alguno de los archivos fuente.
 ## Build
