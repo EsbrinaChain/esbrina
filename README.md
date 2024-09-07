@@ -12,7 +12,7 @@
 </p>
 
 <p align='center'><img src="/img/Logo-3.png" style="width:8cm;height:8cm" alt="EsbrinaChain-System" /></p>
-<p align='center'><img src="/img/Logo-4c.gif" style="width:22cm;height:20cm" alt="EsbrinaChain-Application" /></p>
+<p align='center'><img src="/img/Logo-4c.gif" style="width:28cm;height:34cm" alt="EsbrinaChain-Application" /></p>
 
 # Criterios del sistema Blockchain
 El sistema es público y de libre acceso sobre la testnet de Ethereum (Sepolia). 
