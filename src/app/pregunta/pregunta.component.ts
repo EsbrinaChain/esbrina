@@ -105,12 +105,13 @@ export class PreguntaComponent {
   
   eventInicioVotacion: any;
   eventFinalVotacion: any;
-  
+  userActual: any;
 
   
 
   constructor(private matDialog: MatDialog) {
-    
+    this.userActual = window.localStorage.getItem("esbrinaUserMail");
+
             
   }
 
@@ -207,6 +208,7 @@ ngOnInit(): void {
   this.consultaVariables();
   setInterval(() => { this.actualizaListaPregs(); }, 30000);
   this.getBote();
+  this.balanceWalletAddress = this.getBalanceAddress(this.wallet.address);
   this.validaWalletBackend(this.wallet.address);
 }
 
@@ -297,11 +299,8 @@ async getBote() {
 }
 async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any, transactionIndex:any) {
   this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
-  // Usando Ganache retorna el valor del balance de la cuenta en ETH cuando deberian ser wei.
   const recompensaETH = this.web3obj.utils.fromWei(recompensa,"ether");
-  //console.log(this.balanceWalletAddress);
-  //console.log("Recompensa: ", recompensa);
-  //console.log("RecompensaETH: ", recompensaETH);
+
   if(recompensaETH < this.balanceWalletAddress){
     this.totalPregs++;
     const prg = {
@@ -325,7 +324,6 @@ async insertaPregunta(idp:any, enunciado: any, recompensa: any, blockNumber:any,
     this.conPregsQuery();
 
   }
-    
 }
 async updEstadoPregBackend(id_preg: any, estado_actual: any) {
     const queryPreg = query(collection(this.db, '/Pregs'), where("idp","==",Number(id_preg)));
@@ -628,6 +626,7 @@ async actualizaListaPregs() {
   this.conPregsQuery();
   this.consultaVariables();
   this.getBote();
+  this.balanceWalletAddress = await this.getBalanceAddress(this.wallet.address);
 }
 
 async updGanadoraBackend(id_preg: any, id_resp: any, valor:any) {

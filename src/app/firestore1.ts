@@ -19,7 +19,7 @@ export const firebaseConfig = {
 export const providerETH = 'https://sepolia.drpc.org';
 
 //export const providerETH = 'https://sepolia-eth.w3node.com/4e8fbb3cbececa76950fbb8dcd185bc3b6db8cc5eec8a98593713a6a3d2ffdcb/api';
-export const contract_address: any = "0x603C4fAB85A5df9eB531e40b9d80c137B2B0c591";
+export const contract_address: any = "0xe535A8c9bC67057Df5ce8085EB0eebf7A702eBE5";
 
 
   //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';

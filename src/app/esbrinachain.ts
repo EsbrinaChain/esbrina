@@ -35,6 +35,13 @@ export let ABI = {
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "BoteGotGod",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "uint256",

@@ -227,4 +227,28 @@ textarea {
     font-size: 16px;
 }
 
+.usuarioActualLbl {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    background-color: rgba(17, 179, 60, 0.846);
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.usuarioActualTxt{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: rgb(255, 255, 255);
+    background-color: rgba(38, 75, 244, 0.846);
+    padding-left: 3px;
+    padding-right: 3px;
+
+}
+.user-td{
+    text-align: right;
+    vertical-align: bottom
+}
+
 

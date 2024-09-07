@@ -1,9 +1,21 @@
         <!--<button mat-raised-button color="primary" (click)="test()">TEST</button>-->
         <table cols="1" width="95%" border="0px" align="center">
+            <!--<tr>
+                <td align="right" colspan="2">
+                            <label class="usuarioActualLbl">{{idiomaSel.m72}}</label> 
+                            <label class="usuarioActualTxt">{{userActual}}</label>
+                </td>
+            </tr>-->
             <tr>
-                <td align="center" colspan="2">
+                <td align="right">
                     <img class="bote" src="./assets/bote/{{imgBote}}"/>
                     <span class="boteDatoUnits">{{idiomaSel.m36}}</span>
+                </td>
+                <td align="right" class="user-td">
+                    <label class="usuarioActualLbl">{{idiomaSel.m72}}</label><br>
+                    <label class="usuarioActualTxt">{{userActual}}</label><br>
+                    <label class="usuarioActualLbl">{{idiomaSel.m73}}</label><br>
+                    <label class="usuarioActualTxt">{{balanceWalletAddress}} (wei)</label>
                 </td>
             </tr>
             <tr>
