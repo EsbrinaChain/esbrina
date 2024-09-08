@@ -14,8 +14,13 @@ export const firebaseConfig = {
           measurementId: "G-Y0VFSVPTBC"
         };
 
+
+        //export const providerETH = 'https://rpc2.sepolia.org';
 //export const providerETH = 'https://sepolia.drpc.org';
-export const providerETH = 'https://lb.drpc.org/ogrpc?network=sepolia&dkey=AvUhdnE0lEOFnfamA-Vzcgm0fMHgbcsR773QUh7cII5S';
+//export const providerETH = 'https://lb.drpc.org/ogrpc?network=sepolia&dkey=AvUhdnE0lEOFnfamA-Vzcgm0fMHgbcsR773QUh7cII5S';
+export const providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
+  //export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
+
 export const contract_address: any = "0x26748Da13d70D2FBEa73ff4a7BEe84bFce94bad0";
 
 /* No borrar - Es una cceso alternativo a otro backend disponible 

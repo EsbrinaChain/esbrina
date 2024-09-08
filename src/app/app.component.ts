@@ -19,7 +19,7 @@ import 'firebase/firestore';
 import { getFirestore, collection, getDocs, doc, setDoc, addDoc, Timestamp,query, where, deleteDoc } from 'firebase/firestore';
 import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import {firebaseConfig } from './firestore1';
-//import {firebaseConfig } from './firestore2';
+
 
 
 
@@ -254,7 +254,7 @@ export class AppComponent implements OnInit{
   }
   async eliminarCuenta() {
     const usuariosRef = collection(this.db, "Usuarios");
-    const q = query(usuariosRef, where("email", "==",this.esbrinaUserMail.toString()));
+    const q = query(usuariosRef, where("email", "==",this.esbrinaUserMail));
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) { console.log("no results"); }
     else {
