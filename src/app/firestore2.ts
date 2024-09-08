@@ -18,14 +18,3 @@ export const firebaseConfig = {
 
 export const providerETH ="https://sepolia.drpc.org";
 export const contract_address: any = "0x26748Da13d70D2FBEa73ff4a7BEe84bFce94bad0";
-
-
-  //https://sepolia-eth.w3node.com/4e8fbb3cbececa76950fbb8dcd185bc3b6db8cc5eec8a98593713a6a3d2ffdcb/api
-  //providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  //export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
-  //export const providerETH = 'https://rpc2.sepolia.org';
-  //providerETH = 'http://127.0.0.1:7545/';
-  //contract_address: any = "0x7a588bF361542fb2aD6191fe467e83fb097E1Ea6";
-  // Initialize Firebase
-  //const app = initializeApp(firebaseConfig);
-  //const analytics = getAnalytics(app);
