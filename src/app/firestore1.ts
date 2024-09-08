@@ -1,6 +1,4 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,5 +14,18 @@ export const firebaseConfig = {
           measurementId: "G-Y0VFSVPTBC"
         };
 
-export const providerETH = 'https://sepolia.drpc.org';
+//export const providerETH = 'https://sepolia.drpc.org';
+export const providerETH = 'https://lb.drpc.org/ogrpc?network=sepolia&dkey=AvUhdnE0lEOFnfamA-Vzcgm0fMHgbcsR773QUh7cII5S';
 export const contract_address: any = "0x26748Da13d70D2FBEa73ff4a7BEe84bFce94bad0";
+
+/* No borrar - Es una cceso alternativo a otro backend disponible 
+export const firebaseConfig = {
+  apiKey: "AIzaSyDVchTBjD_eoLrnj_A11NWXqdT9jgR5iws",
+  authDomain: "esb666-eef8b.firebaseapp.com",
+  projectId: "esb666-eef8b",
+  storageBucket: "esb666-eef8b.appspot.com",
+  messagingSenderId: "120427871828",
+  appId: "1:120427871828:web:33ec72c6f9dcbfd1de77c1",
+  measurementId: "G-V5SP5S2F6P"
+};
+*/

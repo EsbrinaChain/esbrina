@@ -28,7 +28,7 @@
         <img class="imgLogo" src="./assets/logo/{{imgLogoFile}}" />
         <h4 class="usuarios_op">{{idioma_seleccionat.m22}}</h4>
         <h4 class="usuarios_op">{{idioma_seleccionat.m23}}</h4>
-        <button mat-raised-button color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>
+        <button routerLink="/Inicio" color="primary" (click)="eliminarCuenta()">{{idioma_seleccionat.m24}}</button>
     </div>
     }
     @if(regUser && !userDefined){

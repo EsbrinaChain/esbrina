@@ -10,12 +10,10 @@ import 'firebase/firestore';
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, documentId} from 'firebase/firestore';
 import { addDoc, Timestamp, query, orderBy, where, and } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { RespuestaComponent } from '../respuesta/respuesta.component';
-import Web3 from 'web3';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogRef, MatDialogContent, MatDialogActions, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
-import {CdkTextareaAutosize, TextFieldModule} from '@angular/cdk/text-field';
+import { TextFieldModule} from '@angular/cdk/text-field';
 import { ABI } from '../esbrinachain';
 import { GetPregComponent } from '../get-preg/get-preg.component';
 import { GetRespComponent } from '../get-resp/get-resp.component';
@@ -23,7 +21,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrestigioComponent } from '../prestigio/prestigio.component';
 import {firebaseConfig, providerETH, contract_address } from '../firestore1';
-//import {firebaseConfig, providerETH, contract_address } from '../firestore2';
+
 
 
 

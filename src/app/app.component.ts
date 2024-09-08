@@ -265,7 +265,11 @@ export class AppComponent implements OnInit{
       );
       this.window.localStorage.removeItem("esbrinaUser");
       this.window.localStorage.removeItem("esbrinaUserMail");
-  }
+      this.window.localStorage.removeItem("seeds");
+      this.userDefined = false;
+      this.regUser = true;
+      this.totalUsuarios-=1;
+    }
 }
     
 }

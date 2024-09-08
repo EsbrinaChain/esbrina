@@ -18,6 +18,10 @@ export const routes: Routes = [
     {
     path: "Preguntas",
     component: PreguntaComponent
+    },
+    {
+    path: "Inicio",
+    component: AppComponent
     }
 ];
 

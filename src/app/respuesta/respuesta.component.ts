@@ -2,18 +2,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { es, en, cat } from "../idioma";
-import {resps} from "../db-resps"
 import { initializeApp } from "firebase/app";
 import 'firebase/firestore';
-import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, getDoc, doc, setDoc } from 'firebase/firestore';
-import { addDoc, Timestamp, query, orderBy, where } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { query, orderBy, where } from 'firebase/firestore';
 import { ABI } from '../esbrinachain';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {firebaseConfig, providerETH, contract_address } from '../firestore1';
-//import {firebaseConfig,providerETH, contract_address } from '../firestore2';
-
+import {firebaseConfig, contract_address } from '../firestore1';
 
 
 @Component({

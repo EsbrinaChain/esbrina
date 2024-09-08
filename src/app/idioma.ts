@@ -182,7 +182,7 @@ export const cat = {
     m21: "Si us plau, entri una adreça de correu correcta!",
     m22: "Voste ja té un compte creat a Esbrinachain!",
     m23: "Premi 'Esborrar compte' per eliminar el compte.",
-    m24: "Erase account",
+    m24: "Esborrar aquesta compte",
     m25: "Crear una Nova Pregunta",
     m26: "Respondre",
     m27: "Només 1 resposta per pregunta",
