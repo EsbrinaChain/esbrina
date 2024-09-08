@@ -21,7 +21,6 @@
 </p>
 <p align='center'><img src="/img/003-EspecificacionFinal.gif" style="width:28cm;height:34cm" alt="EsbrinaChain-Application" /></p>
  
- </p>
 # Proyecto Esbrinachain 
 ## Aspectos técnicos
 <p align='center'>
