@@ -23,13 +23,19 @@
  
 # Proyecto Esbrinachain 
 ## Aspectos técnicos
-<p align='center'>
+
 Este proyecto se generó con [Angular CLI](https://github.com/angular/angular-cli) versión 17.0.5.
-</p>
+
 ## Desarrollo
+
 Ejecute `ng serve` para un servidor de desarrollo. Navegue hasta `http://localhost:4200/`. La aplicación se recargará automáticamente si cambia alguno de los archivos fuente.
+
 ## Build
+
 Ejecute `ng build` para construir el proyecto. Los artefactos de compilación se almacenarán en el directorio `docs/`.
+
 ## Ayuda
-Para obtener más ayuda sobre Angular CLI, use `ng help` o consulte la página [Descripción general y referencia de comandos de Angular CLI] (https://angular.io/cli).
-"#esbrina"
+
+Para obtener más ayuda sobre Angular CLI, use `ng help` o consulte la página 
+[Descripción general y referencia de comandos de Angular CLI] (https://angular.io/cli).
+
