@@ -87,7 +87,7 @@
                     <div class="labelMetadata">{{idiomaSel.m45}}<span class="textMetadataEstado">{{item.estado}}</span></div>
                     <div class="labelMetadata">{{idiomaSel.m46}}</div>
                     <div class="textMetadataRecompensa">{{item.recompensa}}</div>
-                    @if(item.incRecompensa > 0){
+                    @if(item.incRecompensa > 0 && item.estado!='consulta'){
                     <div>
                         <button class="btnSubirRecompensa" (click)="incrementaRecompensa(item.idp,incr.value)" title="{{idiomaSel.m41}}">+
                             <label class="wei">(wei)({{idiomaSel.m42}}:{{item.incRecompensa}})</label></button>

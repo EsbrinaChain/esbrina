@@ -14,7 +14,7 @@
                 <tbody>
                     @for (item of lista_prestigio; track item;){
                         <tr>
-                            <td [ngClass]="item.wallet == wallet.address ? 'textUser' : 'textMail'">{{item.email}}</td>
+                            <td [ngClass]="item.wallet == wallet ? 'textUser' : 'textMail'">{{item.email}}</td>
                             <td class="textRep">{{item.reputacion}}</td>
                         </tr>
                         }

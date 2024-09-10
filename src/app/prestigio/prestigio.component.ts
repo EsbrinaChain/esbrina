@@ -47,8 +47,8 @@ export class PrestigioComponent {
     this.db = getFirestore(this.app);
   }
 
-confirmado() {
-  this.dialog.close(this.data_user);
-}
+  confirmado() {
+    this.dialog.close(this.data_user);
+  }
 
 }

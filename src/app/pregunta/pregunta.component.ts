@@ -550,7 +550,7 @@ showDialog(){
 
 showDialogEstadisticas(){
   const stdWindow = new MatDialogConfig();
-  stdWindow.width = '40%';
+  stdWindow.width = '45%';
   stdWindow.autoFocus = true;
   stdWindow.data = {
     listaPrestigio: this.lista_usuarios,
