@@ -19,7 +19,7 @@
 <p align='center'>
    ${\LARGE\textrm{\color{royalblue} Funcionamiento del Sistema Esbrinachain  }}$
 </p>
-<p align='center'><img src="/img/003-EspecificacionFinal.gif" style="width:28cm;height:34cm" alt="EsbrinaChain-Application" /></p>
+<p align='center'><img src="/img/003-EspecificacionFinal.gif" style="width:24cm;height:30cm" alt="EsbrinaChain-Application" /></p>
  
 # Proyecto Esbrinachain 
 ## Aspectos técnicos
