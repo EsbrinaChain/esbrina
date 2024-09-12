@@ -783,64 +783,60 @@ test_valor(txt:any) {
     else return parseInt(txt);
     
   }
+
   async incrementaRecompensa(id_preg: any, incremento: any) {
   
     const valor = this.test_valor(incremento);
-    console.log("pregunta:", id_preg, "Incrementar la recompensa en: ", valor);
-    const pregunta = await this.contract.methods.preguntas(id_preg).call();
-    if (pregunta.estado < 2) {
-      this.linEstadoResp(id_preg, this.idiomaSel.m55, 2000, 'visible');
-      const gasPrice = await this.web3obj.eth.getGasPrice();
-      console.log("Gas Price: ", gasPrice); 
-      const gasEstimated = await this.contract.methods.subirRecompensaPreg(id_preg).estimateGas(
-        {
-          from: this.wallet.address,
-          value: valor
-        });
-      console.log("Gas Estimated", gasEstimated);
-    
-      var rawData = {
-        from: this.wallet.address, // admin (address generada con la semilla facilitada).
-        to: contract_address,
-        value: valor,
-        gasPrice: this.web3obj.utils.toHex(gasPrice),
-        gasLimit: this.web3obj.utils.toHex(gasEstimated),
-        nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
-        data: this.contract.methods.subirRecompensaPreg(id_preg).encodeABI()
-      }
-      //console.log(rawData);
-      var signed: any;
-      if (this.metamask) {
-        this.web3obj.eth.sendTransaction(rawData).then(
-          (receipt: any) => {
-            console.log("Receipt-Subir recompensa: ", receipt);
-            this.linEstadoResp(id_preg, this.idiomaSel.m55, 2000, 'visible');
-            this.updRecompensaPreg(id_preg, valor);
-          },
-          (error: any) => {
-            console.log("Error subida recompensa", error);
-            this.linEstadoResp(id_preg, this.idiomaSel.m50, 2000, 'visible');
+    if (valor > 0) {
+      console.log("pregunta:", id_preg, "Incrementar la recompensa en: ", valor);
+      const pregunta = await this.contract.methods.preguntas(id_preg).call();
+      if (pregunta.estado < 2) {
+        this.linEstadoResp(id_preg, this.idiomaSel.m55, 2000, 'visible');
+        const gasPrice = await this.web3obj.eth.getGasPrice();
+        console.log("Gas Price: ", gasPrice);
+        const gasEstimated = await this.contract.methods.subirRecompensaPreg(id_preg).estimateGas(
+          {
+            from: this.wallet.address,
+            value: valor
+          });
+        console.log("Gas Estimated", gasEstimated);
+        
+        var rawData = {
+          from: this.wallet.address, // admin (address generada con la semilla facilitada).
+          to: contract_address,
+          value: valor,
+          gasPrice: this.web3obj.utils.toHex(gasPrice),
+          gasLimit: this.web3obj.utils.toHex(gasEstimated),
+          nonce: await this.web3obj.eth.getTransactionCount(this.wallet.address),
+          data: this.contract.methods.subirRecompensaPreg(id_preg).encodeABI()
+        }
+        //console.log(rawData);
+        var signed: any;
+        let receipt;
+        try {
+          if (this.metamask) {
+            receipt = await this.web3obj.eth.sendTransaction(rawData);
           }
-        );
-      }
-      else {
-        signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-        this.web3obj.eth.sendSignedTransaction(signed.rawTransaction).then(
-          (receipt: any) => {
-            console.log("Receipt-Subir recompensa: ", receipt);
-            this.linEstadoResp(id_preg, this.idiomaSel.m55, 2000, 'visible');
-            this.updRecompensaPreg(id_preg, valor);
-          },
-          (error: any) => {
-            console.log("Error subida recompensa", error);
-            this.linEstadoResp(id_preg, this.idiomaSel.m50, 2000, 'visible');
+          else {
+            signed = await this.web3obj.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+            receipt = await this.web3obj.eth.sendSignedTransaction(signed.rawTransaction);
           }
-        );
+          console.log("Receipt-Subir recompensa: ", receipt);
+          const idp = this.web3obj.utils.hexToNumber(receipt.logs[0].topics[1]);
+          console.log("logs[0].topics[1]", idp);
+          this.linEstadoResp(id_preg, this.idiomaSel.m55, 2000, 'visible');
+          this.updRecompensaPreg(id_preg, valor);
+        } catch (error) {
+          console.log("Error subida recompensa", error);
+          this.linEstadoResp(id_preg, this.idiomaSel.m50, 2000, 'visible');
+        }
+      } else {
+        console.log(this.idiomaSel.m56);
+        this.linEstadoResp(id_preg, this.idiomaSel.m56, 2000, 'visible');
       }
-    
-    } else {
-      console.log(this.idiomaSel.m56);
-      this.linEstadoResp(id_preg, this.idiomaSel.m56, 2000, 'visible');
+    }
+    else {
+      console.log("Incremento de recompensa no es un valor mayor que cero.")
     }
   }  
   async notificacio(id_preg: any, miss: any) {
