@@ -17,13 +17,18 @@ export const firebaseConfig = {
         };
 
 
-        //export const providerETH = 'https://rpc2.sepolia.org';
-export const providerETH = 'https://sepolia.drpc.org';
+//export const providerETH = 'https://rpc2.sepolia.org';
+//export const providerETH = 'https://sepolia.drpc.org';
 //export const providerETH = 'https://lb.drpc.org/ogrpc?network=sepolia&dkey=AvUhdnE0lEOFnfamA-Vzcgm0fMHgbcsR773QUh7cII5S';
 //export const providerETH = 'https://sepolia.infura.io/v3/d09825f256ae4705a74fdee006040903';
-  //export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
+//export const providerETH = 'https://sepolia.infura.io/v3/14a07be1d5274d6e873766271f369061';
+//export const providerETH = 'https://eth-sepolia.public.blastapi.io';
 
-export const contract_address: any = "0x85b2964c99ebD5d946647F52bD3e39D75068729f";
+//https://sepolia-eth.w3node.com/928c8003ca34e94ec5c67fb92c6076c3ed089b015fd2fe514e5365a49834ac66/api
+//export const providerETH = 'https://sepolia-eth.w3node.com/1c2c6455a2ad33df1658b14631fb18798de11bd1b1368efb055bd3667a090aa8/api';
+
+export const providerETH = 'https://sepolia.drpc.org';
+export const contract_address: any = "0xda4273106A47F030844B8F62ee348c69c02a3f45";
 
 /* No borrar - Es una cceso alternativo a otro backend disponible 
 export const firebaseConfig = {
