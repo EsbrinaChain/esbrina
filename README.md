@@ -1,11 +1,11 @@
 #  
 <p align='center'>
 <table align="center" border=1">
-  <tr><td></td><td></td></tr>
+  <tr>
+    <td><h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1></td>
+    <td><sub><sup>${\textrm{\color{royalblue}By QDJ}}$</sup></sub></td></tr>
 </table>
-<h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1></p>
-<p align=center><sub><sup>${\textrm{\color{royalblue}By QDJ}}$</sup></sub></p>
-
+</p>
 <p align='center'> 
   <h2 align='center'>
     ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ 
