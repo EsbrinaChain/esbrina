@@ -1,5 +1,5 @@
 <p align='center'>
-<h1>${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1> <h6><sub><sup>${\textrm{\color{royalblue}(By QDJ)}}$</sup></sub></h6>
+<td><h1>${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1> <h6><sub><sup>${\textrm{\color{royalblue}(By QDJ)}}$</sup></sub></h6></td>
 </p>
 <p align='center'> 
   <h2 align='center'>
