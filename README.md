@@ -7,7 +7,7 @@
 </p>
 <br> 
 <p align='center'> 
-    ${\LARGE\textrm{\color{royalblue}Blockchain Sepolia Testnet: [EsbrinaChain] }}$ 
+    ${\LARGE\textrm{\color{royalblue}Blockchain Sepolia Testnet }}$ 
 </p>
 
 <p align='center'><img src="/img/logo-000.gif" style="width:13cm;height:12cm" alt="EsbrinaChain-System" /></p>
