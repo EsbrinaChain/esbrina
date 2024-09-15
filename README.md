@@ -2,9 +2,6 @@
 <p align="center">
 <h1 align="center">${\color[RGB]{0,0,255}\LARGE\textrm EsbrinaChain}$ <sub><sup>${\color[RGB]{0,0,255}\:\Tiny By\:QDJ\:-\:(esbrinachain@gmail.com)}$</sup></sub><h1>
 </p>
-
-<h1 align="center">${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$ <sub><sup>${\textrm{\color{royalblue}(By QDJ - esbrinachain@gmail.com)}}$</sup></sub><h1> 
-
 <p align='center'> 
   <h2 align='center'>
     ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ 
