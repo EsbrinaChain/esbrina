@@ -1,11 +1,9 @@
-# 
-
-<h1 align="center">${\color[RGB]{0,0,255}\LARGE\textrm EsbrinaChain}$ <sub><sup>${\color[RGB]{0,0,255}\:\Tiny By\:QDJ\:-\:(esbrinachain@gmail.com)}$</sup></sub><h1>
-
 <p align='center'> 
-  <h2 align='center'>
-    ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ 
-  </h2>
+<h1 align="center">${\color[RGB]{0,0,255}\LARGE\textrm EsbrinaChain}$ <sub><sup>${\color[RGB]{0,0,255}\:\Tiny By\:QDJ\:-\:(esbrinachain@gmail.com)}$</sup></sub>
+<br>
+<p align="center">
+  ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ </p>
+</h1>  
 </p>
 <br> 
 <p align='center'> 
