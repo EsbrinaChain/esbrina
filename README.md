@@ -1,6 +1,6 @@
 #  
 <p align='center'>
-<table align="center" border="0">
+<table align="center" border="0" color="#FFFFFF">
   <tr>
     <td><h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1></td>
     <td><sub><sup>${\textrm{\color{royalblue}(By QDJ)}}$</sup></sub></td></tr>
