@@ -1,6 +1,6 @@
 #  
-<p align='center'>  <h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain }}$ </h1> </p>
-<br>By QDJ<br>
+<p align='center'>  <h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain }}$ </h1> <h6>By QDJ</h6></p>
+<br>
 <p align='center'> 
   <h2 align='center'>
     ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ 
