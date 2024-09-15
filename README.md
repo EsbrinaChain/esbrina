@@ -1,8 +1,8 @@
 #  
 <style>
-  table td {
-    border: none !important;
-  }
+td, th {
+   border: none;
+}
 </style>
 <p align='center'>
 <table align="center">
