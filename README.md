@@ -1,10 +1,10 @@
 #  
-<p align='center'>
- <style>
+<style>
   table td {
     border: none !important;
   }
 </style>
+<p align='center'>
 <table align="center">
   <tr>
     <td><h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1></td>
