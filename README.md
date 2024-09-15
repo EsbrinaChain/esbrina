@@ -1,7 +1,7 @@
 # 
-<p align="center">
+
 <h1 align="center">${\color[RGB]{0,0,255}\LARGE\textrm EsbrinaChain}$ <sub><sup>${\color[RGB]{0,0,255}\:\Tiny By\:QDJ\:-\:(esbrinachain@gmail.com)}$</sup></sub><h1>
-</p>
+
 <p align='center'> 
   <h2 align='center'>
     ${\LARGE\textrm{\color{royalblue}Sistema colaborativo de conocimiento en blockchain }}$ 
