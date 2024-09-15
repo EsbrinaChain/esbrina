@@ -1,11 +1,5 @@
-<p style="color: blue">bar</p>
-
 <p align='center'>
-<table align="center">
-  <tr>
-    <td><h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1></td>
-    <td><sub><sup>${\textrm{\color{royalblue}(By QDJ)}}$</sup></sub></td></tr>
-</table>
+${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$ | <sub><sup>${\textrm{\color{royalblue}(By QDJ)}}$</sup></sub>
 </p>
 <p align='center'> 
   <h2 align='center'>
