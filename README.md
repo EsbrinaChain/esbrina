@@ -1,9 +1,11 @@
 
 <style>
-td, th {
-   border: none;
-}
+#foo {color: red}
 </style>
+
+<p id="foo">foo</p>
+
+<p style="color: blue">bar</p>
 
 <p align='center'>
 <table align="center">
