@@ -1,4 +1,5 @@
 # 
+{\color[RGB]{0,0,255}{\LARGE\textrm EsbrinaChain\:\Tiny By QDJ}}
 <h1 align="center">${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$ <sub><sup>${\textrm{\color{royalblue}(By QDJ - esbrinachain@gmail.com)}}$</sup></sub><h1> 
 
 <p align='center'> 
