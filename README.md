@@ -27,6 +27,7 @@
 Este proyecto se generó con <b>[Angular CLI](https://github.com/angular/angular-cli) versión 17.0.5.</b><br>
 Desarrollo de contratos inteligentes con lenguaje <b>Solidity</b>.<br>
 Soporte de backend con Google <b>Firestore Cloud</b>.<br>
+Test unitarios con <b>Mocha</b>
 
 ## Desarrollo
 
