@@ -1,6 +1,6 @@
 #  
 <p align='center'>
-<table border="1">
+<table align="center" border=1">
   <tr><td></td><td></td></tr>
 </table>
 <h1 align='center'> ${\LARGE\textrm{\color{royalblue}EsbrinaChain}}$</h1></p>
