@@ -31,7 +31,8 @@ Test unitarios con <b>Mocha</b>.
 
 ## Desarrollo
 
-Ejecute `ng serve` para un servidor de desarrollo. Navegue hasta `http://localhost:4200/`. La aplicación se recargará automáticamente si cambia alguno de los archivos fuente.
+El detalle del desarrollo completo se puede consultar en el documento técnico:<br>
+<a href='https://github.com/EsbrinaChain/esbrina/blob/Esbrinachain/DocTecnico-Esbrinachain_FINAL.pdf'>DocTecnico-Esbrinachain_FINAL.pdf</a>
 
 ## Build
 
