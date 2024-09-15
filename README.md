@@ -34,12 +34,4 @@ Test unitarios con <b>Mocha</b>.
 El detalle del desarrollo completo se puede consultar en el documento técnico:<br>
 <a href='https://github.com/EsbrinaChain/esbrina/blob/Esbrinachain/DocTecnico-Esbrinachain_FINAL.pdf'>DocTecnico-Esbrinachain_FINAL.pdf</a>
 
-## Build
-
-Ejecute `ng build` para construir el proyecto. Los artefactos de compilación se almacenarán en el directorio `docs/`.
-
-## Ayuda
-
-Para obtener más ayuda sobre Angular CLI, use `ng help` o consulte la página 
-[Descripción general y referencia de comandos de Angular CLI] (https://angular.io/cli).
 
