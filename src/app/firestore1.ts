@@ -27,6 +27,7 @@ export const firebaseConfig = {
 //https://sepolia-eth.w3node.com/928c8003ca34e94ec5c67fb92c6076c3ed089b015fd2fe514e5365a49834ac66/api
 //export const providerETH = 'https://sepolia-eth.w3node.com/1c2c6455a2ad33df1658b14631fb18798de11bd1b1368efb055bd3667a090aa8/api';
 
+// Last configuration and Smart Contract address
 export const providerETH = 'https://sepolia.drpc.org';
 export const contract_address: any = "0xda4273106A47F030844B8F62ee348c69c02a3f45";
 
