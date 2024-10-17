@@ -51,7 +51,7 @@ export class RegistrarComponent {
   web3: any;
   userDefined: any;
   contract: any;
- 
+  redActual:any;
 
   // Variable de S.C.
   tiempo_votacion: any;
@@ -88,20 +88,39 @@ export class RegistrarComponent {
     }
   }
 
-  async registrar(sendData: any) {
+  async setRedSepolia() {
     
-    this.provider = await detectEthereumProvider();
-    if (this.provider) {
-      console.log(this.provider);
-      // From now on, this should always be true:
-      // provider === window.ethereum
-      if (this.provider == undefined || this.provider !== this.window.ethereum) {
-        console.log('Please install MetaMask!');
-        return;
-      }
+    if(this.window.ethereum) {
+        // Chequear red Sepolia
+        this.redActual = await this.window.ethereum.request({
+          "method": "eth_chainId",
+          "params": [],
+         });
+        if(this.redActual == "0xaa36a7"){
+          console.log("La red actual es Sepolia", " (",this.redActual,")");
+        }
+        else{
+          try{
+              await this.window.ethereum.request({
+                "method": "wallet_switchEthereumChain",
+                "params": [{ chainId: "0xaa36a7"}],
+              });
+          } catch(err){
+            console.log(err);
+          }
+           
+        }
+        const net = await this.window.ethereum.request({
+          "method": "eth_chainId",
+          "params": [],
+         });
+         if (net == "0xaa36a7"){}
+         else{
+          console.log("No estas en la red Sepolia.");
+         }
     }
-  }
 
+  }
   
   async getBlockN() {
     this.blockNumber = await this.window.ethereum.request({ method: 'eth_blockNumber' });
@@ -121,6 +140,7 @@ export class RegistrarComponent {
       console.log("Q: ",this.wallet);
     });
   }
+
   async loginMetamask() {
     //console.log("METAMASK");
     this.provider = await detectEthereumProvider();
@@ -129,10 +149,10 @@ export class RegistrarComponent {
       // From now on, this should always be true:
       // provider === window.ethereum
       if (this.provider == undefined || this.provider !== this.window.ethereum) {
-        console.log('Please install MetaMask!');
+        console.log('Por favor, instala MetaMask!');
         return;
       }
-      //console.log("LLEGA");
+      await this.setRedSepolia();
       this.accounts = await this.window.ethereum.request({ method: 'eth_requestAccounts' });
       console.log("All accounts: ", this.accounts);
       this.wallet.address = this.accounts[0];
