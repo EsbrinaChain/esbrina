@@ -32,6 +32,6 @@ Test unitarios con <b>Mocha</b>.
 ## Desarrollo
 
 El detalle del desarrollo completo se puede consultar en el documento técnico:<br>
-<a href='https://github.com/EsbrinaChain/esbrina/blob/Esbrinachain/DocTecnico-Esbrinachain_FINAL.pdf'>DocTecnico-Esbrinachain_FINAL.pdf</a>
+<!--<a href='https://github.com/EsbrinaChain/esbrina/blob/Esbrinachain/DocTecnico-Esbrinachain_FINAL.pdf'>DocTecnico-Esbrinachain_FINAL.pdf</a>-->
 
 
